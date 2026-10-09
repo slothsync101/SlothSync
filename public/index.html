@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F6F0E5" />
+<script>try{var t=localStorage.getItem("sloth_theme");if(t==="dark"||(t!=="light"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark-ui")}catch(e){}</script>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Sloth Sync" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAFrklEQVR42u2dO24VMRSGJ1a2Q+FF0NJRUVEiISQasgbSICEkSioqOloWMQVroKeipohAV4Hc65k5b39/RUKuPT7+/B+/Jrn69fPHgtD/1AgBAg4EHAg4EHAg4EDAgYADAQcCDgQcCAEHAg4EHAg4EHAg4EDAgYADAQcCDoT+6HrOZn/9/m3rR548ejxblK5meDVhBwrgUhkOJSCmAqUaHMZM1KakCBzuTJSkJD0cAbEog0hWOIIzUYOSfHCkwyIvIg0yeP70zpEdi4wWkgCOYlgkQqRBBq3L5xy1sUhhIQ0yaG8mOGYjI2yrY6WVObEIm2IaZGAh0eGAjIDRaMQCPuLCARlhI9MgAz4iwgEZwaPUIAM+YsEBGSki1iADPqLAARmJosfrkCgGHNhGrhg2yIAPZzggI2M8r2cOcR/7sXXW+Fjc54hjG12ikDisaN/8UIcjAhldp9i1Oh+V00q3Kr9q3tF1Di/b6B6VeiGiZx7VnKN7V13JRRSdw9g2eqSwGiOiZB4NMgo8j1K0K5ytdJ4qUVoxs40UHWCWYsSTS2Ln6Dynshpk8LR2cBjklA7NJpFvRJknN4JD2zayLwG0n182/o3I0or0cNQgI1dbJOHQyymVyNBukWAvlDp4e//x87/ffPXiWaUaLSW5Q6rkHH1XD6n2mVSNSpunUlulYnC4kDHYSYKIiNcYmY/QE1JxMnZ/Sq/GyNOprNvn0fpY77PAsW1IHY/11hJUa+y14bC82iM1CsfLsa8xSI+0XLYhG9+R0mxq7IWdA5VURDhsbGOkTMsaA5pHwZeaPnz6cvePl8+fVq0ROPZ30umXqh1mX2OytCK7VNmdU+7108XvXyzZvkbZzHK8X5iQoupwnB+sF4dyihpnh6NPP1g7cCCcAwEHAg5fnb8yc35r4fz/PlSyfY3AwWw0TRzqpJWHBqvefqV9jcYSuEMqtUM6MmJGTsI2nXRcdHj7Ghe5i6UHb5IWPHizH7jFztuyphXZqdxIafY1Aod/fMfLsa8RODyjvLUE+xqBwyfW+z5rXyOrlUPre8H3z17f3J5++e7tG+0a469WZF6HFOFj9+bPwTdX72EhiMhuw1gDkFEEjvN9dqaHzmAxgsii9pY9cMjDsUmDZFzkQ0NB4OBUFmWAw/KXyW+yjR0/nyUOOAdyhUP7j40hlx7BORBwoOxwmM3Fti5NzZaya0k4mHYUm3BMnVbGzcB4ByyOwt0EWw23Su96fcfZygw5ZRH/M14Z99HvNHgqGx8Owfxe+S9Sx5xyslop5a7TtloYDtYsNdYpoVcrs5lHzPa24PAix8i32oPp9c2t3mm7VMlhbbLyJtjfztPg465MVfhqwiHlbweH1OnqVLYLT0s7uAZeg8U8k3ME5CMgGUoS3iE9leDvJ+1y3bm7U0UKUSJDaRGgCMfi+r7T4OTxYgfv/mDqhJIJjkXowEUks4hstMe3DXU4AvJxBBGp85cUZCy5Dt6kTvM3zVLFD+QSbf6qO8di9Zvzs/AdcMvAcykr24YVMkzIWJLukK48s4mM4BDHfJ2bDJvTTTvnmJaPpGQYTUj1JqfBp6hrhjFWbc6RwkIK3FeyhkMJ/HUOMowvUlmnFb3kEiTFrNnGVTg4VPnwQkTVvVwuX7rBoc2HJSLaSc3rWq4nHAZ8qFJiM9FxvLDtDIcZH4KUWE5+fa/y+8NhzMcOVryWQu4veYSAw5GPsIrw+k8jFpARHQ74CBiHKGmFFBNweDRiRKszwTEhHzHbGzGtTJViIg+DRuxoXVbnqGohKaBPA0cZRBJ5YSOyPH8R58hrIRmxzgpHFkpSW116OMIiUmCdVQSOOJRUWntXg8OLkpL7MWXhMACl/B7/FHCI4DLhceCkcKAR8QcAEXAg4EDAgYADAQcCDgQcCDgQcCDgQAg4EHAg4EDAgYADAQcCDgQcCDjQfPoNwCTKX7xEo24AAAAASUVORK5CYII=" />
+<title>Sloth Sync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+@theme inline {
+  --color-background: var(--background); --color-foreground: var(--foreground);
+  --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary); --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted); --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent); --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card); --color-border: var(--border);
+}
+:root {
+  --background:#F6F0E5; --foreground:#24342D; --primary:#C98952; --primary-foreground:#FFF9F0;
+  --secondary:#E7DDCE; --secondary-foreground:#304138; --muted:#E9E2D7; --muted-foreground:#68756C;
+  --accent:#A8C3A0; --accent-foreground:#21362A; --card:#FBF7EF; --border:#DDD4C6;
+  --radius:1rem;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root.dark-ui {
+  --background:#18211C; --foreground:#EFE8DA; --primary:#D89A62; --primary-foreground:#2A1C0E;
+  --secondary:#2A372F; --secondary-foreground:#E7DDCE; --muted:#243029; --muted-foreground:#9DAA9F;
+  --accent:#5F7C62; --accent-foreground:#F1F5EC; --card:#202B25; --border:#33423A;
+}
+html { scroll-padding-top: env(safe-area-inset-top,0px); }
+body { background: var(--background); font-family: "Nunito", system-ui, sans-serif; }
+*::-webkit-scrollbar { display:none; } * { scrollbar-width:none; }
+.fade { animation: fade .25s ease; }
+@keyframes fade { from { opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
+</style>
+</head>
+<body>
+<main id="app" class="min-h-screen text-foreground pb-28 max-w-md mx-auto relative"></main>
+<div id="sheet"></div>
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-28 z-50 bg-foreground text-background text-sm font-bold px-4 py-2 rounded-full opacity-0 transition-opacity pointer-events-none"></div>
+
+<script src="/sloth-web.js"></script>
+<script>
+const WEB_MODE = typeof window !== 'undefined' && !!window.__SLOTH_WEB;   // true only in the standalone website build
+const hostKind = () => WEB_MODE ? 'web' : (typeof window !== 'undefined' && window.claude ? 'claude' : 'static');   // static = this single file dropped on a plain host with no server
+const STATIC_HELP = "This copy of the page has no server behind it, so it can't do this. To get Google Calendar and real people on your own site, deploy the whole website kit (sloth-sync-web.zip), not just this one HTML file.";
+const ICONS = {
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon:'<path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/>',
+  calendar:'<rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14.5c2 .8 3.5 2.7 3.5 5.5"/>',
+  bell:'<path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15z"/><path d="M10 21h4"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+  wand:'<path d="M5 19L17 7"/><path d="M15 5l4 4"/><path d="M6 4v3M4.5 5.5h3M19 15v3M17.5 16.5h3"/>',
+  chev:'<path d="M9 6l6 6-6 6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'
+};
+const ic = (n, s=20, c='') => `<svg class="${c}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+
+const members = [
+  {id:'p', name:'Prabhat (you)', short:'PR', color:'#C98952', on:true},
+];
+const today = new Date();
+const days = Array.from({length:366}, (_, i) => { const d = new Date(today); d.setDate(today.getDate() + i); return d; });
+const DOW = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const fmtLong = d => d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', ...(d.getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})});
+
+const CALS = [
+  {id:'personal', name:'Personal', shared:false, bg:'var(--primary)', fg:'var(--primary-foreground)'},
+  {id:'team', name:'Team', shared:true, bg:'var(--accent)', fg:'var(--accent-foreground)'},
+  {id:'crew', name:'Weekend crew', shared:true, bg:'#9B7BA8', fg:'#FFFFFF'},
+];
+let SHARED = CALS.filter(c => c.shared);
+const CAL_COLORS = ['#9B7BA8', '#6FA3A0', '#C4A15B', '#B97868', '#7D8FB3', '#8A9A5B'];
+const defaultCal = () => (CALS.find(c => !c.google && c.shared) || CALS.find(c => !c.google) || CALS[0] || {}).id;
+const calOf = id => CALS.find(c => c.id === id) || CALS.find(c => c.id === defaultCal()) || CALS[0] || {id:'none', name:'Calendar', bg:'var(--primary)', fg:'var(--primary-foreground)'};
+let events = {
+  0: [{t:'2:00 PM', title:'Weekly product sync', who:['PR'], c:'accent', cal:'team'}, {t:'6:00 PM', dur:'1 hr', title:'Gym', who:['PR'], c:'primary', cal:'personal'}],
+  1: [{t:'10:30 AM', title:'Design review', who:['PR'], c:'primary', cal:'team'}, {t:'9:00 AM', dur:'1 hr', title:'Dentist', who:['PR'], c:'primary', cal:'personal'}],
+  2: [{t:'7:00 PM', dur:'2 hrs', title:'Board game night', who:['PR'], c:'accent', cal:'crew'}],
+  3: [{t:'11:00 AM', title:'Roadmap check-in', who:['PR'], c:'accent', cal:'team'}, {t:'6:30 PM', dur:'1 hr', title:'Call mom', who:['PR'], c:'primary', cal:'personal'}],
+  4: [{t:'10:00 AM', dur:'2 hrs', title:'Brunch', who:['PR'], c:'accent', cal:'crew'}],
+};
+let notifs = [];
+let prefs = {sync:true, quiet:false, notify:true};
+let state = {tab:'home', day:0, sheet:null, step:-1, prop:0, lunchDone:false, pends:[], req:null, rejected:[], done:[], evd:null, real:{on:false, me:null, myName:'', names:{}, reqs:{}, seen:null, subs:{}, ui:{}, rp:null, cm:null, canWrite:null, invites:{}, inv:null, jn:null}, nf:{busy:false, result:'', frame:false}, ga:null, gpanel:false, cl:null, google:null, gl:null, nc:null, cx:null, vis:{personal:true, team:true, crew:true}, shortcuts:[
+    {id:'s1', icon:'🍽️', title:'Team lunch', dur:'1 hr', span:1, win:'Midday', mode:'dur'},
+    {id:'s2', icon:'☕', title:'Coffee chat', dur:'30 min', span:1, win:'Morning', mode:'dur'},
+    {id:'s3', icon:'🔁', title:'Weekly sync', dur:'1 hr', span:1, win:'Afternoon', mode:'dur'},
+    {id:'s4', icon:'🌙', title:'Overnight offsite', mode:'range', st:'9:30 PM', et:'9:00 AM', daysSpan:1}], cal:{view:'month', focus:new Date(today.getFullYear(), today.getMonth(), today.getDate()), fresh:true},
+  invites:[]};
+const SLOTS = {Morning:['9:00 AM','10:30 AM'], Midday:['12:00 PM','12:30 PM','1:00 PM'], Afternoon:['2:00 PM','3:30 PM','4:30 PM'], Anytime:['9:00 AM','10:30 AM','12:00 PM','1:00 PM','2:00 PM','3:30 PM','4:30 PM']};
+const dl = d => { const x = days[d]; if (!x) return ''; if (d < 7) return fmtLong(x).split(',')[0]; return x.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', ...(x.getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})}); };
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const offVal = o => ymd(days[Math.max(0, Math.min(days.length - 1, o))]);
+const valOff = v => { const [y, m, d] = String(v).split('-').map(Number); if (!y || !m || !d) return null; return Math.max(0, Math.min(days.length - 1, Math.round((new Date(y, m - 1, d) - base) / 864e5))); };
+const near = c => Array.from({length:60}, (_, i) => Math.max(0, c - 7) + i).filter(d => d < days.length);
+const dateAttrs = () => `min="${offVal(0)}" max="${offVal(days.length - 1)}"`;
+const monthOff = n => Math.round((new Date(today.getFullYear(), today.getMonth() + n, 1) - base) / 864e5);
+const dr = (d, n = 1) => n > 1 ? `${dl(d)}–${dl(d + n - 1)}` : dl(d);
+const fmtT = m => { let h = Math.floor(m / 60), mm = m % 60; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${h}:${String(mm).padStart(2, '0')} ${ap}`; };
+const parseT = t => { const [a, ap] = t.split(' '); let [h, m] = a.split(':').map(Number); if (ap === 'PM' && h !== 12) h += 12; if (ap === 'AM' && h === 12) h = 0; return h * 60 + m; };
+const durMin = d => d === '30 min' ? 30 : d === '2 hrs' ? 120 : 60;
+const TIMES = Array.from({length:48}, (_, i) => fmtT(i * 30));
+const lengthTxt = m => { const h = Math.floor(m / 60), mm = m % 60; return h ? `${h} hr${mm ? ' ' + mm + ' min' : ''}` : `${mm} min`; };
+const overlap = (a, b) => a[0] < b[1] && b[0] < a[1];
+const ivals = p => {
+  if (p.custom) return [[p.s, p.e]];
+  return Array.from({length:p.span || 1}, (_, k) => { const st = (p.day + k) * 1440 + parseT(p.time); return [st, st + durMin(p.dur)]; });
+};
+function freeIv(ivs, ignore) {
+  if (ivs.some(v => v[1] > days.length * 1440)) return false;
+  for (const d of Object.keys(events)) for (const ev of events[d]) {
+    if (ev.free) continue;
+    const st = (+d) * 1440 + parseT(ev.t), x = ev.s !== undefined ? [ev.s, ev.e] : [st, st + durMin(ev.dur)];
+    if (ivs.some(v => overlap(v, x))) return false;
+  }
+  return !state.pends.some(p => p !== ignore && ivals(p).some(x => ivs.some(v => overlap(v, x))));
+}
+function slotFree(d, t, span, ignore, dur = '1 hr') {
+  return freeIv(ivals({day:d, time:t, span, dur}), ignore);
+}
+function fitsPd(pd, d, t) {
+  if (pd.custom) { const st = d * 1440 + parseT(t); return freeIv([[st, st + pd.e - pd.s]], pd); }
+  return slotFree(d, t, pd.span || 1, pd, pd.dur);
+}
+const snap = pd => ({day:pd.day, time:pd.time, span:pd.span, custom:pd.custom, s:pd.s, e:pd.e});
+const wt = (o, at) => o.custom ? `${dl(Math.floor(o.s / 1440))} ${fmtT(o.s % 1440)} – ${dl(Math.floor(o.e / 1440))} ${fmtT(o.e % 1440)}` : at ? `${dr(o.day, o.span)} at ${o.time}` : `${dr(o.day, o.span)} ${o.time}`;
+function setStart(pd, d, t) { if (pd.custom) { const len = pd.e - pd.s; pd.s = d * 1440 + parseT(t); pd.e = pd.s + len; } pd.day = d; pd.time = t; }
+function rangeUI(r) {
+  const sel = 'rounded-2xl bg-muted px-3 py-3 text-sm font-semibold outline-none flex-1 min-w-0';
+  const dsel = k => `<input type="date" data-rf="${k}" value="${offVal(r[k])}" ${dateAttrs()} class="${sel}" />`;
+  const tsel = k => `<select data-rf="${k}" class="${sel}">${TIMES.map(t => `<option ${r[k] === t ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
+  const l = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
+  return `${l('Starts')}<div class="flex gap-2">${dsel('sd')}${tsel('st')}</div>${l('Ends')}<div class="flex gap-2">${dsel('ed')}${tsel('et')}</div>`;
+}
+function resultWhen(r, p) {
+  if (r.mode !== 'range') return `${resultWhen(r, p)}`;
+  const k = p[2] || 0, st = r.s + k * 1440, en = r.e + k * 1440;
+  return `<p class="font-extrabold">${fmtLong(days[Math.floor(st / 1440)])} · ${fmtT(st % 1440)}</p><p class="font-extrabold">to ${fmtLong(days[Math.floor(en / 1440)])} · ${fmtT(en % 1440)}</p><p class="text-sm font-bold text-primary mt-1">${lengthTxt(en - st)} in total</p>`;
+}
+const proposals = () => {
+  const out = [], r = state.req;
+  if (r.mode === 'range') {
+    for (let k = 0; k < (r.ahead || 14) && r.e + k * 1440 <= days.length * 1440; k++) {
+      const st = r.s + k * 1440, en = r.e + k * 1440, d = Math.floor(st / 1440);
+      if (freeIv([[st, en]], null) && !state.rejected.includes(`${r.title}|${d}|${fmtT(st % 1440)}`)) out.push([d, fmtT(st % 1440), k]);
+    }
+    return out;
+  }
+  const lo = r.from || 0, hi = Math.min(days.length - 1, lo + (r.ahead || 14));
+  for (let d = lo; d <= hi; d++) SLOTS[r.win].forEach(t => {
+    const taken = !slotFree(d, t, r.span, null, r.dur) || state.rejected.includes(`${r.title}|${d}|${t}`);
+    if (!taken) out.push([d, t]);
+  });
+  return out;
+};
+
+function avatar(m, extra='') {
+  if (m.img) return `<span class="size-6 rounded-full overflow-hidden flex ring-2 ring-card ${extra}"><img src="${esc(m.img)}" alt="" class="size-6 object-cover" /></span>`;
+  return `<span class="size-6 rounded-full text-[10px] font-extrabold flex items-center justify-center ring-2 ring-card text-white ${extra}" style="background:${m.color}">${m.init || m.short}</span>`;
+}
+const byShort = s => members.find(m => m.short === s);
+
+function header() {
+  const names = {home:'Slow morning, ' + (state.real.myName ? esc(state.real.myName.split(' ')[0]) : 'Prabhat'), groups:'Your group', calendar:'Calendar', status:'Confirmations', notifs:'Notifications', settings:'Settings'};
+  const subs = {home:members.filter(m => m.on).length > 1 ? `${members.filter(m => m.on).length} people in sync.` : 'Just you for now.', groups:'Who joins scheduling', calendar:'Day, week, month and year', status:`${state.pends.length + state.invites.filter(i => i.status !== 'declined' && !inviteComplete(i)).length} in progress`, notifs:`${notifs.filter(n=>n.open).length + state.invites.filter(i=>i.status==='open').length} open`, settings:'Make it yours'};
+  return `<header class="px-5 pt-8 pb-4 flex items-start justify-between">
+    <div><p class="text-sm font-semibold text-muted-foreground tracking-wide">${fmtLong(today)}</p>
+    <h1 class="text-3xl font-extrabold tracking-tight mt-1">${names[state.tab]}</h1>
+    <p class="text-base text-muted-foreground mt-1">${subs[state.tab]}</p></div>
+    <div class="size-14 rounded-full bg-accent/60 flex items-center justify-center border border-border text-3xl" aria-label="Sloth mascot">🦥</div></header>`;
+}
+
+const DEFAULT_SC = state.shortcuts.map(x => ({...x}));
+const scMeta = sc => sc.mode === 'range' ? `${sc.st} → ${sc.et}` : `${sc.dur} · ${sc.win}${sc.span > 1 ? ' · ' + sc.span + ' days' : ''}`;
+function shortcutsSection() {
+  const cards = state.shortcuts.map(sc => `<div class="relative shrink-0">
+    <button data-sc="${sc.id}" class="w-[148px] rounded-2xl bg-card border border-border p-3 text-left active:scale-95 transition-transform">
+      <span class="text-2xl">${sc.icon}</span><span class="block font-extrabold mt-2 truncate">${sc.title}</span><span class="block text-xs text-muted-foreground truncate">${scMeta(sc)}</span></button>
+    <button data-scdel="${sc.id}" aria-label="Remove ${sc.title} shortcut" class="absolute top-1 right-1 size-7 rounded-full text-muted-foreground text-xs flex items-center justify-center">✕</button></div>`).join('');
+  const missing = DEFAULT_SC.some(d => !state.shortcuts.some(x => x.id === d.id));
+  return `<section class="px-5 mt-5"><div class="flex items-center justify-between mb-3"><h2 class="text-xl font-bold">Shortcuts</h2>${missing ? '<button data-screset class="text-xs font-bold text-primary">Restore defaults</button>' : '<span class="text-xs font-bold text-muted-foreground">Tap to auto-schedule</span>'}</div>
+    <div class="flex gap-3 overflow-x-auto -mx-5 px-5 pb-1">${cards}<button data-newev class="shrink-0 w-[148px] rounded-2xl border border-dashed border-border p-3 text-left text-muted-foreground"><span class="text-2xl">＋</span><span class="block font-extrabold mt-2">New event</span><span class="block text-xs">Set it up yourself</span></button></div></section>`;
+}
+function pendingCard() {
+  return state.pends.map(pd => {
+    const cb = pd.counterBy && members.find(x => x.id === pd.counterBy);
+    const rows = pd.ids.map(id => {
+      const m = members.find(x => x.id === id), r = pd.res[id];
+      const st = r === 'yes' ? `<span class="text-xs font-extrabold text-accent-foreground bg-accent rounded-full px-3 py-1">${id === pd.counterBy ? 'Proposed' : 'Confirmed'}</span>`
+        : `<span class="text-xs font-bold text-muted-foreground flex items-center gap-2"><span class="inline-block size-3 border-2 border-accent border-t-primary rounded-full animate-spin"></span>${cb ? 'Reviewing new time' : 'Waiting'}</span>`;
+      return `<div class="flex items-center gap-3">${avatar(m)}<span class="flex-1 text-sm font-bold">${m.name}</span>${st}</div>`;
+    }).join('');
+    const ask = pd.me === 'ask';
+    const you = `<div class="flex items-center gap-3">${avatar(members[0])}<span class="flex-1 text-sm font-bold">You</span>${ask ? `<span class="text-xs font-extrabold text-primary bg-secondary rounded-full px-3 py-1">Your OK needed</span>` : `<span class="text-xs font-extrabold text-accent-foreground bg-accent rounded-full px-3 py-1">${pd.counterBy === 'p' ? 'Proposed' : 'Confirmed'}</span>`}</div>`;
+    const banner = cb ? `<div class="mt-2 rounded-2xl bg-accent/50 border border-accent px-3 py-2 text-xs"><span class="font-extrabold">${cb.id === 'p' ? 'Your' : cb.name.split(' ')[0] + "'s"} counter-offer</span> replaced <span class="line-through">${wt(pd.orig)}</span> for everyone</div>` : '';
+    return `<section class="px-5 mt-5"><div class="rounded-3xl bg-card border border-border p-4 fade">
+      <p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">${ask ? 'Needs your OK' : cb ? 'New time proposed' : 'Awaiting confirmation'}</p>
+      <h3 class="text-lg font-extrabold mt-1">${pd.title} · ${wt(pd)}</h3>${banner}
+      <div class="mt-3 space-y-3">${you}${rows}</div>
+      <div class="flex flex-wrap gap-x-4 gap-y-2 mt-4">${ask ? `<button data-accept="${pd.id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Accept new time</button>` : ''}${cb ? `<button data-revert="${pd.id}" class="text-sm font-bold text-primary">Keep original time</button>` : ''}<button data-tab="status" class="text-sm font-bold text-primary">Who's confirmed</button><button data-propose="${pd.id}" class="text-sm font-bold text-primary">Propose another time</button><button data-cancel="${pd.id}" class="text-sm font-bold text-muted-foreground">Cancel request</button></div></div></section>`;
+  }).join('');
+}
+function dashEvents() {
+  const out = [];
+  (events[state.day] || []).forEach((e, idx) => {
+    if (e.google) { const f = out.find(o => o.e.google && o.e.gid === e.gid); if (f) { f.cals.push(e.cal); return; } }
+    out.push({e, idx, cals:[e.cal]});
+  });
+  return out.map(o => ({...o, names:[...new Set(o.cals)].map(id => calOf(id).name).join(' · ')}));
+}
+function homeView() {
+  const ws = state.day - (state.day % 7);
+  const strip = days.slice(ws, ws + 7).map((d, k) => {
+    const i = ws + k;
+    const sel = i === state.day, has = (events[i]||[]).length;
+    return `<button data-day="${i}" class="min-w-[54px] rounded-2xl px-2 py-3 text-center border ${sel?'bg-primary text-primary-foreground border-primary':'bg-card border-border'}">
+      <span class="block text-xs font-semibold ${sel?'opacity-80':'text-muted-foreground'}">${DOW[d.getDay()]}</span>
+      <span class="block text-xl font-extrabold mt-1">${d.getDate()}</span>
+      <span class="block size-1.5 rounded-full mx-auto mt-2 ${has?(sel?'bg-primary-foreground':'bg-primary'):'opacity-0'}"></span></button>`;
+  }).join('');
+  const evs = dashEvents().map(({e, idx, names}) => `
+    <article class="bg-card border border-border rounded-3xl p-4 flex gap-4 items-center fade">
+      <div class="w-1.5 self-stretch rounded-full bg-${e.c}"></div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">${e.range || (e.t + (e.dur ? ' · ' + e.dur : ''))}${e.of > 1 ? ' · Day ' + e.part + ' of ' + e.of : ''}</p>
+        <h3 class="text-lg font-extrabold mt-1 truncate">${e.title}</h3>
+        <div class="flex items-center gap-2 mt-2"><div class="flex -space-x-2">${e.who.map(s=>avatar(byShort(s))).join('')}</div>
+        <span class="text-xs text-muted-foreground">${e.google ? 'From Google' : e.cal === 'personal' ? 'Only you' : e.who.length + ' going'} · ${names}</span></div></div>
+      ${e.google ? '' : `<button data-del="${idx}" aria-label="Remove event" class="text-muted-foreground p-2">${ic('trash',18)}</button>`}
+    </article>`).join('') || `<div class="bg-card border border-dashed border-border rounded-3xl p-6 text-center text-muted-foreground fade"><div class="text-3xl">🦥</div><p class="font-bold mt-2">Nothing planned</p><p class="text-sm">A perfectly slow day.</p></div>`;
+  const pend = Object.values(state.real.reqs).filter(v => v.status === 'open' && !(v.res && v.res[state.real.me] === v.ver)).length + notifs.filter(n=>n.type==='req'&&n.open).length + state.invites.filter(i=>i.status==='open').length + state.pends.filter(p=>p.me==='ask').length;
+  return `${header()}
+  <section class="px-5 mt-2"><div class="flex items-center justify-between mb-3"><h2 class="text-lg font-bold">${days[state.day].toLocaleDateString('en-US',{month:'long', ...(days[state.day].getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})})}</h2><div class="flex items-center gap-2"><button data-wk="-1" aria-label="Previous week" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground"><span class="inline-flex rotate-180">${ic('chev',18)}</span></button><button data-wk="1" aria-label="Next week" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">${ic('chev',18)}</button><button data-tab="calendar" aria-label="Open calendar" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">${ic('calendar',20)}</button></div></div>
+    <div class="flex gap-2 overflow-x-auto -mx-5 px-5 pb-1">${strip}</div></section>
+  <section class="px-5 mt-7"><div class="flex items-center justify-between mb-3"><h2 class="text-xl font-bold">${state.day < 7 ? dl(state.day) + "'s plan" : 'Plan for ' + dl(state.day)}</h2>
+    <button id="add" class="text-sm font-bold text-primary flex items-center gap-1">${ic('plus',16)}Add</button></div>
+    <div class="space-y-3">${evs}</div></section>
+  <section class="px-5 mt-5 grid grid-cols-2 gap-3">
+    <button data-tab="groups" class="rounded-2xl bg-secondary border border-border p-4 text-left"><span class="text-primary">${ic('users')}</span><span class="block font-bold mt-3">Group calendars</span><span class="text-xs text-muted-foreground">${members.filter(m=>m.on).length > 1 ? members.filter(m=>m.on).length + ' people' : 'Just you'}</span></button>
+    <button data-tab="notifs" class="rounded-2xl bg-card border border-border p-4 text-left"><span class="text-primary">${ic('bell')}</span><span class="block font-bold mt-3">Auto-schedule</span><span class="text-xs text-muted-foreground">${pend} request${pend===1?'':'s'} pending</span></button></section>
+  ${shortcutsSection()}${pendingCard()}
+  <button id="auto" class="fixed bottom-24 right-5 rounded-full bg-primary text-primary-foreground px-5 py-4 flex items-center gap-2 shadow-lg shadow-primary/20 font-extrabold">${ic('wand')}Auto-schedule</button>`;
+}
+
+const base = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+const midnight = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const offsetOf = d => Math.round((midnight(d) - base) / 864e5);
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const sameDay = (a, b) => a.toDateString() === b.toDateString();
+const hourLbl = h => fmtT(h * 60).replace(':00', '');
+const dkey = d => `${d.getFullYear()},${d.getMonth()},${d.getDate()}`;
+const bgOf = b => b.pending ? 'var(--card)' : calOf(b.cal).bg;
+const fgOf = b => b.pending ? 'var(--foreground)' : calOf(b.cal).fg;
+
+function blocksOn(date) {
+  const off = offsetOf(date), lo = off * 1440, hi = lo + 1440, out = [];
+  (events[off] || []).forEach(ev => {
+    let a, b;
+    if (ev.s !== undefined) { a = ev.s - lo; b = ev.e - lo; } else { a = parseT(ev.t); b = a + durMin(ev.dur); }
+    out.push({title:ev.title, a:Math.max(0, a), b:Math.min(1440, b), c:ev.c, cal:ev.cal || defaultCal(), who:ev.who || [], pending:false, allDay:!!ev.allDay, google:!!ev.google, gid:ev.gid});
+  });
+  state.pends.forEach(pd => ivals(pd).forEach(([st, en]) => {
+    if (st < hi && en > lo) out.push({title:pd.title, a:Math.max(0, st - lo), b:Math.min(1440, en - lo), c:'accent', cal:pd.cal || defaultCal(), who:['PR', ...pd.ids.map(i => members.find(m => m.id === i).short)], pending:true});
+  }));
+  const seen = new Map(), res = [];
+  out.filter(b => state.vis[b.cal]).forEach(b => {
+    if (b.google && b.gid) { const k = b.gid + '|' + b.a + '|' + b.b, f = seen.get(k); if (f) { f.alsoIn.push(b.cal); return; } b.alsoIn = []; seen.set(k, b); }
+    res.push(b);
+  });
+  return res;
+}
+function layout(bl) {
+  bl.sort((x, y) => x.a - y.a || y.b - x.b);
+  const lanes = [];
+  bl.forEach(b => { let i = lanes.findIndex(end => end <= b.a); if (i < 0) { i = lanes.length; lanes.push(0); } lanes[i] = b.b; b.lane = i; });
+  bl.forEach(b => { b.n = Math.max(b.lane + 1, ...bl.filter(o => o.a < b.b && o.b > b.a).map(o => o.lane + 1)); });
+  return bl;
+}
+function timeGrid(dates, H, compact) {
+  const hours = Array.from({length:24}, (_, h) => h), cols = dates.length;
+  const labels = hours.map(h => `<div class="absolute left-0 w-10 text-right pr-1 text-[10px] font-semibold text-muted-foreground" style="top:${h * H - 6}px">${h ? hourLbl(h) : ''}</div>`).join('');
+  const lines = hours.map(h => `<div class="absolute left-10 right-0 border-t border-border" style="top:${h * H}px"></div>`).join('');
+  const head = compact ? `<div class="flex pl-10 mb-1">${dates.map(d => `<button data-cdate="${dkey(d)}" class="flex-1 text-center text-[11px] font-bold ${sameDay(d, base) ? 'text-primary' : 'text-muted-foreground'}">${DOW[d.getDay()]}<span class="block text-sm font-extrabold ${sameDay(d, base) ? '' : 'text-foreground'}">${d.getDate()}</span></button>`).join('')}</div>` : '';
+  const adRow = dates.map(d => blocksOn(d).filter(b => b.allDay).map(b => { b.idx = state._blk.length; b.dateTxt = fmtLong(d); state._blk.push(b); return `<button data-blk="${b.idx}" class="block w-full truncate rounded px-1 text-[9px] font-bold mt-0.5 text-left" style="background:${bgOf(b)};color:${fgOf(b)}">${b.title}</button>`; }));
+  const adHtml = adRow.some(x => x.length) ? `<div class="flex pl-10 mb-1">${adRow.map(x => `<div class="flex-1 min-w-0 px-px">${x.join('')}</div>`).join('')}</div>` : '';
+  const now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
+  const colsHtml = dates.map((d, ci) => {
+    const bl = layout(blocksOn(d).filter(b => !b.allDay));
+    const items = bl.map(b => {
+      b.idx = state._blk.length; b.dateTxt = fmtLong(d); state._blk.push(b);
+      return `<button data-blk="${b.idx}" class="absolute rounded-lg text-left overflow-hidden px-1.5 py-0.5 ${b.pending ? 'border border-dashed border-primary' : ''}" style="top:${b.a / 60 * H}px;height:${Math.max(16, (b.b - b.a) / 60 * H - 2)}px;left:${b.lane * 100 / b.n}%;width:calc(${100 / b.n}% - 2px);background:${bgOf(b)};color:${fgOf(b)}"><span class="block ${compact ? 'text-[9px]' : 'text-xs'} font-extrabold leading-tight truncate">${b.title}</span>${compact ? '' : `<span class="block text-[10px] opacity-80">${fmtT(b.a)} – ${fmtT(b.b % 1440)}</span>`}</button>`;
+    }).join('');
+    const nowLine = sameDay(d, now) ? `<div class="absolute left-0 right-0 border-t-2 border-primary" style="top:${nowMin / 60 * H}px"></div>` : '';
+    return `<div class="absolute top-0 bottom-0 ${compact && ci ? 'border-l border-border' : ''}" style="left:calc(2.5rem + (100% - 2.5rem) * ${ci} / ${cols});width:calc((100% - 2.5rem) / ${cols})">${items}${nowLine}</div>`;
+  }).join('');
+  return `<div class="rounded-3xl bg-card border border-border p-2">${head}${adHtml}<div id="calScroll" class="overflow-y-auto" style="height:60vh"><div class="relative" style="height:${24 * H}px">${labels}${lines}${colsHtml}</div></div></div>`;
+}
+function monthGrid(f) {
+  const first = new Date(f.getFullYear(), f.getMonth(), 1), st = addDays(first, -first.getDay());
+  const n = addDays(st, 35).getMonth() === f.getMonth() ? 42 : 35;
+  const cells = Array.from({length:n}, (_, i) => addDays(st, i)).map(d => {
+    const inM = d.getMonth() === f.getMonth(), bl = layout(blocksOn(d));
+    const pills = bl.slice(0, 2).map(b => `<span class="block truncate rounded px-1 text-[9px] font-bold mt-0.5 ${b.pending ? 'border border-dashed border-primary' : ''}" style="background:${bgOf(b)};color:${fgOf(b)}">${b.title}</span>`).join('');
+    return `<button data-cdate="${dkey(d)}" class="min-h-[64px] rounded-xl p-1 text-left border overflow-hidden ${inM ? 'bg-card border-border' : 'border-transparent text-muted-foreground opacity-50'} ${sameDay(d, base) ? 'ring-2 ring-primary' : ''}">
+      <span class="block text-xs font-extrabold ${sameDay(d, base) ? 'text-primary' : ''}">${d.getDate()}</span>${pills}${bl.length > 2 ? `<span class="block text-[9px] font-bold text-muted-foreground">+${bl.length - 2}</span>` : ''}</button>`;
+  }).join('');
+  return `<div class="grid grid-cols-7 gap-1 mb-1 text-center text-[11px] font-bold text-muted-foreground">${DOW.map(d => `<span>${d[0] + d.slice(1).toLowerCase()}</span>`).join('')}</div><div class="grid grid-cols-7 gap-1">${cells}</div>`;
+}
+function yearGrid(f) {
+  const y = f.getFullYear();
+  return `<div class="grid grid-cols-3 gap-2">${Array.from({length:12}, (_, m) => {
+    const pad = new Date(y, m, 1).getDay(), n = new Date(y, m + 1, 0).getDate();
+    const cells = Array.from({length:pad}, () => '<span></span>').join('') + Array.from({length:n}, (_, i) => {
+      const d = new Date(y, m, i + 1), has = blocksOn(d).length > 0;
+      return `<span class="${has ? 'bg-primary text-primary-foreground rounded-full font-extrabold' : ''} ${sameDay(d, base) ? 'ring-1 ring-foreground rounded-full' : ''}">${i + 1}</span>`;
+    }).join('');
+    return `<button data-cmonth="${m}" class="rounded-2xl bg-card border border-border p-2 text-left"><p class="text-sm font-extrabold mb-1">${new Date(y, m, 1).toLocaleDateString('en-US', {month:'short'})}</p><div class="grid grid-cols-7 gap-px text-[8px] leading-4 text-center text-muted-foreground font-semibold">${cells}</div></button>`;
+  }).join('')}</div>`;
+}
+function calFilters() {
+  const v = state.vis, anyShared = SHARED.some(c => v[c.id]), allShared = SHARED.every(c => v[c.id]);
+  const mine = CALS.filter(c => !c.shared), mineOn = mine.every(c => v[c.id]), anyMine = mine.some(c => v[c.id]);
+  const modes = [['all', 'All', mineOn && allShared], ['personal', 'Personal', mineOn && !anyShared], ['shared', 'Shared', !anyMine && allShared], ['none', 'Unselect all', !anyMine && !anyShared]];
+  const top = modes.map(([k, l, on]) => `<button data-cf="${k}" class="rounded-full px-3 py-1.5 text-xs font-extrabold border ${on ? 'bg-foreground text-background border-foreground' : 'bg-card border-border text-muted-foreground'}">${l}</button>`).join('');
+  const chip = c => `<span class="flex items-center rounded-full border border-border ${v[c.id] ? 'bg-card' : 'bg-muted text-muted-foreground opacity-60'}"><button data-cvis="${c.id}" aria-pressed="${!!v[c.id]}" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold"><span class="size-2.5 rounded-full" style="background:${c.bg}"></span>${c.name}</button>${c.google ? '' : `<button data-clink="${c.id}" aria-label="Link a Google calendar to ${c.name}" title="Google Calendar" class="mr-1.5 rounded px-1 text-[9px] font-extrabold ${gLinks(c.id).length ? 'bg-muted text-foreground' : 'border border-dashed border-border text-muted-foreground'}">${gLinks(c.id).length ? 'G' : '+G'}</button>`}${c.shared && !c.google ? `<button data-cmem="${c.id}" aria-label="People in ${c.name}" title="People" class="mr-1.5 rounded px-1 text-[10px] font-extrabold ${c.live ? 'bg-primary text-primary-foreground' : 'border border-dashed border-border text-muted-foreground'}">${c.live ? 'Live' : '👥'}</button>` : ''}${!c.google ? `<button data-calx="${c.id}" aria-label="${c.live && c.owner !== state.real.me ? 'Leave' : 'Delete'} ${c.name}" title="${c.live && c.owner !== state.real.me ? 'Leave calendar' : 'Delete calendar'}" class="pr-2.5 text-xs text-muted-foreground">✕</button>` : ''}</span>`;
+  const lbl = t => `<span class="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">${t}</span>`;
+  return `<div class="flex flex-wrap gap-2 mt-3">${top}</div>
+    <div class="flex flex-wrap items-center gap-2 mt-2">${lbl('Mine')}${CALS.filter(c => !c.shared).map(chip).join('')}</div>
+    <div class="flex flex-wrap items-center gap-2 mt-2">${lbl('Shared')}${SHARED.map(chip).join('')}<button data-newcal class="rounded-full border border-dashed border-border px-3 py-1.5 text-xs font-bold text-muted-foreground">＋ New shared</button></div>`;
+}
+function calendarView() {
+  const c = state.cal, f = c.focus, V = c.view;
+  state._blk = [];
+  const o = (opt) => f.toLocaleDateString('en-US', opt);
+  let title, body;
+  if (V === 'day') { title = o({weekday:'short', month:'short', day:'numeric', year:'numeric'}); body = timeGrid([f], 56, false); }
+  else if (V === 'week') { const st = addDays(f, -f.getDay()), en = addDays(st, 6); title = `${st.toLocaleDateString('en-US', {month:'short', day:'numeric'})} – ${en.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}`; body = timeGrid(Array.from({length:7}, (_, i) => addDays(st, i)), 40, true); }
+  else if (V === 'month') { title = o({month:'long', year:'numeric'}); body = monthGrid(f); }
+  else { title = String(f.getFullYear()); body = yearGrid(f); }
+  const seg = ['day', 'week', 'month', 'year'].map(v => `<button data-cv="${v}" class="flex-1 rounded-full py-2 text-sm font-bold ${V === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}">${v[0].toUpperCase() + v.slice(1)}</button>`).join('');
+  const arrow = (dir, cls) => `<button data-cnav="${dir}" aria-label="${dir < 0 ? 'Previous' : 'Next'}" class="size-9 rounded-full bg-card border border-border flex items-center justify-center"><span class="inline-flex ${cls}">${ic('chev', 18)}</span></button>`;
+  return `${header()}<section class="px-5">
+    <div class="flex bg-muted rounded-full p-1">${seg}</div>
+    ${calFilters()}
+    ${gPanel()}
+    <div class="flex items-center gap-2 mt-3">${arrow(-1, 'rotate-180')}<h2 class="flex-1 text-center text-lg font-extrabold">${title}</h2>${arrow(1, '')}<button id="cToday" class="rounded-full bg-secondary text-secondary-foreground px-3 py-2 text-xs font-extrabold">Today</button></div>
+    ${CALS.some(c => state.vis[c.id]) ? '' : '<p class="mt-3 rounded-2xl bg-muted px-4 py-3 text-sm font-bold text-muted-foreground text-center">No calendars selected. Turn one on above to see events.</p>'}
+    <div class="mt-4">${body}</div></section>`;
+}
+const PALETTE = ['#7D8FB3', '#9B7BA8', '#6FA3A0', '#C4A15B', '#B08968', '#8A9A5B'];
+function uniqueShort(name) {
+  const parts = name.trim().split(/\s+/), first = parts[0][0].toUpperCase();
+  const cands = [first + (parts.length > 1 ? parts[parts.length - 1][0].toUpperCase() : (parts[0][1] || '').toUpperCase())];
+  for (const ch of name.replace(/\s+/g, '').slice(1)) cands.push(first + ch.toUpperCase());
+  for (let i = 2; i < 10; i++) cands.push(first + i);
+  return cands.find(c => !members.some(m => m.short === c));
+}
+
+// ================= Real people: shared calendars, invitations (db + user capabilities) =================
+const dayOffRaw = d => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - base) / 864e5);
+const msOf = (day, mins) => new Date(base.getFullYear(), base.getMonth(), base.getDate() + day, 0, mins).getTime();
+const msFromMin = min => { const d = Math.floor(min / 1440); return msOf(d, min - d * 1440); };
+const minFromMs = ms => { const x = new Date(ms); return dayOffRaw(x) * 1440 + x.getHours() * 60 + x.getMinutes(); };
+const isReal = id => { const m = members.find(x => x.id === id); return !!(m && m.real); };
+const uidOf = id => { const m = members.find(x => x.id === id); return m && m.uid; };
+const memByUid = u => members.find(x => x.uid === u);
+const realUids = c => (c.members || []).map(uidOf).filter(Boolean);
+const hexFor = bg => /^#/.test(bg) ? bg : String(bg).includes('accent') ? '#A8C3A0' : String(bg).includes('primary') ? '#C98952' : '#9B7BA8';
+const fgFor = hex => { const n = parseInt(String(hex).slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 170 ? '#21362A' : '#FFFFFF'; };
+const nameOf = u => { const r = state.real; if (u === r.me) return 'You'; const m = memByUid(u); return esc(String(r.names[u] || (m && unesc(m.name)) || 'Someone')); };
+const firstName = u => nameOf(u).split(' ')[0];
+const initialsOf = n => String(n).split(/\s+/).filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+
+function ensureMember(uid, prof) {
+  let m = memByUid(uid);
+  if (!m) {
+    const raw = prof && prof.name ? prof.name : 'Someone';
+    m = {id:'r_' + uid, uid, real:true, name:esc(raw), short:uniqueShort(raw), color:(prof && prof.color) || PALETTE[members.length % PALETTE.length], on:true};
+    members.push(m);
+  } else if (prof && prof.name) m.name = esc(prof.name);
+  if (prof && prof.avatarUrl) m.img = prof.avatarUrl;
+  return m;
+}
+function labelCals() { CALS.forEach(c => { if (c.live && c.baseName) c.name = c.owner === state.real.me || !c.owner ? c.baseName : `${c.baseName} (${firstName(c.owner)})`; }); }
+async function loadProfiles(uids) {
+  const r = state.real; uids = [...new Set(uids)].filter(Boolean);
+  if (!r.on || !uids.length) return;
+  const ps = await r.user.profiles(uids);
+  uids.forEach(u => { const p = ps[u]; if (!p) return; r.names[u] = p.name || ''; const m = memByUid(u); if (m) { if (p.name) m.name = esc(p.name); if (p.avatarUrl) m.img = p.avatarUrl; if (p.color) m.color = p.color; } });
+  labelCals(); refresh();
+}
+async function webSignIn() { if (window.__slothAuth) await window.__slothAuth.prompt(); await initReal(); if (!state.real.on) toast('Sign-in was skipped'); else { state.sheet = null; render(); } }
+async function webGoogleBoot() {
+  const m = /[#?&]google=(linked|error)(?:&reason=([a-z]+))?/.exec(location.hash + location.search);
+  if (m) { try { history.replaceState(null, '', location.pathname); } catch (e) { /* ignore */ } }
+  if (m && m[1] === 'error') {
+    const why = {denied:'You cancelled the Google sign-in.', scope:'Google Calendar needs permission to see your calendars. Try again and keep that box ticked.', state:'That sign-in expired or was not started in this browser. Try again.', notconfigured:"Google Calendar isn't set up on this site yet.", norefresh:'Google did not give long-lasting access. Try again.'}[m[2]] || 'Google sign-in did not finish. Try again.';
+    state.gl = {step:2, err:why}; state.sheet = 'glink'; render(); return;
+  }
+  try { const st = await window.__slothGoogle.status(); if (st.linked) { if (m) { state.tab = 'settings'; render(); } await linkGoogle(!m); } } catch (e) { /* not linked */ }
+}
+async function initReal() {
+  const r = state.real;
+  if (r.on) return;
+  try {
+    if (typeof window === 'undefined' || !window.claude) return;
+    const [user, db] = await Promise.all([window.claude.use('user'), window.claude.use('db')]);
+    if (!user || !db) return;
+    const me = await user.id(); if (!me) return;
+    Object.assign(r, {on:true, me, user, db});
+    members[0].uid = me;
+    const p = (await user.profiles([me]))[me];
+    r.myName = (p && p.name) || '';
+    if (r.myName) { members[0].name = esc(r.myName) + ' (you)'; members[0].init = initialsOf(r.myName); r.names[me] = r.myName; }
+    if (p && p.avatarUrl && r.myName) members[0].img = p.avatarUrl;
+    r.canWrite = await user.can('data.write');
+  } catch (e) { r.on = false; return; }
+  subscribeReal(); render();
+  if (JOIN_CODE) startJoin(JOIN_CODE);
+  if (WEB_MODE) webGoogleBoot();
+}
+const liveRefresh = () => { if (state.sheet === 'invite' || state.sheet === 'cmem') render(); else refresh(); };
+function subscribeReal() {
+  const r = state.real, db = r.db, me = r.me, err = e => { r.err = (e && e.code) || 'error'; };
+  r.subs.invites = db.collection('invites').where('owner', '==', me).onSnapshot(snap => { r.invites = Object.fromEntries(snap.docs.map(d => [d.id, d.data()])); liveRefresh(); }, err);
+  r.subs.contacts = db.doc('data/users/' + me + '/contacts').onSnapshot(snap => {
+    const uids = (snap.exists && snap.data().uids) || [];
+    uids.forEach(u => ensureMember(u)); loadProfiles(uids); refresh();
+  }, err);
+  r.subs.cals = db.collection('cals').where('members', 'array-contains', me).onSnapshot(snap => {
+    snap.docChanges().forEach(ch => { if (ch.type === 'removed') dropLiveCal(ch.doc.id); else applyCalDoc(ch.doc.id, ch.doc.data()); });
+    liveRefresh();
+  }, err);
+  r.subs.inv = db.collection('reqs').where('inv', 'array-contains', me).onSnapshot(snap => {
+    const first = r.seen === null; if (first) r.seen = new Set();
+    const next = {};
+    snap.docs.forEach(d => {
+      const v = d.data(); next[d.id] = v;
+      if (!r.seen.has(d.id)) { r.seen.add(d.id); if (!first && v.status === 'open') addNotif(`${nameOf(v.owner)} invited you to ${esc(String(v.title))}`); }
+    });
+    r.reqs = next; loadProfiles(Object.values(next).map(v => v.owner)); refresh();
+  }, err);
+  r.subs.own = db.collection('reqs').where('owner', '==', me).where('status', '==', 'open').onSnapshot(snap => {
+    snap.docChanges().forEach(ch => {
+      if (ch.type === 'removed') { state.pends = state.pends.filter(p => p.rid !== ch.doc.id); }
+      else syncOwnerReq(ch.doc.id, ch.doc.data());
+    });
+    refresh();
+  }, err);
+}
+
+// ---- live shared calendars
+function applyCalDoc(id, d) {
+  const r = state.real, owner = d.owner === r.me, local = owner && d.localId ? d.localId : id;
+  let c = CALS.find(x => x.id === local);
+  if (!c) { const col = d.color || '#9B7BA8'; c = {id:local, name:esc(String(d.name || 'Shared')), shared:true, custom:owner, bg:col, fg:fgFor(col)}; CALS.push(c); SHARED = CALS.filter(x => x.shared); state.vis[local] = true; }
+  const was = !!(c.live && c.dbId === id), prevU = new Set(realUids(c));
+  c.live = true; c.dbId = id; c.owner = d.owner; c.baseName = esc(String(d.name || c.name));
+  if (!owner) { c.bg = d.color || c.bg; c.fg = fgFor(c.bg); }
+  const uids = (d.members || []).filter(u => u !== r.me);
+  uids.forEach(u => ensureMember(u)); loadProfiles(uids);
+  c.members = uids.map(u => 'r_' + u);
+  const joined = was ? uids.filter(u => !prevU.has(u)) : [];
+  if (joined.length) loadProfiles(joined).then(() => joined.forEach(u => { addNotif(`${nameOf(u)} joined ${c.baseName}`); }));
+  labelCals();
+  Object.keys(events).forEach(k => { events[k] = events[k].filter(e => e.cal !== local || e.dbev || e.google); });
+  if (!r.subs['ev:' + id]) r.subs['ev:' + id] = r.db.collection('cals/' + id + '/ev').onSnapshot(snap => { replaceEvents(c.id, snap.docs.map(x => [x.id, x.data()])); refresh(); }, () => {});
+}
+function dropLiveCal(id) {
+  const r = state.real, c = CALS.find(x => x.dbId === id); if (!c) return;
+  state.pends.filter(p => p.cal === c.id).forEach(p => pushStatus(p, 'cancelled'));
+  state.pends = state.pends.filter(p => p.cal !== c.id);
+  const un = r.subs['ev:' + id]; if (un) { un(); delete r.subs['ev:' + id]; }
+  if (c.owner === r.me) { c.live = false; return; }
+  Object.keys(events).forEach(k => { events[k] = events[k].filter(e => e.cal !== c.id); });
+  CALS.splice(CALS.indexOf(c), 1); SHARED = CALS.filter(x => x.shared); delete state.vis[c.id];
+}
+function replaceEvents(localId, docs) {
+  Object.keys(events).forEach(k => { events[k] = events[k].filter(e => !(e.dbev && e.cal === localId)); });
+  docs.forEach(([did, p]) => { const ev = fromPiece(did, p, localId); if (ev) (events[ev.day] = events[ev.day] || []).push(ev); });
+}
+function fromPiece(did, p, calId) {
+  const [y, m, d] = String(p.date || '').split('-').map(Number); if (!y || !m || !d) return null;
+  const day = dayOffRaw(new Date(y, m - 1, d)); if (day < 0 || day >= days.length) return null;
+  const me = state.real.me;
+  const who = [...(p.whoU || []).map(u => u === me ? 'PR' : (memByUid(u) || {}).short), ...(p.whoN || []).map(n => (members.find(x => !x.real && x.id !== 'p' && x.name === esc(String(n))) || {}).short)].filter(Boolean);
+  const ev = {day, t:String(p.t || '12:00 AM'), title:esc(String(p.title || '')), c:p.c === 'primary' ? 'primary' : 'accent', cal:calId, who:[...new Set(who)], gid:String(p.gid), part:+p.part || 1, of:+p.of || 1, dbev:true, did};
+  if (p.dur) ev.dur = String(p.dur);
+  if (p.range) ev.range = esc(String(p.range));
+  if (p.allDay) ev.allDay = true;
+  if (p.startMs) { ev.s = minFromMs(p.startMs); ev.e = minFromMs(p.endMs || p.startMs + 36e5); }
+  return ev;
+}
+let gidSeq = 0;
+async function writePiece(c, d, ev) {
+  const r = state.real, whoU = [], whoN = [];
+  (ev.who || []).forEach(sh => { const m = byShort(sh); if (!m) return; if (m.id === 'p') whoU.push(r.me); else if (m.real) whoU.push(m.uid); else whoN.push(unesc(m.name)); });
+  const gid = String(ev.gid || ('m' + Date.now().toString(36) + (++gidSeq).toString(36) + Math.floor(Math.random() * 1296).toString(36))); ev.gid = gid;
+  const piece = {date:ymd(days[d]), t:ev.t, title:unesc(ev.title), c:ev.c || 'accent', gid, part:ev.part || 1, of:ev.of || 1, whoU:[...new Set(whoU)], whoN, createdBy:r.me};
+  if (ev.dur) piece.dur = ev.dur;
+  if (ev.range) piece.range = unesc(ev.range);
+  if (ev.allDay) piece.allDay = true;
+  if (ev.s !== undefined) { piece.startMs = msFromMin(ev.s); piece.endMs = msFromMin(ev.e); }
+  await r.db.collection('cals/' + c.dbId + '/ev').doc(gid + '_' + piece.part).set(piece);
+}
+function placeEvent(calId, d, ev) {
+  const c = calOf(calId), r = state.real;
+  if (c && c.live && r.on) {
+    writePiece(c, d, ev).catch(e => toast(e && e.code === 'invalid_argument' && !WEB_MODE ? 'You need Contributor access to add to a shared calendar' : "Couldn't save to the shared calendar"));
+    return;
+  }
+  (events[d] = events[d] || []).push(ev);
+}
+async function makeLive(c) {
+  const r = state.real; if (c.live) return;
+  const dbId = r.me + '-' + c.id, own = [];
+  Object.keys(events).forEach(k => events[k].forEach(ev => { if (ev.cal === c.id && !ev.google && !ev.dbev) own.push([+k, ev]); }));
+  c.dbId = dbId; c.live = true; c.owner = r.me; c.baseName = c.name;
+  try {
+    await r.db.doc('cals/' + dbId).set({name:unesc(c.name), color:hexFor(c.bg), owner:r.me, localId:c.id, members:[r.me, ...realUids(c)], createdMs:Date.now()});
+    for (const [d, ev] of own) await writePiece(c, d, ev);
+  } catch (e) { c.live = false; delete c.dbId; throw e; }
+}
+async function setCalMembers(c) {
+  const r = state.real;
+  if (c.owner !== r.me) throw {code:'not_owner'};
+  await r.db.doc('cals/' + c.dbId).update({members:[r.me, ...new Set(realUids(c))]});
+}
+let contactsQ = Promise.resolve();
+function saveContacts() {
+  const r = state.real; if (!r.on) return Promise.resolve();
+  contactsQ = contactsQ.then(() => r.db.doc('data/users/' + r.me + '/contacts').set({uids:members.filter(m => m.real).map(m => m.uid)}));
+  return contactsQ.catch(() => {});
+}
+async function addRealToCalendar(c, m) {
+  const r = state.real, cur = new Set(c.members || []);
+  cur.add(m.id); c.members = [...cur];
+  try { if (!c.live) await makeLive(c); else await setCalMembers(c); toast(`${unesc(m.name).split(' ')[0]} added to ${unesc(c.name)}`); }
+  catch (e) { cur.delete(m.id); c.members = [...cur]; toast(e && e.code === 'not_owner' ? "Only the calendar's owner can change who's in it" : "Couldn't update the shared calendar"); }
+  render();
+}
+
+// ---- real invitations
+const wq = (pd, fn) => { pd.wq = (pd.wq || Promise.resolve()).then(fn).catch(() => toast("Couldn't update the request for everyone")); return pd.wq; };
+function setTimes(pd, startMs, endMs) {
+  if (pd.custom) { pd.s = minFromMs(startMs); pd.e = minFromMs(endMs); pd.day = Math.floor(pd.s / 1440); pd.time = fmtT(pd.s % 1440); }
+  else { const x = new Date(startMs); pd.day = dayOffRaw(x); pd.time = fmtT(x.getHours() * 60 + x.getMinutes()); }
+}
+const startOf = o => o.custom ? msFromMin(o.s) : msOf(o.day, parseT(o.time));
+function createReq(pd) {
+  const r = state.real, c = calOf(pd.cal || defaultCal()), inv = pd.ids.filter(isReal).map(uidOf);
+  if (!r.on || !inv.length) return;
+  pd.rid = 'r' + pd.id; pd.dbver = 1;
+  const doc = {owner:r.me, cal:c.live ? c.dbId : null, title:unesc(pd.title), dur:pd.dur, span:pd.span || 1, custom:!!pd.custom, startMs:startOf(pd), inv, res:{}, ver:1, rounds:0, counterBy:null, counterName:'', meAsk:false, origStartMs:null, origEndMs:null, status:'open', createdMs:Date.now()};
+  if (pd.custom) doc.endMs = msFromMin(pd.e);
+  wq(pd, () => r.db.doc('reqs/' + pd.rid).set(doc));
+}
+function pushReq(pd, bump) {
+  const r = state.real; if (!r.on || !pd.rid) return;
+  if (bump) pd.dbver = (pd.dbver || 1) + 1;
+  const o = pd.orig, cb = pd.counterBy;
+  const data = {startMs:startOf(pd), ver:pd.dbver || 1, rounds:pd.rounds || 0, counterBy:cb && isReal(cb) ? uidOf(cb) : (cb === 'p' ? r.me : null), counterName:cb && !isReal(cb) && cb !== 'p' ? unesc((members.find(m => m.id === cb) || {}).name || '') : '', meAsk:pd.me === 'ask', origStartMs:o ? startOf(o) : null, origEndMs:o && o.custom ? msFromMin(o.e) : null, status:'open'};
+  if (pd.custom) data.endMs = msFromMin(pd.e);
+  wq(pd, () => r.db.doc('reqs/' + pd.rid).update(data));
+}
+function pushStatus(pd, status) { const r = state.real; if (r.on && pd.rid) wq(pd, () => r.db.doc('reqs/' + pd.rid).update({status})); }
+const localCal = dbId => (CALS.find(c => c.dbId === dbId) || {}).id || defaultCal();
+function mirrorRes(pd, d) { (d.inv || []).forEach(u => { const mid = 'r_' + u; if (d.res && d.res[u] === d.ver) pd.res[mid] = 'yes'; else delete pd.res[mid]; }); }
+function pdFromDoc(id, d) {
+  const pd = {id:+id.slice(1) || Date.now(), rid:id, title:esc(String(d.title || '')), dur:String(d.dur || '1 hr'), span:+d.span || 1, custom:!!d.custom, ids:(d.inv || []).map(u => ensureMember(u).id), res:{}, alt:{}, me:d.meAsk ? 'ask' : 'yes', cal:localCal(d.cal), rounds:+d.rounds || 0, dbver:+d.ver || 1};
+  setTimes(pd, d.startMs, d.endMs);
+  if (d.origStartMs != null) { const o = {custom:pd.custom, span:pd.span, dur:pd.dur}; setTimes(o, d.origStartMs, d.origEndMs); pd.orig = o; }
+  if (d.counterBy) pd.counterBy = d.counterBy === state.real.me ? 'p' : 'r_' + d.counterBy;
+  return pd;
+}
+function applyRemoteProposal(pd, d) {
+  const r = state.real, was = wt(pd, 1);
+  if (d.origStartMs != null) { const o = {custom:pd.custom, span:pd.span, dur:pd.dur}; setTimes(o, d.origStartMs, d.origEndMs); pd.orig = o; } else pd.orig = null;
+  setTimes(pd, d.startMs, d.endMs);
+  pd.rounds = +d.rounds || 0; pd.dbver = d.ver;
+  pd.counterBy = d.counterBy ? (d.counterBy === r.me ? 'p' : 'r_' + d.counterBy) : null;
+  pd.me = d.meAsk ? 'ask' : 'yes';
+  pd.res = {}; mirrorRes(pd, d);
+  if (d.counterBy && d.counterBy !== r.me) {
+    addNotif(`${nameOf(d.counterBy)} proposed ${wt(pd, 1)}. Everyone now sees this time instead of ${was}`, {type:'ask', pid:pd.id});
+    toast(`${unesc(nameOf(d.counterBy)).split(' ')[0]} proposed a new time. Your OK is needed`);
+  }
+}
+function syncOwnerReq(id, d) {
+  let pd = state.pends.find(p => p.rid === id);
+  if (!pd) { pd = pdFromDoc(id, d); mirrorRes(pd, d); state.pends.push(pd); return; }
+  if (d.ver > (pd.dbver || 1)) applyRemoteProposal(pd, d); else mirrorRes(pd, d);
+  tryFinalize(pd);
+}
+function realInviteCards() {
+  const r = state.real; if (!r.on) return '';
+  return Object.entries(r.reqs).sort((a, b) => (b[1].createdMs || 0) - (a[1].createdMs || 0)).slice(0, 12).map(([id, v]) => {
+    const ps = {custom:!!v.custom, span:+v.span || 1}; setTimes(ps, v.startMs, v.endMs);
+    const when = wt(ps) + (v.custom ? '' : ' · ' + esc(String(v.dur || ''))), owner = nameOf(v.owner), mine = v.res && v.res[r.me] === v.ver, open = v.status === 'open';
+    const tag = v.counterBy ? `<p class="text-xs font-bold text-primary mt-1">${v.counterBy === r.me ? 'You' : nameOf(v.counterBy)} suggested this time</p>` : v.counterName ? `<p class="text-xs font-bold text-primary mt-1">${esc(String(v.counterName))} suggested this time</p>` : '';
+    let body;
+    if (v.status === 'booked') body = '<p class="text-xs font-bold text-muted-foreground mt-2">Booked. It is in the shared calendar.</p>';
+    else if (v.status === 'cancelled') body = `<p class="text-xs font-bold text-muted-foreground mt-2">Cancelled by ${owner}</p>`;
+    else if (mine) body = `<p class="text-xs font-bold text-muted-foreground mt-2">${v.meAsk ? `You confirmed. Waiting for ${owner} to OK the new time.` : 'You confirmed. Waiting for the others.'}</p>`;
+    else if (r.ui[id] === 'counter') {
+      const sel = 'rounded-2xl bg-muted px-3 py-2 text-sm font-semibold outline-none flex-1 min-w-0', tm = fmtT(ps.custom ? ps.s % 1440 : parseT(ps.time));
+      body = `<p class="text-sm text-muted-foreground mt-2">Suggest another start</p><div class="flex gap-2 mt-2"><input type="date" id="rcDay" value="${offVal(ps.day)}" ${dateAttrs()} class="${sel}" /><select id="rcTime" class="${sel}">${TIMES.map(t => `<option ${t === tm ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+        <div class="flex gap-2 mt-3"><button data-rsend="${id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Send suggestion</button><button data-rno="${id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Cancel</button></div>`;
+    } else if (r.canWrite === false) body = '<p class="text-xs font-bold text-muted-foreground mt-2">You have view-only access, so you can\'t reply. Ask for Contributor access to this page.</p>';
+    else body = `<div class="flex flex-wrap gap-2 mt-3"><button data-racc="${id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Accept</button><button data-rcnt="${id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Suggest another time</button></div>`;
+    return `<div class="bg-card border rounded-3xl p-4 ${open && !mine ? 'border-primary' : 'border-border'}"><p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Invitation from ${owner}</p><p class="font-extrabold text-lg mt-1">${esc(String(v.title || ''))}</p><p class="text-sm text-muted-foreground">${when}</p>${tag}${body}</div>`;
+  }).join('');
+}
+
+// ---- invite links + codes
+const ARTIFACT_URL = 'https://claude.ai/artifact/226WKNVAeBgJuQZ5Vc9hc8';
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const normCode = t => String(t || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+const showCode = c => c.length > 4 ? c.slice(0, 4) + '-' + c.slice(4) : c;
+const inviteBase = () => WEB_MODE ? location.origin + location.pathname : ARTIFACT_URL;
+const inviteLink = c => inviteBase() + '#join=' + c;
+const inviteText = (cal, c) => `Join "${cal}" on Sloth Sync: ${inviteLink(c)}  (or open the page and enter the code ${showCode(c)})`;
+function newCode() {
+  const a = new Uint8Array(8);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) crypto.getRandomValues(a); else for (let i = 0; i < 8; i++) a[i] = Math.floor(Math.random() * 256);
+  return Array.from(a, v => CODE_CHARS[v % CODE_CHARS.length]).join('');
+}
+const JOIN_CODE = (() => { try { const m = /[#?&]join=([A-Za-z0-9-]+)/.exec((location.hash || '') + (location.search || '')); const c = m && normCode(m[1]); return c && c.length === 8 ? c : null; } catch (e) { return null; } })();
+function inviteState(v) {
+  if (!v) return 'missing';
+  if (v.revoked) return 'revoked';
+  if (v.expiresMs && Date.now() > v.expiresMs) return 'expired';
+  if (v.maxUses && (v.uses || 0) >= v.maxUses) return 'used up';
+  return 'active';
+}
+const INVITE_MSG = {missing:"That code doesn't match any invite. Check it and try again.", revoked:'That invite was cancelled by its owner.', expired:'That invite has expired. Ask for a new one.', 'used up':'That invite has already been used the maximum number of times.'};
+async function createInvite(c, opt) {
+  const r = state.real;
+  if (c.live && c.owner !== r.me) throw {code:'not_owner'};
+  if (!c.live) await makeLive(c);
+  let code = newCode();
+  for (let i = 0; i < 4 && (await r.db.doc('invites/' + code).get()).exists; i++) { if (i === 3) throw {code:'collision'}; code = newCode(); }
+  const now = Date.now();
+  await r.db.doc('invites/' + code).set({code, cal:c.dbId, calName:unesc(c.name), owner:r.me, createdMs:now, expiresMs:opt.days ? now + opt.days * 864e5 : null, maxUses:opt.uses || null, uses:0, joined:[], revoked:false});
+  return code;
+}
+async function copyText(t) {
+  try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(t); return true; } } catch (e) {}
+  try { const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); document.body.removeChild(ta); return !!ok; } catch (e) { return false; }
+}
+async function shareText(title, text, url) {
+  try { if (navigator.share) { await navigator.share({title, text, url}); return 'shared'; } } catch (e) { if (e && e.name === 'AbortError') return 'cancelled'; }
+  return (await copyText(`${text}`)) ? 'copied' : 'failed';
+}
+async function previewInvite(code) {
+  const r = state.real, jn = r.jn; jn.busy = true; jn.err = ''; jn.info = null; render();
+  try {
+    const iv = await r.db.doc('invites/' + code).get(), v = iv.exists ? iv.data() : null, st = inviteState(v);
+    if (st !== 'active') { jn.err = INVITE_MSG[st]; return; }
+    const cd = await r.db.doc('cals/' + v.cal).get();
+    if (!cd.exists) { jn.err = 'That calendar no longer exists.'; return; }
+    const cal = cd.data(); await loadProfiles([v.owner]).catch(() => {});
+    jn.info = {code, cal:v.cal, name:esc(String(cal.name || v.calName || 'Shared calendar')), owner:v.owner, count:(cal.members || []).length, already:(cal.members || []).includes(r.me)};
+  } catch (e) { jn.err = "Couldn't look up that invite. Try again."; }
+  finally { jn.busy = false; render(); }
+}
+async function joinInvite() {
+  const r = state.real, jn = r.jn; if (!jn.info || jn.busy) return;
+  jn.busy = true; jn.err = ''; render();
+  try {
+    const iv = await r.db.doc('invites/' + jn.info.code).get(), v = iv.exists ? iv.data() : null, st = inviteState(v);
+    if (st !== 'active') { jn.err = INVITE_MSG[st]; jn.info = null; return; }
+    const cd = await r.db.doc('cals/' + v.cal).get(); if (!cd.exists) { jn.err = 'That calendar no longer exists.'; jn.info = null; return; }
+    const cal = cd.data(), name = esc(String(cal.name || 'Shared calendar'));
+    if (!(cal.members || []).includes(r.me)) {
+      await r.db.doc('cals/' + v.cal).update({members:[...(cal.members || []), r.me]});
+      await r.db.doc('invites/' + jn.info.code).update({uses:(v.uses || 0) + 1, joined:[...(v.joined || []), r.me]}).catch(() => {});
+    }
+    r.jn = null; state.sheet = null; state.tab = 'calendar'; state.cal.fresh = true;
+    try { if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    render(); toast(jn.info.already ? `You're already in ${unesc(name)}` : `Joined ${unesc(name)}`);
+  } catch (e) { jn.err = e && e.code === 'invalid_argument' && !WEB_MODE ? "You need Contributor access to this page to join. Ask the person who invited you." : "Couldn't join. Try again."; }
+  finally { if (r.jn) { r.jn.busy = false; render(); } }
+}
+function startJoin(code) {
+  const r = state.real; r.jn = {code, info:null, err:'', busy:false}; state.sheet = 'join'; render();
+  if (code && code.length === 8) previewInvite(code);
+}
+// ---- people picker + calendar membership sheets
+function rpRows() {
+  const rp = state.real.rp; if (!rp) return '';
+  if (!rp.res.length) return `<p class="text-sm text-muted-foreground">${rp.searched ? (WEB_MODE ? 'No one found. People show up here once they have opened this site. You can also send them an invite link.' : 'No one found. Search needs people in your organization, and anyone invited from outside may not appear.') : (WEB_MODE ? 'Type a name to search people on this site.' : 'Type a name to search your organization.')}</p>`;
+  return rp.res.map(p => { const added = !!memByUid(p.id); return `<button data-rpadd="${esc(p.id)}" class="w-full flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${added ? 'bg-accent/50' : 'bg-card'}"><span class="size-8 rounded-full overflow-hidden flex shrink-0"><img src="${esc(p.avatarUrl)}" alt="" class="size-8 object-cover" /></span><span class="flex-1 min-w-0 font-bold truncate">${esc(p.name)}${p.guest ? ' <span class="text-[10px] text-muted-foreground">guest</span>' : ''}</span><span class="text-sm font-extrabold ${added ? 'text-primary' : 'text-muted-foreground'}">${added ? 'Added' : 'Add'}</span></button>`; }).join('');
+}
+function searchPeople(q) {
+  const r = state.real; if (!r.on || !r.rp) return;
+  r.user.search(q).then(list => { r.rp.res = (list || []).filter(p => p.id !== r.me); r.rp.searched = true; const el = document.getElementById('rpRes'); if (el) el.innerHTML = rpRows(); });
+}
+function openPicker(forCal) { const r = state.real; r.rp = {q:'', res:[], searched:false, forCal:forCal || null}; state.sheet = 'rp'; render(); searchPeople(''); }
+function groupsView() {
+  return `${header()}<section class="px-5 mt-2 space-y-3">${members.map((m,i) => `
+    <div class="bg-card border border-border rounded-3xl p-4 flex items-center gap-3">
+      <span class="size-11 rounded-full text-white font-extrabold flex items-center justify-center" style="background:${m.color}">${m.short}</span>
+      <div class="flex-1"><p class="font-extrabold">${m.name}${m.real ? ' <span class="text-[10px] font-extrabold uppercase rounded bg-primary text-primary-foreground px-1.5 py-0.5 align-middle">Real</span>' : ''}</p><p class="text-xs text-muted-foreground">${m.real ? 'Real person' : m.on?'Calendar synced':'Excluded from scheduling'}${m.email ? ' · ' + m.email : ''}</p></div>
+      ${i===0?'<span class="text-xs font-bold text-muted-foreground">Always on</span>':toggle('mem'+i, m.on)}</div>`).join('')}
+    ${members.length === 1 ? '<p class="text-sm text-muted-foreground px-1">Just you for now. Add real people to schedule events together.</p>' : ''}
+    <button data-addp class="w-full rounded-3xl border border-dashed border-border p-4 text-left text-muted-foreground flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic('plus', 22)}</span><span class="font-extrabold">Add a person</span></button>
+    <button data-joinopen class="w-full rounded-3xl border border-dashed border-border p-4 text-left text-muted-foreground flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic('users')}</span><span class="font-extrabold">Have an invite code?</span></button></section>`;
+}
+function inviteCards() {
+  return state.invites.map(iv => {
+    const when = `${dl(iv.day)} ${iv.time} · ${iv.dur}`, f = iv.from.split(' ')[0];
+    const btn = (a, id, t, p) => `<button ${a}="${id}" class="rounded-full ${p?'bg-primary text-primary-foreground':'bg-secondary text-secondary-foreground'} px-4 py-2 text-sm font-extrabold">${t}</button>`;
+    let body;
+    if (iv.status === 'open' && iv.mode === 'counter') {
+      const sel = 'rounded-2xl bg-muted px-3 py-2 text-sm font-semibold outline-none flex-1';
+      body = `<p class="text-sm text-muted-foreground mt-2">Suggest another time</p>
+        <div class="flex gap-2 mt-2"><input type="date" id="cDay" value="${offVal(iv.pick ? iv.pick[0] : iv.day)}" ${dateAttrs()} class="${sel}" />
+        <select id="cTime" class="${sel}">${SLOTS.Anytime.map(t => `<option ${iv.pick && iv.pick[1] === t ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+        ${iv.auto && iv.pick ? `<p class="text-xs text-muted-foreground mt-2">Suggested ${dl(iv.pick[0])} at ${iv.pick[1]}. No conflicts found. Tap Auto-schedule again for another.</p>` : ''}
+        <button data-iauto="${iv.id}" class="mt-3 w-full rounded-full bg-secondary text-secondary-foreground py-2 text-sm font-bold flex items-center justify-center gap-2">${ic('wand', 16)}Auto-schedule</button>
+        <div class="flex gap-2 mt-3">${btn('data-isend', iv.id, 'Send suggestion', 1)}${btn('data-inosugg', iv.id, 'Just decline')}</div>`;
+    } else if (iv.status === 'open') {
+      body = `<div class="flex flex-wrap gap-2 mt-3">${btn('data-iacc', iv.id, 'Accept', 1)}${btn('data-idec', iv.id, 'Decline')}${btn('data-iauto', iv.id, 'Auto-schedule')}</div>`;
+    } else {
+      const t = {accepted:"You're going. Added to your calendar", declined:'You declined', countered:`You suggested ${iv.alt ? dl(iv.alt[0]) + ' ' + iv.alt[1] : ''}. ${[f, ...iv.others.map(i => members.find(m => m.id === i).name.split(' ')[0])].join(', ')} now see your time instead of ${dl(iv.day)} ${iv.time}. Waiting for ${f}`, moved:`${f} agreed to ${iv.alt ? dl(iv.alt[0]) + ' ' + iv.alt[1] : ''}. Added to your calendar`}[iv.status];
+      body = `<p class="text-xs font-bold text-muted-foreground mt-2">${t}</p>`;
+    }
+    return `<div class="bg-card border border-border rounded-3xl p-4 ${iv.status==='open'?'border-primary':''}"><p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Invitation from ${f}</p>
+      <p class="font-extrabold text-lg mt-1">${iv.title}</p><p class="text-sm text-muted-foreground">${when}</p>${body}</div>`;
+  }).join('');
+}
+const inviteComplete = iv => (iv.status === 'accepted' || iv.status === 'moved') && iv.others.every(id => iv.res[id] === 'yes');
+function statusView() {
+  const chip = ([m, note]) => `<span class="inline-flex items-center gap-2 rounded-full bg-muted border border-border pl-1 pr-3 py-1 text-xs font-bold">${avatar(m)}${m.id === 'p' ? 'You' : m.name.split(' ')[0]}${note ? `<span class="text-muted-foreground font-semibold">${note}</span>` : ''}</span>`;
+  const lab = t => `<p class="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-3 mb-2">${t}</p>`;
+  const card = (title, when, yes, no, tag) => {
+    const total = yes.length + no.length, pct = Math.round(100 * yes.length / total);
+    return `<div class="bg-card border border-border rounded-3xl p-4 fade">
+      <div class="flex items-start justify-between gap-2"><div><h3 class="text-lg font-extrabold">${title}</h3><p class="text-xs text-muted-foreground font-semibold">${when}</p></div>
+      <span class="text-xs font-extrabold rounded-full px-3 py-1 whitespace-nowrap ${no.length ? 'bg-secondary text-primary' : 'bg-accent text-accent-foreground'}">${tag}</span></div>
+      <div class="mt-3 h-2 rounded-full bg-muted overflow-hidden"><div class="h-full bg-accent transition-all" style="width:${pct}%"></div></div>
+      <p class="text-xs font-bold text-muted-foreground mt-1">${yes.length} of ${total} confirmed</p>
+      ${lab('Confirmed')}<div class="flex flex-wrap gap-2">${yes.map(chip).join('') || '<span class="text-xs text-muted-foreground">No one yet</span>'}</div>
+      ${lab('Not confirmed yet')}<div class="flex flex-wrap gap-2">${no.map(chip).join('') || '<span class="text-xs text-muted-foreground">Everyone is in</span>'}</div></div>`;
+  };
+  const reqs = state.pends.map(pd => {
+    const yes = [], no = [];
+    (pd.me === 'ask' ? no : yes).push([members[0], pd.me === 'ask' ? 'your OK needed' : '']);
+    pd.ids.forEach(id => (pd.res[id] === 'yes' ? yes : no).push([members.find(x => x.id === id), id === pd.counterBy ? 'proposed this time' : '']));
+    return card(pd.title, `${wt(pd)} · ${pd.dur}`, yes, no, pd.me === 'ask' ? 'Needs your OK' : 'Waiting');
+  });
+  const inv = state.invites.filter(i => i.status !== 'declined').map(iv => {
+    const org = members.find(m => m.id === iv.fid), f = iv.from.split(' ')[0];
+    const good = iv.status === 'accepted' || iv.status === 'moved', yes = [], no = [];
+    const put = (c, m, note) => (c ? yes : no).push([m, note]);
+    put(good || iv.status === 'countered', members[0], iv.status === 'countered' ? 'proposed this time' : iv.status === 'open' ? 'your reply needed' : '');
+    put(iv.status !== 'countered', org, 'organizer');
+    iv.others.forEach(id => put(iv.status !== 'countered' && iv.res[id] === 'yes', members.find(m => m.id === id), ''));
+    const [d, t] = iv.status === 'countered' || iv.status === 'moved' ? iv.alt : [iv.day, iv.time];
+    const fin = inviteComplete(iv); return {done:fin, html:card(`${iv.title} <span class="text-sm text-muted-foreground font-semibold">from ${f}</span>`, `${dl(d)} ${t} · ${iv.dur}`, yes, no, fin ? 'Booked' : iv.status === 'open' ? 'Needs your reply' : 'Waiting')};
+  });
+  const done = state.done.map(d => card(d.title, `${wt(d)} · ${d.dur}`, d.names.map(m => [m, '']), [], 'Booked'));
+  const booked = [...done, ...inv.filter(x => x.done).map(x => x.html)];
+  const h = t => `<h2 class="text-xl font-bold mt-2">${t}</h2>`;
+  const empty = '<div class="bg-card border border-dashed border-border rounded-3xl p-6 text-center text-muted-foreground"><div class="text-3xl">🦥</div><p class="font-bold mt-2">Nothing waiting</p><p class="text-sm">Auto-schedule an event to start collecting confirmations.</p></div>';
+  return `${header()}<section class="px-5 mt-2 space-y-3">${h('In progress')}${[...reqs, ...inv.filter(x => !x.done).map(x => x.html)].join('') || empty}${booked.length ? h('Booked') + booked.join('') : ''}</section>`;
+}
+function notifsView() {
+  const items = notifs.map(n => `<div class="bg-card border border-border rounded-3xl p-4 ${n.open?'':'opacity-50'}">
+    <p class="font-bold">${n.text}</p>
+    ${n.type==='ask' && n.open ? askBtns(n) : n.type==='req' && n.open ? `<div class="flex gap-2 mt-3"><button data-nauto="${n.id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Find a time</button><button data-ndismiss="${n.id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Dismiss</button></div>`
+    : n.open ? `<button data-ndismiss="${n.id}" class="text-xs font-bold text-primary mt-2">Mark read</button>` : `<p class="text-xs text-muted-foreground mt-1">Done</p>`}</div>`).join('');
+  return `${header()}<section class="px-5 mt-2 space-y-3">${realInviteCards()}${inviteCards()}${items}</section>`;
+}
+function toggle(id, on) {
+  return `<button role="switch" aria-checked="${on}" data-toggle="${id}" class="w-12 h-7 rounded-full p-1 transition-colors ${on?'bg-primary':'bg-muted'}"><span class="block size-5 rounded-full bg-white transition-transform ${on?'translate-x-5':''}"></span></button>`;
+}
+const G_LOGO = `<svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 010-9.4l-7.9-6.1a24 24 0 000 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>`;
+const G_SERVER = 'Google Calendar';
+const G_COLORS = ['#4285F4', '#34A853', '#EA4335', '#FBBC05', '#9B7BA8', '#6FA3A0', '#B97868', '#7D8FB3'];
+let gMcp;
+async function gGetMcp() {
+  if (gMcp !== undefined) return gMcp;
+  try { gMcp = (window.claude && await window.claude.use('mcp')) || null; } catch (e) { gMcp = null; }
+  return gMcp;
+}
+function gErr(e) {
+  const code = e && e.code;
+  if (code === 'no_mcp' && hostKind() === 'static') return STATIC_HELP;
+  if (code === 'no_mcp') return WEB_MODE ? 'Google Calendar linking is only available in the Claude version for now.' : 'Linking works from the published page. Open this page from its artifact link.';
+  if (code === 'web_not_configured') return "Google Calendar isn't set up on this site yet. Whoever runs the site needs to add Google credentials. The README explains how.";
+  if (code === 'needs_reauth') return WEB_MODE ? 'Google needs you to link again. Tap Link Google Calendar.' : 'Google Calendar needs to be reconnected. Reconnect it in claude.ai Settings → Connectors, then try again.';
+  if (code === 'server_not_connected' || code === 'selection_required') return WEB_MODE ? 'Link your Google Calendar first.' : 'Add Google Calendar in claude.ai Settings → Connectors, then try again.';
+  if (['not_in_manifest', 'not_granted', 'consent_required', 'blocked_by_policy', 'approval_required', 'capability_disabled', 'capability_removed'].includes(code)) return "This page isn't allowed to read your Google Calendar. Allow it from the page's Permissions menu.";
+  if (['server_unavailable', 'upstream_error', 'rate_limited', 'server_not_found'].includes(code)) return "Google Calendar didn't respond. Try again in a moment.";
+  if (code === 'tool_error') return 'Google Calendar reported a problem: ' + esc(String(e.message || '').slice(0, 120));
+  if (code === 'needs_signin' || code === 'unauthenticated') return 'Pick a name to sign in first, then link Google Calendar.';
+  if (code === 'network') return "Can't reach the server. Google Calendar linking only works on the deployed site, not in a preview.";
+  if (code === 'empty') return 'No calendars were found on that Google account.';
+  return 'Something went wrong talking to Google Calendar.';
+}
+function gPayload(res) {
+  if (!res) return null;
+  let p = res.payload;
+  if (typeof p === 'string') { try { p = JSON.parse(p); } catch (e) { p = null; } }
+  if (!p && res.structuredContent) p = res.structuredContent;
+  if (!p && Array.isArray(res.content)) { const t = res.content.find(b => b && b.type === 'text'); if (t) { try { p = JSON.parse(t.text); } catch (e) { p = null; } } }
+  return p || null;
+}
+async function gCall(tool, input) {
+  const mcp = await gGetMcp();
+  if (!mcp) { const e = new Error('no mcp'); e.code = 'no_mcp'; throw e; }
+  const run = () => mcp.callTool(G_SERVER, tool, input, {cache:{refresh:true}});
+  try { return gPayload(await run()); }
+  catch (e) {
+    if (e && e.retryable) { await new Promise(r => setTimeout(r, Math.min(e.retryAfterMs || 800, 3000))); return gPayload(await run()); }
+    throw e;
+  }
+}
+function gConvert(c, ev) {
+  if (!ev || ev.status === 'cancelled' || !ev.start || !ev.end) return [];
+  const N = days.length, out = [];
+  const common = {title:esc(String(ev.summary || '(No title)')), who:['PR'], c:'primary', cal:c.key, google:true, free:ev.availability === 'AVAILABILITY_FREE' || ev.transparency === 'transparent', gid:'g' + ev.id};
+  if (ev.start.date) {
+    const toDay = v => { const [y, m, d] = String(v).slice(0, 10).split('-').map(Number); return Math.round((new Date(y, m - 1, d) - base) / 864e5); };
+    const a = toDay(ev.start.date), b = ev.end.date ? toDay(ev.end.date) : a + 1;
+    for (let d = Math.max(a, 0); d < Math.min(b, N); d++) out.push({...common, day:d, t:'12:00 AM', range:'All day', allDay:true, s:d * 1440, e:d * 1440 + 1440, part:d - a + 1, of:b - a});
+    return out;
+  }
+  const st = new Date(ev.start.dateTime), en = new Date(ev.end.dateTime || ev.start.dateTime);
+  if (isNaN(st) || isNaN(en)) return [];
+  const s = Math.round((st - base) / 60000), e = Math.max(s + 5, Math.round((en - base) / 60000));
+  const d0 = Math.floor(s / 1440), d1 = Math.floor((e - 1) / 1440);
+  for (let d = Math.max(d0, 0); d <= Math.min(d1, N - 1); d++) {
+    const a = Math.max(s, d * 1440);
+    const range = d0 === d1 ? `${fmtT(s % 1440)} – ${fmtT(e % 1440)}` : d === d0 ? `${fmtT(s % 1440)} → ${dl(Math.floor(e / 1440))} ${fmtT(e % 1440)}` : d === d1 ? `Until ${fmtT(e % 1440)}` : 'All day';
+    out.push({...common, day:d, t:fmtT(a % 1440), range, s, e, part:d - d0 + 1, of:d1 - d0 + 1});
+  }
+  return out;
+}
+async function gFetchEvents(c) {
+  const start = base.toISOString(), end = new Date(base.getFullYear(), base.getMonth(), base.getDate() + 180).toISOString();
+  let token, pages = 0; const out = [];
+  do {
+    const p = await gCall('list_events', {calendarId:c.id, startTime:start, endTime:end, orderBy:'startTime', pageSize:100, ...(token ? {pageToken:token} : {})});
+    if (p && p.accessRole) c.role = p.accessRole;
+    if (p && p.summary) c.title = esc(String(p.summary));
+    ((p && (p.events || p.items)) || []).forEach(ev => out.push(...gConvert(c, ev)));
+    token = p && p.nextPageToken; pages++;
+  } while (token && pages < 6);
+  c.evs = out; c.loaded = true;
+}
+const gTargets = c => { const v = (c.targets || ['own']).filter(t => t === 'own' || CALS.some(x => x.id === t && !x.google)); return v.length ? v : ['own']; };
+const gLinks = id => state.google ? state.google.cals.filter(c => c.on && gTargets(c).includes(id)) : [];
+const unesc = t => String(t).replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+let gSaveT = null;
+function gSaveSettings() {
+  const r = state.real, g = state.google; if (!r.on || !g) return;
+  clearTimeout(gSaveT);
+  gSaveT = setTimeout(() => {
+    const cals = {}; g.cals.forEach(c => { cals[c.id] = {on:!!c.on, t:(c.targets || ['own']).slice(0, 12)}; });
+    r.db.doc('data/users/' + r.me + '/google').set({cals, manual:g.cals.filter(c => c.manual).map(c => c.id).slice(0, 30), list:g.cals.filter(c => !c.manual && c.sum !== undefined).slice(0, 60).map(c => ({id:c.id, s:String(c.sum).slice(0, 120), r:c.role || null, h:!!c.hidden, d:!!c.discovered}))}).catch(() => {});
+  }, 600);
+}
+async function gLoadSettings() {
+  const r = state.real; if (!r.on) return null;
+  try { const sn = await r.db.doc('data/users/' + r.me + '/google').get(); return sn.exists ? sn.data() : null; } catch (e) { return null; }
+}
+function gMakeCal(c, i, primary, saved) {
+  const sv = saved && saved.cals && saved.cals[c.id];
+  return {key:'g' + i, id:c.id, base:gBase(c, primary), color:G_COLORS[i % G_COLORS.length], on:sv ? !!sv.on : i < 25, evs:[], loaded:false, sum:c.summary, role:c.accessRole, hidden:!!c.hidden, discovered:!!c.discovered, ...(sv && Array.isArray(sv.t) ? {targets:sv.t} : {})};
+}
+function applyGoogle() {
+  for (let i = CALS.length - 1; i >= 0; i--) if (CALS[i].google) { delete state.vis[CALS[i].id]; CALS.splice(i, 1); }
+  Object.keys(events).forEach(k => { events[k] = events[k].filter(e => !e.google); });
+  if (!state.google) return;
+  state.google.cals.filter(c => c.on).forEach(c => {
+    const ts = gTargets(c);
+    if (ts.includes('own')) { CALS.push({id:c.key, name:c.name, shared:false, google:true, bg:c.color, fg:'#FFFFFF'}); state.vis[c.key] = true; }
+    ts.forEach(t => c.evs.forEach(ev => (events[ev.day] = events[ev.day] || []).push({...ev, cal:t === 'own' ? c.key : t})));
+  });
+  gSaveSettings();
+}
+const gCount = () => Object.values(events).flat().filter(e => e.google).length;
+function toggleGLink(key, id) {
+  const c = state.google.cals.find(x => x.key === key), here = c.on && gTargets(c).includes(id);
+  if (here) { const t = gTargets(c).filter(x => x !== id); c.targets = t.length ? t : ['own']; }
+  else { c.targets = [...(c.on ? gTargets(c) : []).filter(x => x !== 'own'), id]; c.on = true; state.vis[id] = true; }
+  applyGoogle(); render();
+  if (c.on && !c.loaded) gFetchEvents(c).then(() => { applyGoogle(); render(); }).catch(e => { c.on = false; state.google.err = gErr(e); applyGoogle(); render(); });
+}
+function gPanel() {
+  const g = state.google, open = state.gpanel;
+  const head = `<button data-gpanel aria-expanded="${open}" class="flex flex-1 min-w-0 items-center gap-2 rounded-2xl bg-card border border-border px-3 py-2.5 text-left"><span class="inline-flex">${G_LOGO.replace('width="22" height="22"', 'width="18" height="18"')}</span><span class="flex-1 text-sm font-extrabold">Google calendars in each calendar</span><span class="text-xs font-bold text-muted-foreground">${g ? g.cals.length + ' found' : 'Not linked'} ${open ? '▴' : '▾'}</span></button>`;
+  const headRow = `<div class="flex items-stretch gap-2">${head}${g ? `<button data-grefresh aria-label="Refresh Google calendars" title="Refresh Google calendars" class="size-11 shrink-0 rounded-2xl bg-card border border-border text-muted-foreground flex items-center justify-center ${g.listBusy ? 'animate-spin' : ''}">↻</button>` : ''}</div>`;
+  if (!open) return `<div class="mt-3">${headRow}</div>`;
+  if (!g) return `<div class="mt-3">${headRow}<div class="rounded-2xl border border-border bg-card p-3 mt-2"><p class="text-sm text-muted-foreground">Link your Google account to choose which of your Google calendars show up in each calendar here.</p><button id="clGo" class="mt-3 w-full rounded-full bg-primary text-primary-foreground py-2.5 text-sm font-extrabold">Link Google Calendar</button></div></div>`;
+  const rows = CALS.filter(c => !c.google).map(c => `<div class="rounded-2xl bg-card border border-border p-3 mt-2"><p class="text-sm font-extrabold flex items-center gap-2"><span class="size-2.5 rounded-full" style="background:${c.bg}"></span>${c.name}<span class="text-[10px] font-bold text-muted-foreground">${c.shared ? 'shared' : 'mine'}</span></p>
+    <div class="flex flex-wrap gap-1.5 mt-2">${gSort(g.cals).map(x => { const on = x.on && gTargets(x).includes(c.id); return `<button data-gm="${x.key}|${c.id}" aria-pressed="${on}" class="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold border ${on ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border text-muted-foreground'}"><span class="size-2 rounded-full" style="background:${x.color}"></span>${x.name}${x.on && x.loaded ? ' · ' + x.evs.length : ''}</button>`; }).join('')}</div></div>`).join('');
+  return `<div class="mt-3">${headRow}<p class="text-xs text-muted-foreground mt-2 px-1">For each calendar, tap the Google calendars whose events should show in it.</p>${rows}<button data-gadd class="mt-2 w-full rounded-2xl border border-dashed border-border px-3 py-2.5 text-xs font-bold text-muted-foreground">＋ Add a calendar Google isn't listing (Birthdays, shared…)</button></div>`;
+}
+function showGoogleOnCalendar() {
+  let first = null;
+  Object.values(events).flat().forEach(e => { if (e.google && (first === null || e.day < first)) first = e.day; });
+  if (state.google) state.google.cals.filter(c => c.on).forEach(c => gTargets(c).forEach(t => { state.vis[t === 'own' ? c.key : t] = true; }));
+  state.cal.view = 'month'; state.cal.focus = new Date(days[first === null ? 0 : first]); state.cal.fresh = true; state.tab = 'calendar'; state.sheet = null;
+  render(); toast(first === null ? 'No Google events in the next 6 months' : 'Showing your Google events');
+}
+const gBase = (c, primary) => esc(String(c.summary && c.summary !== c.id ? c.summary : c === primary ? 'Google' : c.id));
+const gPrimary = list => list.find(c => !String(c.id).includes('#') && String(c.id).includes('@') && !String(c.id).includes('group.calendar')) || list.find(c => !String(c.id).includes('#')) || list[0];
+const gMine = c => c.role ? ['owner', 'writer'].includes(c.role) : !/#holiday@|\.v\.calendar\.google\.com$/.test(String(c.id));
+const gSort = cals => [...cals.filter(gMine), ...cals.filter(c => !gMine(c))];
+const gGroups = (cals, fn) => [['My calendars', cals.filter(gMine)], ['Other calendars', cals.filter(c => !gMine(c))]].filter(([, l]) => l.length).map(([t, l]) => `<p class="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground mt-2">${t}</p>` + l.map(fn).join('')).join('');
+function uniqNames(cals) { const seen = {}; cals.forEach(c => { const b = c.base; seen[b] = (seen[b] || 0) + 1; c.name = seen[b] > 1 ? `${b} (${seen[b]})` : b; }); }
+async function gFetchList() {
+  let list = [], tok, pg = 0;
+  do {
+    const p = await gCall('list_calendars', {pageSize:250, ...(tok ? {pageToken:tok} : {})});
+    list.push(...((p && p.calendars) || [])); tok = p && p.nextPageToken; pg++;
+  } while (tok && pg < 4);
+  return list.slice(0, 40);
+}
+async function linkGoogle(silent) {
+  if (!silent) { state.gl = {step:1, err:''}; state.sheet = 'glink'; render(); }
+  try {
+    if (WEB_MODE) {
+      if (!state.real.on && !silent) { await webSignIn(); if (!state.real.on) throw {code:'needs_signin'}; }
+      const G = window.__slothGoogle, st = await G.status();
+      if (!st.configured) throw {code:'web_not_configured'};
+      if (!st.linked) { if (silent) return; location.href = await G.start(); return; }
+    }
+    const saved = await gLoadSettings();
+    // coming back to the page: use the list we already know. Only pressing Sync (or linking) asks Google for new calendars.
+    const list = silent && saved && Array.isArray(saved.list) && saved.list.length ? saved.list.map(x => ({id:x.id, summary:x.s, accessRole:x.r || undefined, hidden:x.h, discovered:x.d})) : await gFetchList();
+    if (!list.length) throw {code:'empty'};
+    const primary = gPrimary(list);
+    const cals = list.map((c, i) => gMakeCal(c, i, primary, saved));
+    ((saved && saved.manual) || []).filter(id => !cals.some(c => c.id === id)).forEach(id => { const sv = (saved.cals || {})[id] || {}; cals.push({key:'g' + cals.length, id, base:esc(id), color:G_COLORS[cals.length % G_COLORS.length], on:sv.on !== false, manual:true, evs:[], loaded:false, ...(Array.isArray(sv.t) ? {targets:sv.t} : {})}); });
+    uniqNames(cals);
+    const active = cals.filter(c => c.on);
+    const res = await Promise.allSettled(active.map(gFetchEvents));
+    if (active.length && res.every(r => r.status === 'rejected')) throw res[0].reason;
+    active.forEach((c, i) => { if (res[i].status === 'rejected') { c.on = false; c.err = true; } });
+    state.google = {email:esc(String(primary.id)), synced:new Date(), listAt:Date.now(), cals, busy:false, err:res.some(r => r.status === 'rejected') ? gErr(res.find(r => r.status === 'rejected').reason) : ''};
+    state.gpanel = true; applyGoogle();
+    if (!silent) { addNotif(`Google Calendar linked. ${cals.length} calendar${cals.length === 1 ? '' : 's'}, ${gCount()} event${gCount() === 1 ? '' : 's'} in the next 6 months`); state.sheet = null; }
+    render(); if (!silent) toast('Google Calendar linked');
+  } catch (e) { state.google = null; if (!silent) { if (state.gl) { state.gl.step = 2; state.gl.err = gErr(e); } } render(); }
+}
+const GOOGLE_PRESETS = [{id:'addressbook#contacts@group.v.calendar.google.com', name:'Birthdays'}, {id:'en.christian#holiday@group.v.calendar.google.com', name:'Christian Holidays'}];
+async function addGoogleCal(id) {
+  const g = state.google; id = String(id || '').trim();
+  if (!id || /\s/.test(id)) { state.ga.err = 'Enter a calendar ID or an email address.'; return render(); }
+  if (g.cals.some(c => c.id.toLowerCase() === id.toLowerCase())) { state.ga.err = 'That calendar is already in your list.'; return render(); }
+  state.ga.busy = true; state.ga.err = ''; render();
+  const k = g.cals.reduce((m, c) => Math.max(m, +c.key.slice(1) + 1), 0);
+  const c = {key:'g' + k, id, base:esc(id), color:G_COLORS[k % G_COLORS.length], on:true, manual:true, evs:[], loaded:false};
+  try {
+    await gFetchEvents(c);
+    if (c.title) c.base = c.title;
+    g.cals.push(c); uniqNames(g.cals); applyGoogle();
+    addNotif(`Added Google calendar ${c.name}`);
+    state.sheet = null; state.ga = null; render(); toast(`${unesc(c.name)} added · ${c.evs.length} event${c.evs.length === 1 ? '' : 's'}`);
+  } catch (e) {
+    state.ga.busy = false;
+    state.ga.err = e && e.code === 'tool_error' ? "Google couldn't open that calendar. Check the ID, and that it's shared with you." : gErr(e);
+    render();
+  }
+}
+async function refreshGoogleList(silent, noToast) {
+  const g = state.google; if (!g || g.listBusy) return;
+  g.listBusy = true; render();
+  let added = 0, gone = 0;
+  try {
+    const list = await gFetchList(), ids = new Set(list.map(c => c.id));
+    gone = g.cals.filter(c => !ids.has(c.id) && !c.manual).length; g.cals = g.cals.filter(c => ids.has(c.id) || c.manual);
+    const have = new Set(g.cals.map(c => c.id)), primary = gPrimary(list);
+    let next = g.cals.reduce((m, c) => Math.max(m, +c.key.slice(1) + 1), 0);
+    g.cals.forEach(c => { delete c.isNew; });
+    const fresh = list.filter(c => !have.has(c.id)).map(c => { const k = next++; return {key:'g' + k, id:c.id, base:gBase(c, primary), color:G_COLORS[k % G_COLORS.length], on:true, evs:[], loaded:false, sum:c.summary, role:c.accessRole, hidden:!!c.hidden, discovered:!!c.discovered, isNew:true}; });
+    g.cals.forEach(c => { const f = list.find(x => x.id === c.id); if (f) { c.role = f.accessRole || c.role; c.hidden = !!f.hidden; } });
+    g.cals.push(...fresh); uniqNames(g.cals); added = fresh.length;
+    const res = await Promise.allSettled(fresh.map(gFetchEvents));
+    fresh.forEach((c, i) => { if (res[i].status === 'rejected') { c.on = false; c.err = true; } });
+    const bad = res.find(r => r.status === 'rejected'); if (bad && !silent) g.err = gErr(bad.reason);
+    g.listAt = Date.now(); applyGoogle();
+    if (added || gone) addNotif(`Google Calendar: ${added} new calendar${added === 1 ? '' : 's'}${gone ? `, ${gone} removed` : ''}`);
+  } catch (e) { if (!silent) g.err = gErr(e); }
+  finally { g.listBusy = false; render(); }
+  if (!noToast) toast(added ? `Found ${added} new Google calendar${added === 1 ? '' : 's'}` : gone ? `${gone} Google calendar${gone === 1 ? '' : 's'} removed` : 'Your Google calendar list is up to date');
+  return {added, gone};
+}
+async function syncGoogle() {
+  const g = state.google; g.busy = true; g.err = ''; render();
+  let found = {added: 0, gone: 0};
+  try {
+    found = (await refreshGoogleList(false, true)) || found;
+    const res = await Promise.allSettled(g.cals.filter(c => c.on).map(gFetchEvents));
+    const bad = res.find(r => r.status === 'rejected');
+    if (bad) g.err = gErr(bad.reason); else g.synced = new Date();
+    applyGoogle();
+  } finally { g.busy = false; render(); }
+  if (!g.err) toast(found.added ? `Found ${found.added} new Google calendar${found.added === 1 ? '' : 's'}` : found.gone ? `${found.gone} Google calendar${found.gone === 1 ? '' : 's'} removed` : 'No new Google calendars. Events are up to date.');
+}
+function googleCard() {
+  const g = state.google, box = 'bg-card border border-border rounded-3xl p-4';
+  if (!g) return `<div class="${box}"><div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center">${G_LOGO}</span><div class="flex-1"><p class="font-extrabold">Google Calendar</p><p class="text-xs text-muted-foreground">Link your Google Calendar so auto-schedule works around your real events.</p></div></div>
+    <button data-glink class="mt-3 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Link Google Calendar</button></div>`;
+  const n = gCount();
+  return `<div class="${box}"><div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center">${G_LOGO}</span><div class="flex-1 min-w-0"><p class="font-extrabold">Google Calendar</p><p class="text-xs text-muted-foreground truncate">${g.email}</p></div><span class="text-xs font-extrabold text-accent-foreground bg-accent rounded-full px-3 py-1">Linked</span></div>
+    <p class="text-xs text-muted-foreground mt-2">${g.busy ? 'Syncing…' : 'Synced ' + g.synced.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})} · ${n} event${n === 1 ? '' : 's'} in the next 6 months · ${g.cals.length} calendar${g.cals.length === 1 ? '' : 's'}</p>
+    ${g.err ? `<p class="text-xs font-bold text-primary mt-1">${g.err}</p>` : ''}
+    <div class="mt-3 space-y-2">${gGroups(g.cals, c => `<div class="flex items-center gap-3"><span class="size-3 rounded-full" style="background:${c.color}"></span><span class="flex-1 min-w-0 text-sm font-bold truncate">${c.name} <span class="text-[11px] font-semibold text-muted-foreground">· ${c.on ? (c.loaded ? c.evs.length : '…') : 'off'}${c.on && c.loaded ? (c.evs.length === 1 ? ' event' : ' events') : ''}</span></span>${c.isNew ? '<span class="text-[9px] font-extrabold uppercase rounded bg-primary text-primary-foreground px-1.5 py-0.5">New</span>' : ''}${c.hidden ? '<span class="text-[9px] font-bold text-muted-foreground">hidden</span>' : ''}${c.manual ? `<button data-grm="${c.key}" aria-label="Remove ${c.name}" class="text-xs text-muted-foreground px-1">✕</button>` : ''}${toggle('gcal:' + c.key, c.on)}</div>
+      <div class="pl-6 -mt-1 ${c.on ? '' : 'opacity-50 pointer-events-none'}"><span class="text-[11px] font-bold text-muted-foreground">Show in (pick any)</span><div class="flex flex-wrap gap-1.5 mt-1">${[['own', 'Its own calendar'], ...CALS.filter(x => !x.google).map(x => [x.id, x.name])].map(([id, nm]) => `<button data-gtgt="${c.key}|${id}" aria-pressed="${gTargets(c).includes(id)}" class="rounded-full px-2.5 py-1 text-[11px] font-bold border ${gTargets(c).includes(id) ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border text-muted-foreground'}">${nm}</button>`).join('')}</div></div>`)}</div>
+    <button data-gadd class="mt-3 w-full rounded-full border border-dashed border-border py-2.5 text-xs font-bold text-muted-foreground">＋ Add a Google calendar by ID (Birthdays, shared…)</button>
+    <button id="gShow" class="mt-2 w-full rounded-full bg-primary text-primary-foreground py-2.5 text-sm font-extrabold">View on calendar</button>
+    <p class="text-[11px] text-muted-foreground mt-3">Sync looks for new Google calendars and refreshes events. Nothing is checked until you press it. Switch calendars on or off above.</p>
+    <div class="flex gap-2 mt-2"><button id="gSync" class="flex-1 rounded-full bg-secondary text-secondary-foreground py-2.5 text-sm font-bold ${g.busy ? 'opacity-50' : ''}">${g.busy ? 'Syncing…' : 'Sync'}</button><button id="gOff" class="flex-1 rounded-full border border-border py-2.5 text-sm font-bold text-muted-foreground">Disconnect</button></div></div>`;
+}
+const THEMES = ['auto', 'light', 'dark'];
+function readTheme() { try { const v = localStorage.getItem('sloth_theme'); return THEMES.includes(v) ? v : 'auto'; } catch (e) { return 'auto'; } }
+let themePref = readTheme();
+function themeIsDark() {
+  if (themePref === 'dark') return true;
+  if (themePref === 'light') return false;
+  try { const vt = document.documentElement.getAttribute && document.documentElement.getAttribute('data-theme'); if (vt === 'dark') return true; if (vt === 'light') return false; } catch (e) {}
+  try { return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches); } catch (e) { return false; }
+}
+function applyTheme() {
+  const dark = themeIsDark(), root = document.documentElement;
+  if (root.classList) root.classList.toggle('dark-ui', dark);
+  if (root.style) root.style.colorScheme = dark ? 'dark' : 'light';
+  const m = document.querySelector && document.querySelector('meta[name="theme-color"]');
+  if (m && m.setAttribute) m.setAttribute('content', dark ? '#18211C' : '#F6F0E5');
+}
+function setTheme(v) {
+  if (!THEMES.includes(v)) return;
+  themePref = v; try { localStorage.setItem('sloth_theme', v); } catch (e) {}
+  applyTheme(); render();
+}
+function initTheme() {
+  applyTheme();
+  try { const mq = window.matchMedia('(prefers-color-scheme: dark)'), f = () => { if (themePref === 'auto') { applyTheme(); render(); } }; if (mq.addEventListener) mq.addEventListener('change', f); else if (mq.addListener) mq.addListener(f); } catch (e) {}
+  try { if (typeof MutationObserver !== 'undefined') new MutationObserver(() => { if (themePref === 'auto') { applyTheme(); render(); } }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']}); } catch (e) {}
+}
+function themeCard() {
+  const dark = themeIsDark(), note = themePref === 'auto' ? 'Following your device' : themePref === 'dark' ? 'Always dark' : 'Always light';
+  const btn = ([k, l]) => `<button role="radio" aria-checked="${themePref === k}" data-theme-set="${k}" class="flex-1 rounded-full py-2 text-sm font-bold ${themePref === k ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'}">${l}</button>`;
+  return `<div class="bg-card border border-border rounded-3xl p-4"><div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic(dark ? 'moon' : 'sun')}</span><div class="flex-1"><p class="font-extrabold">Appearance</p><p class="text-xs text-muted-foreground">${note}</p></div></div>
+    <div class="flex bg-muted rounded-full p-1 mt-3" role="radiogroup" aria-label="Appearance">${[['auto', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].map(btn).join('')}</div></div>`;
+}
+const staticBanner = () => hostKind() === 'static' ? `<div class="bg-secondary border border-border rounded-3xl p-4"><p class="font-extrabold">This is a stand-alone copy</p><p class="text-xs text-muted-foreground mt-1">${STATIC_HELP}</p></div>` : '';
+function settingsView() {
+  const row = (k, t, d) => `<div class="bg-card border border-border rounded-3xl p-4 flex items-center gap-3"><div class="flex-1"><p class="font-extrabold">${t}</p><p class="text-xs text-muted-foreground">${d}</p></div>${toggle(k, prefs[k])}</div>`;
+  return `${header()}<section class="px-5 mt-2 space-y-3">${staticBanner()}${notifCard()}${googleCard()}${row('sync','Two-way sync','Keep new events on every calendar')}${row('quiet','Quiet hours','No pings before 9 AM')}${themeCard()}</section>`;
+}
+
+function nav() {
+  const t = [['home','Home','home'],['calendar','Calendar','calendar'],['groups','Groups','users'],['status','Status','check'],['notifs','Alerts','bell'],['settings','Settings','settings']];
+  return `<nav class="fixed bottom-0 inset-x-0 max-w-md mx-auto h-[76px] bg-card/90 backdrop-blur-xl border-t border-border flex items-center justify-around px-1 z-10" style="padding-bottom:env(safe-area-inset-bottom,0px)">
+    ${t.map(([k,l,i]) => `<button data-tab="${k}" class="flex-1 flex flex-col items-center gap-1 text-[11px] ${state.tab===k?'text-primary font-bold':'text-muted-foreground font-semibold'}">${ic(i)}${l}</button>`).join('')}</nav>`;
+}
+
+function sheetView() {
+  if (!state.sheet) return '';
+  const wrap = body => `<div class="fixed inset-0 z-40 bg-black/40 flex items-end justify-center" id="scrim"><div class="bg-card w-full max-w-md rounded-t-3xl p-6 fade" style="padding-bottom:calc(1.5rem + env(safe-area-inset-bottom,0px))">${body}</div></div>`;
+  if (state.sheet === 'invite') {
+    const r = state.real, iv = r.inv, c = calOf(iv.cal);
+    const chip = (attr, val, on, t) => `<button ${attr}="${val}" class="rounded-full px-4 py-2 text-sm font-bold border ${on ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border'}">${t}</button>`;
+    const l = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
+    const mine = Object.values(r.invites).filter(v => c.live && v.cal === c.dbId).sort((a, b) => b.createdMs - a.createdMs).slice(0, 6);
+    const rows = mine.map(v => { const st = inviteState(v), act = st === 'active'; return `<div class="rounded-2xl border border-border ${act ? 'bg-card' : 'bg-muted opacity-70'} p-3"><div class="flex items-center gap-2"><span class="font-extrabold tracking-wider">${showCode(v.code)}</span><span class="text-xs font-bold ${act ? 'text-accent-foreground bg-accent' : 'text-muted-foreground bg-secondary'} rounded-full px-2 py-0.5">${act ? 'Active' : st}</span><span class="flex-1 text-right text-xs text-muted-foreground">${v.uses || 0}${v.maxUses ? ' of ' + v.maxUses : ''} joined${v.expiresMs ? ' · ' + (act ? 'ends ' : 'ended ') + new Date(v.expiresMs).toLocaleDateString('en-US', {month:'short', day:'numeric'}) : ''}</span></div>
+      ${act ? `<div class="flex gap-2 mt-2"><button data-invcopy="${v.code}" class="rounded-full bg-secondary text-secondary-foreground px-3 py-1.5 text-xs font-bold">Copy link</button><button data-invshare="${v.code}" class="rounded-full bg-primary text-primary-foreground px-3 py-1.5 text-xs font-extrabold">Share</button><button data-invrev="${v.code}" class="rounded-full border border-border px-3 py-1.5 text-xs font-bold text-muted-foreground">Cancel invite</button></div>` : ''}</div>`; }).join('');
+    const fresh = iv.last && r.invites[iv.last] ? `<div class="rounded-2xl bg-accent/50 border border-accent p-3 mt-3"><p class="text-xs font-bold">Your invite link</p><input readonly onclick="this.select()" value="${esc(inviteLink(iv.last))}" class="mt-1 w-full rounded-xl bg-card px-3 py-2 text-xs font-semibold outline-none" /><p class="text-xs text-muted-foreground mt-1">Code <b>${showCode(iv.last)}</b>. If the link doesn't open the invite, they can enter the code.</p></div>` : '';
+    return wrap(`<h3 class="text-xl font-extrabold">Invite people to ${c.name}</h3>
+      <p class="text-sm text-muted-foreground mt-1">Anyone who opens the link or enters the code joins this calendar. ${WEB_MODE ? "They don't need a Claude account. They just pick a name when they open the link." : 'They must already have access to this page: share the page with them from claude.ai and make them a Contributor so they can reply and add events.'}</p>
+      ${l('Link works for')}<div class="flex flex-wrap gap-2">${[[1, '1 day'], [7, '7 days'], [30, '30 days']].map(([v, t]) => chip('data-invopt', 'days:' + v, iv.days === v, t)).join('')}</div>
+      ${l('People who can use it')}<div class="flex flex-wrap gap-2">${[[1, '1 person'], [5, '5 people'], [0, 'No limit']].map(([v, t]) => chip('data-invopt', 'uses:' + v, iv.uses === v, t)).join('')}</div>
+      <button data-invmk ${iv.busy ? 'disabled' : ''} class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold ${iv.busy ? 'opacity-60' : ''}">${iv.busy ? 'Creating…' : 'Create invite link'}</button>
+      ${iv.err ? `<p class="text-sm font-bold text-primary mt-2">${iv.err}</p>` : ''}${fresh}
+      ${rows ? `${l('Invites for this calendar')}<div class="space-y-2">${rows}</div>` : ''}`);
+  }
+  if (state.sheet === 'join') {
+    const jn = state.real.jn, info = jn.info, hd = '<h3 class="text-xl font-extrabold">Join a shared calendar</h3>';
+    if (jn.busy && !info) return wrap(`${hd}<div class="text-center py-6"><span class="inline-block size-6 border-2 border-accent border-t-primary rounded-full animate-spin"></span><p class="text-sm text-muted-foreground mt-3">Checking the invite…</p></div>`);
+    if (info) return wrap(`${hd}<div class="mt-4 rounded-2xl bg-accent/50 border border-accent p-4"><p class="font-extrabold text-lg">${info.name}</p><p class="text-sm text-muted-foreground mt-1">${info.already ? "You're already in this calendar." : `Invited by ${nameOf(info.owner)}`} · ${info.count} ${info.count === 1 ? 'person' : 'people'}</p></div>
+      ${jn.err ? `<p class="text-sm font-bold text-primary mt-3">${jn.err}</p>` : ''}
+      <button id="jGo" ${jn.busy ? 'disabled' : ''} class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold ${jn.busy ? 'opacity-60' : ''}">${jn.busy ? 'Joining…' : info.already ? 'Open the calendar' : 'Join ' + info.name}</button>
+      <button id="jBack" class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Not now</button>`);
+    return wrap(`${hd}<p class="text-sm text-muted-foreground mt-1">Enter the code from your invite.</p>
+      <input id="jCode" value="${esc(jn.code || '')}" placeholder="ABCD-EFGH" autocapitalize="characters" autocomplete="off" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 text-lg font-extrabold tracking-widest outline-none" />
+      ${jn.err ? `<p class="text-sm font-bold text-primary mt-3">${jn.err}</p>` : ''}
+      <button id="jLook" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Look up invite</button>`);
+  }
+  if (state.sheet === 'rp') {
+    const rp = state.real.rp, fc = rp.forCal && calOf(rp.forCal);
+    return wrap(`<h3 class="text-xl font-extrabold">Find real people</h3>
+      <p class="text-sm text-muted-foreground mt-1">${fc ? `They'll be added to ${fc.name}. ` : ''}${WEB_MODE ? 'Search people who have joined this site. Not there yet? Send them an invite link instead.' : 'Search people in your organization. They also need access to this page. Share it with them from claude.ai and add them as Contributors, so they can reply and add events.'}</p>
+      <input id="rpQ" value="${esc(rp.q)}" placeholder="Search by name" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none" />
+      <div id="rpRes" class="mt-3 space-y-2">${rpRows()}</div>
+      ${fc ? '<button data-invopen class="mt-3 w-full rounded-full bg-secondary text-secondary-foreground py-2.5 text-sm font-bold">Can\'t find them? Send an invite link instead</button>' : ''}`);
+  }
+  if (state.sheet === 'cmem') {
+    const c = calOf(state.real.cm), r = state.real, others = members.filter(m => m.id !== 'p');
+    const inC = new Set(c.members || []);
+    const rows = others.map(m => { const on = inC.has(m.id); return `<button data-cmt="${m.id}" class="w-full flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${on ? 'bg-accent/50' : 'bg-card'}">${avatar(m)}<span class="flex-1 min-w-0 font-bold truncate">${m.name}</span><span class="text-[10px] font-extrabold uppercase rounded px-1.5 py-0.5 bg-primary text-primary-foreground">Real</span><span class="text-sm font-extrabold ${on ? 'text-primary' : 'text-muted-foreground'}">${on ? 'In' : 'Add'}</span></button>`; }).join('');
+    return wrap(`<h3 class="text-xl font-extrabold">People in ${c.name}</h3>
+      <p class="text-sm text-muted-foreground mt-1">${c.live ? 'This calendar is live. Real people in it see it and its events on their own devices.' : 'Adding a real person makes this calendar live, so they can see it on their own device.'}</p>
+      <div class="space-y-2 mt-4">${rows || '<p class="text-sm text-muted-foreground">No one else yet.</p>'}</div>
+      ${r.on && r.canWrite === false ? '<p class="text-xs font-bold text-muted-foreground mt-4">You have view-only access to this page, so you can\'t change who is in a calendar.</p>' : r.on ? '<button data-rpopen class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Find real people</button>' + (!c.live || c.owner === r.me ? '<button data-invopen class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Invite with a link</button>' : '<p class="text-xs text-muted-foreground mt-2">Only the calendar\'s owner can create invite links.</p>') : (WEB_MODE ? '<button data-websignin class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Sign in to add real people</button>' : (hostKind() === 'static' ? '<p class="text-xs text-muted-foreground mt-4">' + STATIC_HELP + '</p>' : '<p class="text-xs text-muted-foreground mt-4">Real people are available when you open this page from its published link while signed in to Claude.</p>'))}`);
+  }
+  if (state.sheet === 'addp') {
+    return wrap(`<h3 class="text-xl font-extrabold">Add a person</h3>
+      <p class="text-sm text-muted-foreground mt-1">People you add are real people with their own accounts, so they can reply to invitations and see shared calendars.</p>
+      ${WEB_MODE ? '<button data-websignin class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Sign in to add real people</button>' : (hostKind() === 'static' ? '<p class="text-xs text-muted-foreground mt-3">' + STATIC_HELP + '</p>' : '<p class="text-xs text-muted-foreground mt-3">Real people are available when you open this page from its published link while signed in to Claude.</p>')}`);
+  }
+  if (state.sheet === 'notif') {
+    const st = notifStatus(), nf = state.nf;
+    const bellBox = `<div class="mx-auto size-16 rounded-full bg-accent/60 border border-border flex items-center justify-center text-primary">${ic('bell', 30)}</div>`;
+    if (st === 'ios-install') return wrap(`${bellBox}<h3 class="text-xl font-extrabold text-center mt-3">Add Sloth Sync to your Home Screen</h3>
+      <p class="text-sm text-muted-foreground text-center mt-1">iPhone and iPad only allow notifications for web apps on the Home Screen (iOS 16.4 or later).</p>
+      <ol class="mt-4 space-y-2 text-sm font-semibold">
+        <li class="flex gap-3 rounded-2xl bg-muted px-4 py-3"><span class="font-extrabold text-primary">1</span><span>Tap the <b>Share</b> button in Safari.</span></li>
+        <li class="flex gap-3 rounded-2xl bg-muted px-4 py-3"><span class="font-extrabold text-primary">2</span><span>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</span></li>
+        <li class="flex gap-3 rounded-2xl bg-muted px-4 py-3"><span class="font-extrabold text-primary">3</span><span>Open <b>Sloth Sync</b> from your Home Screen and turn on notifications.</span></li></ol>
+      <button id="nLater" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Got it</button>`);
+    if (st === 'blocked' || nf.result === 'denied') return wrap(`${bellBox}<h3 class="text-xl font-extrabold text-center mt-3">${nf.frame ? 'Open Sloth Sync in its own tab' : 'Notifications are off'}</h3>
+      <p class="text-sm text-muted-foreground text-center mt-2">${nf.frame ? 'Your browser blocks the permission prompt while this page is embedded in another page. Open it in its own tab, then turn on notifications there.' : 'You can allow them later in your browser settings, or on iPhone and iPad in Settings, Notifications, Sloth Sync.'}</p>
+      ${nf.frame ? '<button id="nOpen" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Open in a new tab</button>' : ''}
+      <button id="nLater" class="mt-2 w-full rounded-full ${nf.frame ? 'bg-secondary text-secondary-foreground' : 'bg-primary text-primary-foreground'} py-3 font-bold">Close</button>`);
+    return wrap(`${bellBox}<h3 class="text-xl font-extrabold text-center mt-3">Stay in the loop</h3>
+      <p class="text-sm text-muted-foreground text-center mt-1">Get a heads-up when someone confirms, suggests a new time, or needs your OK.</p>
+      <button id="nOn" ${nf.busy ? 'disabled' : ''} class="mt-5 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold ${nf.busy ? 'opacity-60' : ''}">${nf.busy ? 'Waiting for your answer…' : 'Turn on notifications'}</button>
+      <button id="nLater" class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Not now</button>
+      <p class="text-xs text-muted-foreground text-center mt-3">You can change this any time in Settings.</p>`);
+  }
+  if (state.sheet === 'gadd') {
+    const ga = state.ga, have = new Set((state.google ? state.google.cals : []).map(c => c.id.toLowerCase()));
+    const sug = GOOGLE_PRESETS.filter(p => !have.has(p.id.toLowerCase()));
+    const l = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
+    return wrap(`<h3 class="text-xl font-extrabold">Add a Google calendar</h3>
+      <p class="text-sm text-muted-foreground mt-2">Google keeps some calendars out of your list, like Birthdays or ones you never added. If you can see it in Google Calendar, you can add it here by its ID.</p>
+      ${sug.length ? `${l('Quick add')}<div class="flex flex-wrap gap-2">${sug.map(p => `<button data-gpre="${p.id}" ${ga.busy ? 'disabled' : ''} class="rounded-full px-4 py-2 text-sm font-bold border border-border bg-muted">${p.name}</button>`).join('')}</div>` : ''}
+      ${l('Or paste a calendar ID')}<input id="gAddId" value="${esc(ga.id)}" placeholder="name@group.calendar.google.com, or an email" class="w-full rounded-2xl bg-muted px-4 py-3 text-sm font-semibold outline-none" />
+      <p class="text-[11px] text-muted-foreground mt-1">In Google Calendar: Settings, pick the calendar, then Integrate calendar, then Calendar ID.</p>
+      ${ga.err ? `<p class="text-sm font-bold text-primary mt-3">${ga.err}</p>` : ''}
+      <button id="gAddGo" ${ga.busy ? 'disabled' : ''} class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold ${ga.busy ? 'opacity-60' : ''}">${ga.busy ? 'Adding…' : 'Add calendar'}</button>`);
+  }
+  if (state.sheet === 'clink') {
+    const c = calOf(state.cl), g = state.google;
+    if (!g) return wrap(`<h3 class="text-xl font-extrabold">Link Google Calendar to ${c.name}</h3><p class="text-sm text-muted-foreground mt-2">Link your Google account first. Then you can choose which Google calendars show up in ${c.name}.</p>
+      <button id="clGo" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Link Google Calendar</button>`);
+    const rows = g.cals.map(x => { const on = x.on && gTargets(x).includes(c.id); return `<button data-clt="${x.key}" class="w-full flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${on ? 'bg-accent/50' : 'bg-card'}"><span class="size-3 rounded-full" style="background:${x.color}"></span><span class="flex-1 min-w-0 font-bold truncate">${x.name}</span><span class="text-xs text-muted-foreground">${x.on && x.loaded ? x.evs.length + (x.evs.length === 1 ? ' event' : ' events') : x.on ? '…' : 'off'}</span><span class="text-sm font-extrabold ${on ? 'text-primary' : 'text-muted-foreground'}">${on ? 'Linked' : 'Link'}</span></button>`; }).join('');
+    const n = Object.values(events).flat().filter(e => e.google && e.cal === c.id).length;
+    return wrap(`<h3 class="text-xl font-extrabold">Google calendars in ${c.name}</h3><p class="text-sm text-muted-foreground mt-1">Tap to choose which Google calendars show up here.</p>
+      <div class="space-y-2 mt-4">${rows}</div><p class="text-xs font-bold text-muted-foreground mt-3">${n} Google event${n === 1 ? '' : 's'} showing in ${c.name} now.</p>
+      <button id="clView" class="mt-3 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">View on calendar</button>`);
+  }
+  if (state.sheet === 'glink') {
+    const gl = state.gl, hd = `<div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center">${G_LOGO}</span><h3 class="text-xl font-extrabold">Link Google Calendar</h3></div>`;
+    if (gl.step === 1) return wrap(`<div class="text-center py-6"><div class="inline-flex">${G_LOGO}</div><h3 class="text-xl font-extrabold mt-3">Connecting to Google Calendar…</h3><p class="text-sm text-muted-foreground mt-1">If asked, allow this page to read your calendars.</p>
+      <span class="inline-block mt-4 size-6 border-2 border-accent border-t-primary rounded-full animate-spin"></span></div>`);
+    if (gl.step === 2) return wrap(`${hd}<p class="text-sm font-bold text-primary mt-3">${gl.err}</p>
+      <div class="flex gap-2 mt-4"><button id="gClose" class="flex-1 rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Close</button><button id="gGo" class="flex-1 rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Try again</button></div>`);
+    return wrap(`${hd}<p class="text-sm text-muted-foreground mt-3">Sloth Sync will read your Google calendars and the next 6 months of events, so auto-schedule can avoid them. It only reads. Nothing is changed in Google.</p>
+      <button id="gGo" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Continue</button>`);
+  }
+  if (state.sheet === 'newcal') {
+    const nc = state.nc, others = members.filter(m => m.on && m.id !== 'p');
+    const l = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
+    const gl = state.google ? state.google.cals.filter(c => c.on) : [];
+    const glHtml = gl.length ? `${l('Link Google calendars')}<div class="flex flex-wrap gap-2">${gl.map(c => `<button data-ngoog="${c.key}" class="rounded-full px-4 py-2 text-sm font-bold border ${nc.gs.includes(c.key) ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border'}">${c.name}</button>`).join('')}</div>` : '';
+    return wrap(`<h3 class="text-xl font-extrabold">New shared calendar</h3>
+      <input id="cName" value="${esc(nc.name)}" placeholder="Name (e.g. Family, Book club)" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none" />
+      ${l('Color')}<div class="flex gap-3">${CAL_COLORS.map(c => `<button data-ncolor="${c}" aria-label="Color ${c}" class="size-8 rounded-full" style="background:${c};${nc.color === c ? 'outline:2px solid var(--foreground);outline-offset:2px' : ''}"></button>`).join('')}</div>
+      ${l("Who's in it")}<div class="flex flex-wrap gap-2">${others.map(m => `<button data-nmem="${m.id}" class="rounded-full px-4 py-2 text-sm font-bold border ${nc.ids.includes(m.id) ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border'}">${m.name.split(' ')[0]}</button>`).join('') || '<span class="text-sm text-muted-foreground">Add people in Groups first</span>'}</div>
+      ${glHtml}
+      <button id="saveCal" class="mt-6 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Create calendar</button>`);
+  }
+  if (state.sheet === 'calx') {
+    const c = calOf(state.cx), r = state.real, own = c.live && c.owner === r.me, member = c.live && c.owner !== r.me;
+    const n = Object.values(events).flat().filter(e => e.cal === c.id && !e.google).length, pend = state.pends.filter(p => p.cal === c.id).length, people = (c.members || []).length;
+    const ev = n ? `${n} event${n === 1 ? '' : 's'}` : 'no events';
+    if (CALS.filter(x => !x.google).length <= 1) return wrap(`<h3 class="text-xl font-extrabold">You need one calendar</h3>
+      <p class="text-sm text-muted-foreground mt-2">${c.name} is your last calendar, so it can't be ${member ? 'left' : 'deleted'}. Create another one first, then you can ${member ? 'leave' : 'delete'} this one.</p>
+      <button id="calxNo" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">OK</button>`);
+    const title = member ? `Leave ${c.name}?` : own ? `Delete ${c.name} for everyone?` : `Delete ${c.name}?`;
+    const text = member ? `You will stop seeing it and its events. Everyone else keeps it.`
+      : own ? `It is shared with ${people} ${people === 1 ? 'person' : 'people'}. The calendar, its ${ev} and any open invitations for it are deleted for all of them, and its invite links stop working.`
+      : `Its ${ev} will be deleted.${pend ? ` ${pend} pending request${pend === 1 ? ' is' : 's are'} cancelled.` : ''} Google calendars shown in it go back to showing on their own.`;
+    return wrap(`<h3 class="text-xl font-extrabold">${title}</h3>
+      <p class="text-sm text-muted-foreground mt-2">${text}</p>
+      <div class="flex gap-2 mt-4"><button id="calxNo" class="flex-1 rounded-full bg-secondary text-secondary-foreground py-3 font-bold">${member ? 'Stay' : 'Keep it'}</button><button id="calxYes" class="flex-1 rounded-full bg-primary text-primary-foreground py-3 font-extrabold">${member ? 'Leave' : 'Delete'}</button></div>`);
+  }
+  if (state.sheet === 'evd') {
+    const b = state.evd, att = b.who.map(sh => byShort(sh)).filter(Boolean);
+    return wrap(`<p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">${[b.cal, ...(b.alsoIn || [])].map(id => calOf(id).name).join(' · ')}${b.cal === 'personal' ? ' · Private to you' : ''}${b.google ? ' · From Google Calendar' : ''} · ${b.pending ? 'Waiting for confirmations' : b.google ? 'Synced' : b.cal === 'personal' ? 'Scheduled' : 'Confirmed'}</p>
+      <h3 class="text-xl font-extrabold mt-1">${b.title}</h3>
+      <p class="text-sm text-muted-foreground mt-1">${b.dateTxt} · ${b.allDay ? 'All day' : fmtT(b.a) + ' – ' + (b.b >= 1440 ? 'midnight' : fmtT(b.b))}</p>
+      <div class="flex items-center gap-2 mt-3"><div class="flex -space-x-2">${att.map(m => avatar(m)).join('')}</div><span class="text-xs text-muted-foreground">${att.length} invited</span></div>`);
+  }
+  if (state.sheet === 'counter') {
+    const pd = state.pends.find(x => x.id == state.cpid), sel = 'rounded-2xl bg-muted px-3 py-3 font-semibold outline-none flex-1';
+    if (!pd) return '';
+    return wrap(`<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Your counter-offer</p>
+      <h3 class="text-xl font-extrabold mt-1">${pd.title}</h3>
+      <p class="text-sm text-muted-foreground mt-1">Now: ${wt(pd)}. Everyone will see your time instead.${pd.span > 1 || pd.custom ? ' Pick the start. The length stays the same.' : ''}</p>
+      <div class="flex gap-2 mt-4"><input type="date" id="cDay2" value="${offVal(pd.day)}" ${dateAttrs()} class="${sel}" />
+      <select id="cTime2" class="${sel}">${(pd.custom ? TIMES : SLOTS.Anytime).map(t => `<option ${t===pd.time?'selected':''}>${t}</option>`).join('')}</select></div>
+      <button id="autoCounter" class="mt-4 w-full rounded-full bg-secondary text-secondary-foreground py-3 font-bold flex items-center justify-center gap-2">${ic('wand', 18)}Auto-schedule a time</button>
+      <p id="autoNote" class="text-xs text-muted-foreground text-center mt-2 min-h-4"></p>
+      <button id="sendCounter" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Send to everyone</button>`);
+  }
+  if (state.sheet === 'add') return wrap(`<h3 class="text-xl font-extrabold">New event</h3>
+    <input id="newTitle" placeholder="Event name" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none" />
+    <select id="newTime" class="mt-3 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none">${['9:00 AM','10:00 AM','11:00 AM','1:00 PM','3:00 PM','4:30 PM'].map(t=>`<option>${t}</option>`).join('')}</select>
+    <select id="newCal" class="mt-3 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none">${CALS.map(c => `<option value="${c.id}">${c.name}${c.shared ? ' (shared)' : ''}</option>`).join('')}</select>
+    <button id="saveNew" class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Add to ${dl(state.day)}</button>`);
+  const r = state.req;
+  if (state.step === -1) {
+    const others = members.filter(m => m.on && m.id !== 'p');
+    const chip = (attr, val, on, label) => `<button ${attr}="${val}" class="rounded-full px-4 py-2 text-sm font-bold border ${on?'bg-primary text-primary-foreground border-primary':'bg-muted border-border'}">${label}</button>`;
+    const lab = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
+    return wrap(`<h3 class="text-xl font-extrabold">New event to auto-schedule</h3>
+      <input id="reqTitle" value="${esc(r.title)}" placeholder="What's the event? (e.g. Retro, Coffee chat)" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none" />
+      ${lab('When')}<div class="flex flex-wrap gap-2">${chip('data-mode', 'dur', r.mode !== 'range', 'Fixed length')}${chip('data-mode', 'range', r.mode === 'range', 'Custom start & end')}</div>
+      ${r.mode === 'range' ? rangeUI(r) : `${lab(r.span > 1 ? 'How long each day' : 'How long')}<div class="flex flex-wrap gap-2">${['30 min','1 hr','2 hrs'].map(v => chip('data-dur', v, r.dur===v, v)).join('')}</div>
+      ${lab('Days')}<div class="flex flex-wrap gap-2">${[1, 2, 3].map(v => chip('data-span', v, r.span === v, v === 1 ? '1 day' : v + ' days')).join('')}</div>
+      ${lab('Preferred time')}<div class="flex flex-wrap gap-2">${Object.keys(SLOTS).map(v => chip('data-win', v, r.win===v, v)).join('')}</div>`}
+      ${r.mode === 'range' ? '' : `${lab('Start looking from')}<input type="date" id="reqFrom" value="${offVal(r.from || 0)}" ${dateAttrs()} class="w-full rounded-2xl bg-muted px-4 py-3 text-sm font-semibold outline-none" />
+      <div class="flex flex-wrap gap-2 mt-2">${[['Today', 0], ['Next week', 7], ['Next month', monthOff(1)], ['In 2 months', monthOff(2)], ['In 3 months', monthOff(3)]].map(([l2, o]) => chip('data-from', o, (r.from || 0) === o, l2)).join('')}</div>`}
+      ${lab('Look ahead')}<div class="flex flex-wrap gap-2">${[[7, '1 week'], [14, '2 weeks'], [30, '1 month'], [90, '3 months'], [180, '6 months']].map(([v, l2]) => chip('data-ahead', v, (r.ahead || 14) === v, l2)).join('')}</div>
+      ${lab("Who's invited")}<div class="flex flex-wrap gap-2">${others.filter(m => inviteesFor(r.cal).includes(m.id)).map(m => chip('data-who', m.id, r.ids.includes(m.id), m.name.split(' ')[0])).join('') || '<span class="text-sm text-muted-foreground">Just you. Add real people to this calendar to invite them.</span>'}</div>
+      ${lab('Add to calendar')}<div class="flex flex-wrap gap-2">${CALS.filter(c => !c.google).map(c => chip('data-rcal', c.id, r.cal === c.id, c.name)).join('')}</div>
+      <button id="findTime" class="mt-6 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Find a time</button>
+      <button id="saveShortcut" class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-2 text-sm font-bold">Save as shortcut</button>`);
+  }
+  if (state.step === 0) return wrap(`<div class="text-center py-6"><div class="text-5xl">🦥</div><h3 class="text-xl font-extrabold mt-3">Checking ${r.ids.length + 1} calendars…</h3><p class="text-sm text-muted-foreground mt-1">Finding a time for ${r.title}</p>
+    <span class="inline-block mt-4 size-6 border-2 border-accent border-t-primary rounded-full animate-spin"></span></div>`);
+  const props = proposals(), p = props[state.prop % Math.max(props.length, 1)];
+  if (!p) return wrap(`<div class="text-center py-4"><div class="text-4xl">🦥</div><h3 class="text-xl font-extrabold mt-3">No free slots</h3><p class="text-sm text-muted-foreground mt-1">Try a different time of day, fewer days, or look further ahead.</p><button id="back" class="mt-4 rounded-full bg-secondary text-secondary-foreground px-5 py-3 font-bold">Edit details</button></div>`);
+  const who = [members[0], ...r.ids.map(i => members.find(m => m.id === i))];
+  return wrap(`<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">${state.prop % props.length === 0 ? 'Best match' : 'Option ' + (state.prop % props.length + 1) + ' of ' + props.length}</p>
+    <h3 class="text-2xl font-extrabold mt-1">${r.title}</h3>
+    <div class="mt-3 rounded-2xl bg-accent/50 border border-accent p-4"><p class="font-extrabold">${r.span > 1 ? fmtLong(days[p[0]]) + ' to ' + fmtLong(days[p[0] + r.span - 1]) : fmtLong(days[p[0]])}</p><p class="text-lg font-bold text-primary">${p[1]} · ${r.dur}${r.span > 1 ? ' each day' : ''}</p>
+    <div class="flex items-center gap-2 mt-2"><div class="flex -space-x-2">${who.map(m=>avatar(m)).join('')}</div><span class="text-xs text-muted-foreground">${who.length} of ${who.length} free</span></div></div>
+    <div class="flex gap-2 mt-4"><button id="another" class="flex-1 rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Try another</button><button id="confirm" class="flex-1 rounded-full bg-primary text-primary-foreground py-3 font-extrabold">${r.ids.length ? 'Ask everyone' : 'Add to calendar'}</button></div>
+    <p class="text-xs text-muted-foreground text-center mt-3">${r.ids.length ? 'Everyone gets a notification to confirm this date and time.' : 'Nobody else is invited, so it goes straight onto your calendar.'} <button id="back" class="font-bold text-primary">Edit details</button></p>`);
+}
+
+function render() {
+  const old = document.getElementById('calScroll'), keep = old && !state.cal.fresh ? old.scrollTop : null;
+  const v = {home:homeView, calendar:calendarView, groups:groupsView, status:statusView, notifs:notifsView, settings:settingsView}[state.tab]();
+  document.getElementById('app').innerHTML = v + nav();
+  document.getElementById('sheet').innerHTML = sheetView();
+  const sc = document.getElementById('calScroll');
+  if (sc) sc.scrollTop = keep != null ? keep : (state.cal.view === 'week' ? 40 : 56) * 7;
+  state.cal.fresh = false;
+}
+function toast(m) { const t = document.getElementById('toast'); t.textContent = m; t.style.opacity = 1; setTimeout(() => t.style.opacity = 0, 1800); }
+const esc = s => s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const ICON_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAFrklEQVR42u2dO24VMRSGJ1a2Q+FF0NJRUVEiISQasgbSICEkSioqOloWMQVroKeipohAV4Hc65k5b39/RUKuPT7+/B+/Jrn69fPHgtD/1AgBAg4EHAg4EHAg4EDAgYADAQcCDgQcCAEHAg4EHAg4EHAg4EDAgYADAQcCDoT+6HrOZn/9/m3rR548ejxblK5meDVhBwrgUhkOJSCmAqUaHMZM1KakCBzuTJSkJD0cAbEog0hWOIIzUYOSfHCkwyIvIg0yeP70zpEdi4wWkgCOYlgkQqRBBq3L5xy1sUhhIQ0yaG8mOGYjI2yrY6WVObEIm2IaZGAh0eGAjIDRaMQCPuLCARlhI9MgAz4iwgEZwaPUIAM+YsEBGSki1iADPqLAARmJosfrkCgGHNhGrhg2yIAPZzggI2M8r2cOcR/7sXXW+Fjc54hjG12ikDisaN/8UIcjAhldp9i1Oh+V00q3Kr9q3tF1Di/b6B6VeiGiZx7VnKN7V13JRRSdw9g2eqSwGiOiZB4NMgo8j1K0K5ytdJ4qUVoxs40UHWCWYsSTS2Ln6Dynshpk8LR2cBjklA7NJpFvRJknN4JD2zayLwG0n182/o3I0or0cNQgI1dbJOHQyymVyNBukWAvlDp4e//x87/ffPXiWaUaLSW5Q6rkHH1XD6n2mVSNSpunUlulYnC4kDHYSYKIiNcYmY/QE1JxMnZ/Sq/GyNOprNvn0fpY77PAsW1IHY/11hJUa+y14bC82iM1CsfLsa8xSI+0XLYhG9+R0mxq7IWdA5VURDhsbGOkTMsaA5pHwZeaPnz6cvePl8+fVq0ROPZ30umXqh1mX2OytCK7VNmdU+7108XvXyzZvkbZzHK8X5iQoupwnB+sF4dyihpnh6NPP1g7cCCcAwEHAg5fnb8yc35r4fz/PlSyfY3AwWw0TRzqpJWHBqvefqV9jcYSuEMqtUM6MmJGTsI2nXRcdHj7Ghe5i6UHb5IWPHizH7jFztuyphXZqdxIafY1Aod/fMfLsa8RODyjvLUE+xqBwyfW+z5rXyOrlUPre8H3z17f3J5++e7tG+0a469WZF6HFOFj9+bPwTdX72EhiMhuw1gDkFEEjvN9dqaHzmAxgsii9pY9cMjDsUmDZFzkQ0NB4OBUFmWAw/KXyW+yjR0/nyUOOAdyhUP7j40hlx7BORBwoOxwmM3Fti5NzZaya0k4mHYUm3BMnVbGzcB4ByyOwt0EWw23Su96fcfZygw5ZRH/M14Z99HvNHgqGx8Owfxe+S9Sx5xyslop5a7TtloYDtYsNdYpoVcrs5lHzPa24PAix8i32oPp9c2t3mm7VMlhbbLyJtjfztPg465MVfhqwiHlbweH1OnqVLYLT0s7uAZeg8U8k3ME5CMgGUoS3iE9leDvJ+1y3bm7U0UKUSJDaRGgCMfi+r7T4OTxYgfv/mDqhJIJjkXowEUks4hstMe3DXU4AvJxBBGp85cUZCy5Dt6kTvM3zVLFD+QSbf6qO8di9Zvzs/AdcMvAcykr24YVMkzIWJLukK48s4mM4BDHfJ2bDJvTTTvnmJaPpGQYTUj1JqfBp6hrhjFWbc6RwkIK3FeyhkMJ/HUOMowvUlmnFb3kEiTFrNnGVTg4VPnwQkTVvVwuX7rBoc2HJSLaSc3rWq4nHAZ8qFJiM9FxvLDtDIcZH4KUWE5+fa/y+8NhzMcOVryWQu4veYSAw5GPsIrw+k8jFpARHQ74CBiHKGmFFBNweDRiRKszwTEhHzHbGzGtTJViIg+DRuxoXVbnqGohKaBPA0cZRBJ5YSOyPH8R58hrIRmxzgpHFkpSW116OMIiUmCdVQSOOJRUWntXg8OLkpL7MWXhMACl/B7/FHCI4DLhceCkcKAR8QcAEXAg4EDAgYADAQcCDgQcCDgQcCDgQAg4EHAg4EDAgYADAQcCDgQcCDjQfPoNwCTKX7xEo24AAAAASUVORK5CYII=';
+const NOTIF = {
+  ios: () => /iPad|iPhone|iPod/.test(navigator.userAgent || '') || ((navigator.platform || '') === 'MacIntel' && (navigator.maxTouchPoints || 0) > 1),
+  standalone: () => !!(navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)),
+  frame: () => { try { return window.self !== window.top; } catch (e) { return true; } },
+  has: () => typeof window !== 'undefined' && typeof Notification !== 'undefined',
+};
+function notifStatus() {
+  if (!NOTIF.has()) return typeof navigator !== 'undefined' && NOTIF.ios() && !NOTIF.standalone() ? 'ios-install' : 'unsupported';
+  if (Notification.permission === 'granted') return prefs.notify ? 'on' : 'paused';
+  if (Notification.permission === 'denied') return 'blocked';
+  return NOTIF.ios() && !NOTIF.standalone() ? 'ios-install' : 'ready';
+}
+function askedBefore() { try { return localStorage.getItem('sloth_notif_asked') === '1'; } catch (e) { return !!state.nf.asked; } }
+function markAsked() { state.nf.asked = true; try { localStorage.setItem('sloth_notif_asked', '1'); } catch (e) {} }
+async function sysNotify(title, body, force) {
+  if (!NOTIF.has() || Notification.permission !== 'granted' || !prefs.notify) return false;
+  if (!force && !document.hidden) return false;
+  const opts = {body, tag:'sloth-sync', icon:ICON_URL, badge:ICON_URL};
+  try {
+    const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+    if (reg && reg.showNotification) { await reg.showNotification(title, opts); return true; }
+  } catch (e) {}
+  try { new Notification(title, opts); return true; } catch (e) { return false; }
+}
+async function enableNotifications() {
+  const nf = state.nf; if (nf.busy || !NOTIF.has()) return;
+  nf.busy = true; nf.result = ''; nf.frame = false; render();
+  const t0 = Date.now();
+  let r;
+  try { r = await new Promise((res, rej) => { const p = Notification.requestPermission(res); if (p && p.then) p.then(res, rej); }); } catch (e) { r = 'error'; }
+  nf.busy = false; nf.result = r;
+  if (r === 'denied' && NOTIF.frame() && Date.now() - t0 < 400) nf.frame = true;
+  if (r === 'granted') {
+    prefs.notify = true; state.sheet = null; render(); toast('Notifications are on');
+    sysNotify('Sloth Sync', "Notifications are on. We'll nudge you when someone replies.", true);
+    return;
+  }
+  render();
+}
+function maybeFirstRun() {
+  if (askedBefore()) return;
+  const st = notifStatus();
+  if (st !== 'ready' && st !== 'ios-install') return;
+  setTimeout(() => { if (state.sheet) return; markAsked(); state.sheet = 'notif'; render(); }, 900);
+}
+function notifCard() {
+  const st = notifStatus(), box = 'bg-card border border-border rounded-3xl p-4';
+  const chip = {on:['On', 'bg-accent text-accent-foreground'], paused:['Paused', 'bg-secondary text-secondary-foreground'], blocked:['Blocked', 'bg-secondary text-primary'], 'ios-install':['Needs Home Screen', 'bg-secondary text-primary'], unsupported:['Not available', 'bg-muted text-muted-foreground'], ready:['Off', 'bg-muted text-muted-foreground']}[st];
+  const msg = {
+    on:'You get a banner when someone confirms, counters or needs your OK while this page is in the background.',
+    paused:'Notifications are allowed, but paused here.',
+    blocked:'Notifications are blocked for this site. Allow them in your browser settings (on iPhone or iPad: Settings, Notifications, Sloth Sync).',
+    'ios-install':'iPhone and iPad only allow web notifications for apps on the Home Screen. Add Sloth Sync there first.',
+    unsupported:"This browser can't show notifications from web pages.",
+    ready:'Get a heads-up when someone confirms, counters or needs your OK.'}[st];
+  const body = st === 'ready' ? `<button id="nOn" class="mt-3 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Turn on notifications</button>`
+    : st === 'ios-install' ? `<button data-nhelp class="mt-3 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">How to add to Home Screen</button>`
+    : (st === 'on' || st === 'paused') ? `<div class="flex items-center gap-3 mt-3"><span class="flex-1 text-sm font-bold">Notify me about replies</span>${toggle('notify', prefs.notify)}</div><button id="nTest" class="mt-3 w-full rounded-full bg-secondary text-secondary-foreground py-2.5 text-sm font-bold">Send a test notification</button>` : '';
+  return `<div class="${box}"><div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic('bell')}</span><div class="flex-1"><p class="font-extrabold">Notifications</p></div><span class="text-xs font-extrabold rounded-full px-3 py-1 ${chip[1]}">${chip[0]}</span></div><p class="text-xs text-muted-foreground mt-2">${msg}</p>${body}</div>`;
+}
+function addNotif(text, extra = {}) {
+  notifs.unshift({id:Date.now() + Math.random(), text, type:'info', open:true, ...extra});
+  sysNotify('Sloth Sync', String(text).replace(/&lt;/g, '<').replace(/&amp;/g, '&').replace(/&quot;/g, '"'));
+}
+function tryFinalize(pd) { if (pd.me !== 'ask' && pd.ids.every(i => pd.res[i] === 'yes')) { finalize(pd); return true; } return false; }
+function resolveAsk(pd) { notifs.forEach(n => { if (n.type === 'ask' && n.pid === pd.id) n.open = false; }); }
+function askBtns(n) {
+  const pd = state.pends.find(p => p.id === n.pid);
+  if (!pd || pd.me !== 'ask') return `<p class="text-xs text-muted-foreground mt-1">Resolved</p>`;
+  return `<p class="text-xs text-muted-foreground mt-1">Your OK is needed before it's booked.</p><div class="flex gap-2 mt-3"><button data-accept="${pd.id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Accept new time</button><button data-revert="${pd.id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Keep original</button><button data-propose="${pd.id}" class="rounded-full border border-border px-4 py-2 text-sm font-bold">Propose another</button></div>`;
+}
+function refresh() { if (!state.sheet) render(); }
+function finalize(pd) {
+  const who = ['PR', ...pd.ids.map(i => members.find(m => m.id === i).short)];
+  if (pd.custom) {
+    const d0 = Math.floor(pd.s / 1440), d1 = Math.floor((pd.e - 1) / 1440), n = d1 - d0 + 1;
+    for (let d = d0; d <= d1; d++) {
+      const a = Math.max(pd.s, d * 1440);
+      const range = n === 1 ? `${fmtT(pd.s % 1440)} – ${fmtT(pd.e % 1440)}` : d === d0 ? `${fmtT(pd.s % 1440)} → ${dl(Math.floor(pd.e / 1440))} ${fmtT(pd.e % 1440)}` : d === d1 ? `Until ${fmtT(pd.e % 1440)}` : 'All day';
+      placeEvent(pd.cal || defaultCal(), d, {t:fmtT(a % 1440), range, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:d - d0 + 1, of:n, s:pd.s, e:pd.e});
+    }
+  } else for (let k = 0; k < (pd.span || 1); k++) placeEvent(pd.cal || defaultCal(), pd.day + k, {t:pd.time, dur:pd.dur, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:k + 1, of:pd.span || 1});
+  if (pd.title === 'Team lunch') state.lunchDone = true;
+  state.done.unshift({title:pd.title, custom:pd.custom, s:pd.s, e:pd.e, span:pd.span, day:pd.day, time:pd.time, dur:pd.dur, names:[members[0], ...pd.ids.map(i => members.find(m => m.id === i))]});
+  state.pends = state.pends.filter(x => x !== pd);
+  pushStatus(pd, 'booked');
+  addNotif(pd.ids.length ? `${pd.title} is set for ${wt(pd, 1)}. Everyone confirmed.` : `${pd.title} is set for ${wt(pd, 1)}.`);
+  toast(pd.ids.length ? `Everyone confirmed. ${pd.title} scheduled` : `${pd.title} added to your calendar`); refresh();
+}
+function startAuto(title = '') {
+  const sat = days.findIndex(d => d.getDay() === 6), sd = sat >= 0 && sat + 1 < days.length ? sat : 0;
+  state.req = {title, dur:'1 hr', span:1, win:'Midday', mode:'dur', cal:defaultCal(), from:0, ahead:14, sd, ed:sd + 1, st:'9:30 PM', et:'9:00 AM', ids: inviteesFor(defaultCal())};
+  state.sheet = 'auto'; state.step = -1; state.prop = 0; render();
+  if (!title) document.getElementById('reqTitle')?.focus();
+}
+function runShortcut(sc) {
+  const sat = days.findIndex(d => d.getDay() === 6), sd = sat >= 0 && sat + 1 < days.length ? sat : 0;
+  const r = {title:sc.title, from:0, ahead:sc.ahead || 14, cal:CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal(), dur:sc.dur || '1 hr', span:sc.span || 1, win:sc.win || 'Midday', mode:sc.mode || 'dur', sd, ed:Math.min(days.length - 1, sd + (sc.daysSpan || 1)), st:sc.st || '9:30 PM', et:sc.et || '9:00 AM', ids:inviteesFor(CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal())};
+  if (r.mode === 'range') { r.s = r.sd * 1440 + parseT(r.st); r.e = r.ed * 1440 + parseT(r.et); if (r.e <= r.s) return toast('That shortcut has an invalid time range'); }
+  state.req = r; state.sheet = 'auto'; runSearch();
+}
+function runSearch() {
+  state.step = 0; state.prop = 0; render();
+  setTimeout(() => { if (state.sheet === 'auto' && state.step === 0) { state.step = 1; render(); } }, 1400);
+}
+document.addEventListener('change', e => {
+  if (e.target.id === 'reqFrom' && state.req) { state.req.from = valOff(e.target.value) ?? 0; render(); return; }
+  const k = e.target.dataset && e.target.dataset.rf; if (k && state.req) state.req[k] = (k === 'sd' || k === 'ed') ? (valOff(e.target.value) ?? state.req[k]) : e.target.value; });
+document.addEventListener('input', e => {
+  if (e.target.id === 'jCode' && state.real.jn) { state.real.jn.code = e.target.value; return; }
+  if (e.target.id === 'rpQ' && state.real.rp) { state.real.rp.q = e.target.value; searchPeople(e.target.value); return; }
+  if (e.target.id === 'gAddId' && state.ga) { state.ga.id = e.target.value; return; }
+  if (e.target.id === 'cName' && state.nc) { state.nc.name = e.target.value; return; } if (e.target.id === 'reqTitle' && state.req) state.req.title = e.target.value; });
+function addToCal(d, t, dur, title, fid) {
+  placeEvent(defaultCal(), d, {t, dur, title, who:['PR', byShort(members.find(m => m.id === fid).short).short], c:'accent', cal:defaultCal()});
+}
+function candidates(pd) {
+  const out = [];
+  near(pd.day).forEach(d => (pd.custom ? [pd.time] : SLOTS.Anytime).forEach(t => {
+    const taken = !fitsPd(pd, d, t) || (d === pd.day && t === pd.time) || state.rejected.includes(`${pd.title}|${d}|${t}`);
+    if (!taken) out.push([d, t]);
+  }));
+  return out;
+}
+const inviteesFor = calId => { const c = calOf(calId); return c && c.live ? (c.members || []).filter(id => members.some(m => m.id === id && m.on && m.real)) : []; };
+
+document.addEventListener('click', e => {
+  const q = s => e.target.closest(s);
+  let el;
+  if ((el = q('[data-tab]'))) {
+    state.tab = el.dataset.tab;
+    return render();
+  }
+  if ((el = q('[data-wk]'))) { state.day = Math.max(0, Math.min(days.length - 1, state.day + 7 * +el.dataset.wk)); return render(); }
+  if ((el = q('[data-day]'))) { state.day = +el.dataset.day; return render(); }
+  if ((el = q('[data-del]'))) {
+    const ev = events[state.day][+el.dataset.del];
+    if (ev.dbev) {
+      const c = calOf(ev.cal), ids = [];
+      Object.keys(events).forEach(k => events[k].forEach(x => { if (x.dbev && x.cal === ev.cal && x.gid === ev.gid) ids.push(x.did); }));
+      Promise.all(ids.map(i => state.real.db.doc('cals/' + c.dbId + '/ev/' + i).delete())).catch(() => toast("Couldn't remove that event"));
+      return;
+    }
+    if (ev.gid) Object.keys(events).forEach(k => { events[k] = events[k].filter(x => x.gid !== ev.gid); }); else events[state.day].splice(+el.dataset.del, 1);
+    return render();
+  }
+  if (q('[data-glink]')) { state.gl = {step:0, err:''}; state.sheet = 'glink'; return render(); }
+  if (q('#gGo')) { linkGoogle(); return; }
+  if (q('#gClose')) { state.sheet = null; return render(); }
+  if (q('#nOn')) { enableNotifications(); return; }
+  if (q('#nLater')) { state.sheet = null; return render(); }
+  if (q('#nOpen')) { try { window.open(location.href, '_blank', 'noopener'); } catch (e) {} state.sheet = null; return render(); }
+  if (q('[data-nhelp]')) { state.sheet = 'notif'; return render(); }
+  if (q('#nTest')) { sysNotify('Sloth Sync', 'This is a test notification.', true).then(ok => toast(ok ? 'Test notification sent' : "Couldn't show a notification here")); return; }
+  if (q('[data-gadd]')) { state.ga = {id:'', err:'', busy:false}; state.sheet = 'gadd'; return render(); }
+  if ((el = q('[data-gpre]'))) { if (!state.ga.busy) addGoogleCal(el.dataset.gpre); return; }
+  if (q('#gAddGo')) { if (!state.ga.busy) addGoogleCal(state.ga.id); return; }
+  if ((el = q('[data-grm]'))) { const g = state.google, c = g.cals.find(x => x.key === el.dataset.grm); g.cals = g.cals.filter(x => x !== c); applyGoogle(); render(); return toast(`${unesc(c.name)} removed`); }
+  if (q('[data-websignin]')) { webSignIn(); return; }
+  if ((el = q('[data-theme-set]'))) { setTheme(el.dataset.themeSet); return; }
+  if (q('[data-grefresh]')) { refreshGoogleList(false); return; }
+  if (q('[data-gpanel]')) { state.gpanel = !state.gpanel; return render(); }
+  if ((el = q('[data-gm]'))) { const [k, id] = el.dataset.gm.split('|'); toggleGLink(k, id); return; }
+  if ((el = q('[data-clink]'))) { state.cl = el.dataset.clink; state.sheet = 'clink'; return render(); }
+  if (q('#clGo')) { state.sheet = null; linkGoogle(); return; }
+  if (q('#clView')) { showGoogleOnCalendar(); return; }
+  if ((el = q('[data-clt]'))) { toggleGLink(el.dataset.clt, state.cl); return; }
+  if (q('#gShow')) { showGoogleOnCalendar(); return; }
+  if (q('#gSync')) { if (!state.google.busy) syncGoogle(); return; }
+  if (q('#gOff')) { if (WEB_MODE) window.__slothGoogle.disconnect().catch(() => toast("Couldn't tell Google to revoke access. You can do it at myaccount.google.com/permissions")); state.google = null; applyGoogle(); addNotif('Google Calendar disconnected'); render(); return toast('Google Calendar disconnected'); }
+  if ((el = q('[data-toggle]'))) {
+    const k = el.dataset.toggle;
+    if (k.startsWith('gcal:')) {
+      const c = state.google.cals.find(x => x.key === k.slice(5)); c.on = !c.on; applyGoogle();
+      if (c.on && !c.loaded) {
+        render(); state.google.err = '';
+        gFetchEvents(c).then(() => { applyGoogle(); render(); }).catch(e => { c.on = false; state.google.err = gErr(e); applyGoogle(); render(); });
+        return;
+      }
+    }
+    else if (k.startsWith('mem')) { const m = members[+k.slice(3)]; m.on = !m.on; } else prefs[k] = !prefs[k];
+    return render();
+  }
+  if ((el = q('[data-ndismiss]'))) { notifs.find(n => n.id == el.dataset.ndismiss).open = false; return render(); }
+  if ((el = q('[data-nauto]'))) { notifs.find(n => n.id == el.dataset.nauto).open = false; return startAuto('Team lunch'); }
+  if (q('#auto')) return startAuto();
+  if (q('#add')) { state.sheet = 'add'; return render(); }
+  if (q('#saveNew')) {
+    const title = esc(document.getElementById('newTitle').value.trim()) || 'New event';
+    placeEvent(document.getElementById('newCal').value || defaultCal(), state.day, {t:document.getElementById('newTime').value, title, who:['PR'], c:'primary', cal:document.getElementById('newCal').value || defaultCal()});
+    state.sheet = null; render(); return toast('Event added');
+  }
+  if (q('#another')) { state.prop++; return render(); }
+  if ((el = q('[data-cf]'))) {
+    const k = el.dataset.cf; CALS.forEach(c => { state.vis[c.id] = k === 'none' ? false : k === 'all' || (k === 'personal' ? !c.shared : c.shared); });
+    return render();
+  }
+  if ((el = q('[data-cvis]'))) { state.vis[el.dataset.cvis] = !state.vis[el.dataset.cvis]; return render(); }
+  if ((el = q('[data-cv]'))) { state.cal.view = el.dataset.cv; state.cal.fresh = true; return render(); }
+  if ((el = q('[data-cnav]'))) {
+    const f = state.cal.focus, v = state.cal.view, dir = +el.dataset.cnav;
+    state.cal.focus = v === 'day' ? addDays(f, dir) : v === 'week' ? addDays(f, 7 * dir) : v === 'month' ? new Date(f.getFullYear(), f.getMonth() + dir, 1) : new Date(f.getFullYear() + dir, f.getMonth(), 1);
+    return render();
+  }
+  if (q('#cToday')) { state.cal.focus = new Date(base); state.cal.fresh = true; return render(); }
+  if ((el = q('[data-cdate]'))) { const [y, m, d] = el.dataset.cdate.split(',').map(Number); state.cal.focus = new Date(y, m, d); state.cal.view = 'day'; state.cal.fresh = true; return render(); }
+  if ((el = q('[data-cmonth]'))) { state.cal.focus = new Date(state.cal.focus.getFullYear(), +el.dataset.cmonth, 1); state.cal.view = 'month'; state.cal.fresh = true; return render(); }
+  if ((el = q('[data-blk]'))) { state.evd = state._blk[+el.dataset.blk]; state.sheet = 'evd'; return render(); }
+  if (q('[data-addp]')) { if (state.real.on) { openPicker(null); return; } state.sheet = 'addp'; return render(); }
+  if (q('[data-invopen]')) {
+    const r = state.real, id = state.sheet === 'rp' ? r.rp.forCal : r.cm; if (!id || !r.on) return;
+    r.inv = {cal:id, days:7, uses:5, busy:false, err:'', last:null}; state.sheet = 'invite'; return render();
+  }
+  if ((el = q('[data-invopt]'))) { const [k, v] = el.dataset.invopt.split(':'); state.real.inv[k] = +v; return render(); }
+  if (q('[data-invmk]')) {
+    const r = state.real, iv = r.inv; if (iv.busy) return; iv.busy = true; iv.err = ''; render();
+    createInvite(calOf(iv.cal), {days:iv.days, uses:iv.uses}).then(code => { iv.last = code; toast('Invite link created'); })
+      .catch(e => { iv.err = e && e.code === 'not_owner' ? "Only the calendar's owner can create invite links." : e && e.code === 'invalid_argument' && !WEB_MODE ? 'You need Contributor access to this page to create invites.' : "Couldn't create the invite. Try again."; })
+      .finally(() => { iv.busy = false; render(); });
+    return;
+  }
+  if ((el = q('[data-invcopy]'))) { const v = state.real.invites[el.dataset.invcopy]; copyText(inviteText(unesc(calOf(state.real.inv.cal).name), v.code)).then(ok => toast(ok ? 'Invite copied' : 'Select the link above and copy it')); return; }
+  if ((el = q('[data-invshare]'))) { const v = state.real.invites[el.dataset.invshare], nm = unesc(calOf(state.real.inv.cal).name); shareText('Sloth Sync invite', inviteText(nm, v.code), inviteLink(v.code)).then(res => { if (res === 'copied') toast('Invite copied'); else if (res === 'failed') toast('Select the link above and copy it'); }); return; }
+  if ((el = q('[data-invrev]'))) { state.real.db.doc('invites/' + el.dataset.invrev).update({revoked:true}).then(() => toast('Invite cancelled')).catch(() => toast("Couldn't cancel that invite")); return; }
+  if (q('[data-joinopen]')) { if (!state.real.on) { if (WEB_MODE) { webSignIn(); return; } return toast(hostKind() === 'static' ? STATIC_HELP : 'Open this page from its shared link while signed in to Claude to join a calendar'); } startJoin(''); return; }
+  if (q('#jLook')) { const jn = state.real.jn, code = normCode(jn.code); jn.code = code; if (code.length !== 8) { jn.err = 'Codes have 8 letters and numbers, like ABCD-EFGH.'; return render(); } previewInvite(code); return; }
+  if (q('#jGo')) { const jn = state.real.jn; if (jn.info && jn.info.already) { state.real.jn = null; state.sheet = null; state.tab = 'calendar'; return render(); } joinInvite(); return; }
+  if (q('#jBack')) { state.real.jn = null; state.sheet = null; return render(); }
+  if ((el = q('[data-cmem]'))) { state.real.cm = el.dataset.cmem; state.sheet = 'cmem'; return render(); }
+  if (q('[data-rpopen]')) { openPicker(state.sheet === 'cmem' ? state.real.cm : null); return; }
+  if ((el = q('[data-cmt]'))) {
+    const c = calOf(state.real.cm), m = members.find(x => x.id === el.dataset.cmt), cur = new Set(c.members || []);
+    const was = cur.has(m.id); if (was) cur.delete(m.id); else cur.add(m.id); c.members = [...cur];
+    if (m.real && state.real.on) {
+      (async () => { try { if (!c.live) await makeLive(c); else await setCalMembers(c); } catch (e) { if (was) cur.add(m.id); else cur.delete(m.id); c.members = [...cur]; toast(e && e.code === 'not_owner' ? "Only the calendar's owner can change who's in it" : "Couldn't update the shared calendar"); render(); } })();
+    }
+    return render();
+  }
+  if ((el = q('[data-rpadd]'))) {
+    const rp = state.real.rp, p = rp.res.find(x => x.id === el.dataset.rpadd); if (!p) return;
+    const m = ensureMember(p.id, p); saveContacts().catch(() => {});
+    addNotif(`${unesc(m.name)} was added to your group`);
+    const fc = rp.forCal && calOf(rp.forCal);
+    if (fc && fc.shared) { addRealToCalendar(fc, m); } else { toast(`${unesc(m.name).split(' ')[0]} added to the group`); render(); }
+    const rows = document.getElementById('rpRes'); if (rows) rows.innerHTML = rpRows();
+    return;
+  }
+  if ((el = q('[data-racc]'))) {
+    const r = state.real, id = el.dataset.racc, v = r.reqs[id]; if (!v) return;
+    r.db.doc('reqs/' + id).update({res:{[r.me]:v.ver}}).catch(() => toast('You need Contributor access to reply'));
+    return;
+  }
+  if ((el = q('[data-rcnt]'))) { state.real.ui[el.dataset.rcnt] = 'counter'; return render(); }
+  if ((el = q('[data-rno]'))) { delete state.real.ui[el.dataset.rno]; return render(); }
+  if ((el = q('[data-rsend]'))) {
+    const r = state.real, id = el.dataset.rsend, v = r.reqs[id]; if (!v) return;
+    const day = valOff(document.getElementById('rcDay').value); if (day === null) return toast('Pick a date first');
+    const startMs = msOf(day, parseT(document.getElementById('rcTime').value));
+    if (startMs === v.startMs) return toast('That is already the proposed time');
+    const data = {startMs, counterBy:r.me, counterName:'', ver:v.ver + 1, rounds:(v.rounds || 0) + 1, meAsk:true, origStartMs:v.origStartMs != null ? v.origStartMs : v.startMs, origEndMs:v.origStartMs != null ? (v.origEndMs != null ? v.origEndMs : null) : (v.custom ? v.endMs : null), res:{[r.me]:v.ver + 1}};
+    if (v.custom) data.endMs = startMs + (v.endMs - v.startMs);
+    r.db.doc('reqs/' + id).update(data).then(() => { delete r.ui[id]; toast('Suggestion sent'); render(); }).catch(() => toast('You need Contributor access to reply'));
+    return;
+  }
+  if ((el = q('[data-sc]'))) { return runShortcut(state.shortcuts.find(x => x.id === el.dataset.sc)); }
+  if (q('[data-newev]')) return startAuto();
+  if (q('[data-screset]')) { state.shortcuts = [...DEFAULT_SC.map(d => state.shortcuts.find(x => x.id === d.id) || {...d}), ...state.shortcuts.filter(x => x.custom)]; render(); return toast('Defaults restored'); }
+  if ((el = q('[data-scdel]'))) { state.shortcuts = state.shortcuts.filter(x => x.id !== el.dataset.scdel); render(); return toast('Shortcut removed'); }
+  if (q('#saveShortcut')) {
+    const r = state.req, title = esc(r.title.trim());
+    if (!title) return toast('Give the event a name first');
+    state.shortcuts.push({id:'c' + Date.now(), icon:'⭐', title, dur:r.dur, span:r.span, win:r.win, mode:r.mode, st:r.st, et:r.et, daysSpan:Math.max(1, r.ed - r.sd), cal:r.cal, ahead:r.ahead || 14, custom:true});
+    return toast('Saved to Shortcuts');
+  }
+  if ((el = q('[data-from]'))) { state.req.from = +el.dataset.from; return render(); }
+  if ((el = q('[data-ahead]'))) { state.req.ahead = +el.dataset.ahead; return render(); }
+  if ((el = q('[data-rcal]'))) {
+    const c = calOf(el.dataset.rcal); state.req.cal = c.id;
+    state.req.ids = inviteesFor(c.id);
+    return render();
+  }
+  if (q('[data-newcal]')) { state.nc = {gs:[], name:'', color:CAL_COLORS[CALS.length % CAL_COLORS.length], ids:[]}; state.sheet = 'newcal'; return render(); }
+  if ((el = q('[data-ngoog]'))) { const a = state.nc.gs, i = a.indexOf(el.dataset.ngoog); if (i > -1) a.splice(i, 1); else a.push(el.dataset.ngoog); return render(); }
+  if ((el = q('[data-gtgt]'))) {
+    const [key, id] = el.dataset.gtgt.split('|'), c = state.google.cals.find(x => x.key === key);
+    const t = (c.targets || ['own']).filter(x => x === 'own' || CALS.some(y => y.id === x && !y.google)), i = t.indexOf(id);
+    if (i > -1) t.splice(i, 1); else { t.push(id); if (id !== 'own') state.vis[id] = true; }
+    c.targets = t.length ? t : ['own']; applyGoogle(); render();
+    return toast(`${unesc(c.name)} shows in ${gTargets(c).map(x => x === 'own' ? 'its own calendar' : unesc(calOf(x).name)).join(', ')}`);
+  }
+  if ((el = q('[data-ncolor]'))) { state.nc.color = el.dataset.ncolor; return render(); }
+  if ((el = q('[data-nmem]'))) { const ids = state.nc.ids, i = ids.indexOf(el.dataset.nmem); if (i > -1) ids.splice(i, 1); else ids.push(el.dataset.nmem); return render(); }
+  if (q('#saveCal')) {
+    const name = esc(state.nc.name.trim().replace(/\s+/g, ' '));
+    if (!name) return toast('Give the calendar a name first');
+    if (CALS.some(c => c.name.toLowerCase() === name.toLowerCase())) return toast('You already have a calendar with that name');
+    const c = {id:'k' + Date.now(), name, shared:true, custom:true, bg:state.nc.color, fg:'#FFFFFF', members:[...state.nc.ids]};
+    CALS.push(c); SHARED = CALS.filter(x => x.shared); state.vis[c.id] = true;
+    if (state.real.on && c.members.some(isReal)) makeLive(c).catch(() => toast("Couldn't make that calendar live"));
+    const linked = state.google ? state.google.cals.filter(x => state.nc.gs.includes(x.key)) : [];
+    linked.forEach(gc => { gc.targets = [...gTargets(gc).filter(x => x !== 'own'), c.id]; });
+    if (linked.length) applyGoogle();
+    state.sheet = null; render(); return toast(linked.length ? `${name} created and linked to ${linked.length} Google calendar${linked.length === 1 ? '' : 's'}` : `${name} created`);
+  }
+  if ((el = q('[data-calx]'))) { state.cx = el.dataset.calx; state.sheet = 'calx'; return render(); }
+  if (q('#calxNo')) { state.sheet = null; return render(); }
+  if (q('#calxYes')) {
+    const id = state.cx, c = calOf(id), r = state.real, name = unesc(c.name), left = c.live && c.owner !== r.me;
+    if (CALS.filter(x => !x.google).length <= 1) { state.sheet = null; return render(); }
+    if (c.live && r.on) {
+      if (!left) {
+        const evIds = []; Object.keys(events).forEach(k => events[k].forEach(x => { if (x.dbev && x.cal === id) evIds.push(x.did); }));
+        Object.values(r.invites).filter(v => v.cal === c.dbId && !v.revoked).forEach(v => r.db.doc('invites/' + v.code).update({revoked:true}).catch(() => {}));
+        Promise.all([...evIds.map(i => r.db.doc('cals/' + c.dbId + '/ev/' + i).delete()), r.db.doc('cals/' + c.dbId).delete()]).catch(() => toast("Couldn't delete it for everyone"));
+      } else {
+        r.db.doc('cals/' + c.dbId).get().then(sn => sn.exists && r.db.doc('cals/' + c.dbId).update({members:(sn.data().members || []).filter(u => u !== r.me)})).catch(() => toast("Couldn't leave that calendar"));
+      }
+      const un = r.subs['ev:' + c.dbId]; if (un) { un(); delete r.subs['ev:' + c.dbId]; }
+    }
+    state.pends.filter(p => p.cal === id).forEach(p => pushStatus(p, 'cancelled'));
+    state.pends = state.pends.filter(p => p.cal !== id);
+    CALS.splice(CALS.findIndex(x => x.id === id), 1); SHARED = CALS.filter(x => x.shared); delete state.vis[id];
+    if (state.google) state.google.cals.forEach(x => { if (x.targets) { x.targets = x.targets.filter(t => t !== id); if (!x.targets.length) x.targets = ['own']; } });
+    Object.keys(events).forEach(k => { events[k] = events[k].filter(e => e.cal !== id); });
+    if (state.google) applyGoogle();
+    const d = defaultCal();
+    state.shortcuts.forEach(x => { if (x.cal === id) x.cal = d; });
+    if (state.req && state.req.cal === id) { state.req.cal = d; state.req.ids = inviteesFor(d); }
+    state.sheet = null; render(); return toast(left ? `Left ${name}` : `${name} deleted`);
+  }
+  if ((el = q('[data-mode]'))) { state.req.mode = el.dataset.mode; return render(); }
+  if ((el = q('[data-span]'))) { state.req.span = +el.dataset.span; return render(); }
+  if ((el = q('[data-dur]'))) { state.req.dur = el.dataset.dur; return render(); }
+  if ((el = q('[data-win]'))) { state.req.win = el.dataset.win; return render(); }
+  if ((el = q('[data-who]'))) {
+    const ids = state.req.ids, id = el.dataset.who, i = ids.indexOf(id);
+    if (i > -1) ids.splice(i, 1); else ids.push(id);
+    return render();
+  }
+  if (q('#findTime')) { const r = state.req; r.title = esc(r.title.trim()) || 'New event';
+    if (r.mode === 'range') { r.s = r.sd * 1440 + parseT(r.st); r.e = r.ed * 1440 + parseT(r.et); if (r.e <= r.s) return toast('The end must be after the start'); }
+    return runSearch();
+  }
+  if (q('#back')) { state.step = -1; return render(); }
+  if (q('#confirm')) {
+    const props = proposals(), p = props[state.prop % props.length], r = state.req;
+    const rg = r.mode === 'range', k = p[2] || 0;
+    const pd = {id:Date.now(), title:r.title, dur:rg ? lengthTxt(r.e - r.s) : r.dur, span:rg ? 1 : r.span, custom:rg, s:rg ? r.s + k * 1440 : undefined, e:rg ? r.e + k * 1440 : undefined, day:p[0], time:p[1], ids:[...r.ids], res:{}, alt:{}, me:'yes', cal:r.cal};
+    state.pends.push(pd); createReq(pd); state.sheet = null; state.tab = 'home'; state.day = p[0];
+    if (pd.ids.length) addNotif(`You asked ${pd.ids.length} ${pd.ids.length===1?'person':'people'} to confirm ${pd.title}, ${wt(pd, 1)}`);
+    render(); if (pd.ids.length) toast('Requests sent');
+    if (!pd.ids.length) return finalize(pd);
+    return;
+  }
+  if ((el = q('[data-cancel]'))) {
+    const pd = state.pends.find(x => x.id == el.dataset.cancel);
+    state.pends = state.pends.filter(x => x !== pd);
+    pushStatus(pd, 'cancelled'); addNotif(`You cancelled the ${pd.title} request`); render(); return toast('Request cancelled');
+  }
+  if ((el = q('[data-propose]'))) { state.cpid = el.dataset.propose; state.cIdx = 0; state.sheet = 'counter'; return render(); }
+  if (q('#autoCounter')) {
+    const pd = state.pends.find(x => x.id == state.cpid), c = candidates(pd);
+    if (!c.length) return toast('No free slots nearby');
+    const [d, t] = c[(state.cIdx || 0) % c.length]; state.cIdx = (state.cIdx || 0) + 1;
+    document.getElementById('cDay2').value = offVal(d); document.getElementById('cTime2').value = t;
+    document.getElementById('autoNote').textContent = `Suggested ${dr(d, pd.span)} at ${t}. No conflicts found. Tap again for another.`;
+    return;
+  }
+  if (q('#sendCounter')) {
+    const pd = state.pends.find(x => x.id == state.cpid);
+    const d = valOff(document.getElementById('cDay2').value), t = document.getElementById('cTime2').value;
+    if (d === null) return toast('Pick a date first');
+    if (d === pd.day && t === pd.time) return toast('That is already the proposed time');
+    if (!fitsPd(pd, d, t)) return toast('That clashes with something, or runs past the last bookable day');
+    const was = `${wt(pd, 1)}`;
+    if (!pd.orig) pd.orig = snap(pd);
+    pd.rounds = (pd.rounds || 0) + 1; setStart(pd, d, t); pd.counterBy = 'p'; pd.me = 'yes'; resolveAsk(pd); pd.res = {};
+    pushReq(pd, true);
+    addNotif(`You proposed ${wt(pd, 1)}. Everyone now sees this time instead of ${was}`);
+    state.sheet = null; state.day = d; render(); toast('New time sent to everyone');
+    return;
+  }
+  if ((el = q('[data-accept]'))) {
+    const pd = state.pends.find(x => x.id == el.dataset.accept);
+    pd.me = 'yes'; resolveAsk(pd); addNotif(`You accepted ${pd.title}, ${wt(pd, 1)}`);
+    pushReq(pd, false);
+    if (!tryFinalize(pd)) { render(); toast('Accepted. Waiting on the others'); }
+    return;
+  }
+  if ((el = q('[data-revert]'))) {
+    const pd = state.pends.find(x => x.id == el.dataset.revert);
+    Object.assign(pd, pd.orig); pd.orig = null; pd.counterBy = null; pd.me = 'yes'; resolveAsk(pd); state.day = pd.day; pd.res = {}; pushReq(pd, true);
+    addNotif(`You kept the original time for ${pd.title}, ${wt(pd, 1)}. Everyone was asked to reconfirm`);
+    render(); toast('Original time restored'); return;
+  }
+  if ((el = q('[data-iauto]'))) {
+    const iv = state.invites.find(x => x.id === el.dataset.iauto);
+    const c = [];
+    near(iv.day).forEach(d => SLOTS.Anytime.forEach(t => {
+      const taken = !slotFree(d, t, 1, null, iv.dur) || (d === iv.day && t === iv.time);
+      if (!taken) c.push([d, t]);
+    }));
+    if (!c.length) return toast('No free slots nearby');
+    iv.cIdx = iv.mode === 'counter' && iv.auto ? (iv.cIdx || 0) + 1 : 0;
+    iv.pick = c[iv.cIdx % c.length]; iv.auto = true; iv.mode = 'counter';
+    return render();
+  }
+  if ((el = q('[data-iacc]'))) {
+    const iv = state.invites.find(x => x.id === el.dataset.iacc); iv.status = 'accepted';
+    addToCal(iv.day, iv.time, iv.dur, iv.title, iv.fid); setTimeout(() => { iv.res.j = 'yes'; refresh(); }, 4000); render(); return toast('Accepted. Added to your calendar');
+  }
+  if ((el = q('[data-idec]'))) { state.invites.find(x => x.id === el.dataset.idec).mode = 'counter'; return render(); }
+  if ((el = q('[data-inosugg]'))) { state.invites.find(x => x.id === el.dataset.inosugg).status = 'declined'; render(); return toast('Declined'); }
+  if ((el = q('[data-isend]'))) {
+    const iv = state.invites.find(x => x.id === el.dataset.isend);
+    iv.alt = [valOff(document.getElementById('cDay').value) ?? iv.day, document.getElementById('cTime').value]; iv.status = 'countered';
+    addNotif(`Your counter-offer replaced ${dl(iv.day)} ${iv.time} for everyone invited to ${iv.title}`);
+    render(); toast('Suggestion sent');
+    setTimeout(() => {
+      if (iv.status !== 'countered') return;
+      iv.status = 'moved'; addToCal(iv.alt[0], iv.alt[1], iv.dur, iv.title, iv.fid);
+      setTimeout(() => { iv.res.j = 'yes'; refresh(); }, 4000);
+      addNotif(`${iv.from.split(' ')[0]} agreed to ${dl(iv.alt[0])} at ${iv.alt[1]} for ${iv.title}`);
+      toast(`${iv.from.split(' ')[0]} agreed to your time`); refresh();
+    }, 3000);
+    return;
+  }
+  if (e.target.id === 'scrim') { state.sheet = null; render(); }
+});
+initTheme();
+render();
+maybeFirstRun();
+initReal();
+</script>
+</body>
+</html>

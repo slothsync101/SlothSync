@@ -1,0 +1,10 @@
+{
+  "name": "sloth-sync",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sloth Sync: shared calendars and auto-scheduling, hosted on Netlify",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
