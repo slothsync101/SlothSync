@@ -240,8 +240,8 @@ function homeView() {
         <p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">${e.range || (e.t + (e.dur ? ' · ' + e.dur : ''))}${e.of > 1 ? ' · Day ' + e.part + ' of ' + e.of : ''}</p>
         <h3 class="text-lg font-extrabold mt-1 truncate">${e.title}</h3>
         <div class="flex items-center gap-2 mt-2"><div class="flex -space-x-2">${e.who.map(s=>avatar(byShort(s))).join('')}</div>
-        <span class="text-xs text-muted-foreground">${e.google ? 'From Google' : e.cal === 'personal' ? 'Only you' : e.who.length + ' going'} · ${names}</span></div></div>
-      ${e.google ? '' : `<button data-del="${idx}" aria-label="Remove event" class="text-muted-foreground p-2">${ic('trash',18)}</button>`}
+        <span class="text-xs text-muted-foreground">${e.google ? 'From Google' : e.gshared ? 'From ' + nameOf(e.gowner) + "'s Google Calendar" : e.cal === 'personal' ? 'Only you' : e.who.length + ' going'} · ${names}</span></div></div>
+      ${e.google || e.gshared ? '' : `<button data-del="${idx}" aria-label="Remove event" class="text-muted-foreground p-2">${ic('trash',18)}</button>`}
     </article>`).join('') || `<div class="bg-card border border-dashed border-border rounded-3xl p-6 text-center text-muted-foreground fade"><div class="text-3xl">🦥</div><p class="font-bold mt-2">Nothing planned</p><p class="text-sm">A perfectly slow day.</p></div>`;
   const pend = Object.values(state.real.reqs).filter(v => v.status === 'open' && !(v.res && v.res[state.real.me] === v.ver)).length + notifs.filter(n=>n.type==='req'&&n.open).length + state.invites.filter(i=>i.status==='open').length + state.pends.filter(p=>p.me==='ask').length;
   return `${header()}
@@ -479,7 +479,7 @@ function applyCalDoc(id, d) {
   if (joined.length) loadProfiles(joined).then(() => joined.forEach(u => { addNotif(`${nameOf(u)} joined ${c.baseName}`); }));
   labelCals();
   Object.keys(events).forEach(k => { events[k] = events[k].filter(e => e.cal !== local || e.dbev || e.google); });
-  if (!r.subs['ev:' + id]) r.subs['ev:' + id] = r.db.collection('cals/' + id + '/ev').onSnapshot(snap => { replaceEvents(c.id, snap.docs.map(x => [x.id, x.data()])); refresh(); }, () => {});
+  if (!r.subs['ev:' + id]) r.subs['ev:' + id] = r.db.collection('cals/' + id + '/ev').onSnapshot(snap => { r.gmine = r.gmine || {}; const gm = {}; snap.docs.forEach(x => { const q = x.data(); if (q && q.gowner === r.me) gm[x.id] = {gh:q.gh, gcal:q.gcal}; }); r.gmine[id] = gm; replaceEvents(c.id, snap.docs.map(x => [x.id, x.data()])); refresh(); gMirrorSoon(); }, () => {});
 }
 function dropLiveCal(id) {
   const r = state.real, c = CALS.find(x => x.dbId === id); if (!c) return;
@@ -499,10 +499,12 @@ function fromPiece(did, p, calId) {
   const day = dayOffRaw(new Date(y, m - 1, d)); if (day < 0 || day >= days.length) return null;
   const me = state.real.me;
   const who = [...(p.whoU || []).map(u => u === me ? 'PR' : (memByUid(u) || {}).short), ...(p.whoN || []).map(n => (members.find(x => !x.real && x.id !== 'p' && x.name === esc(String(n))) || {}).short)].filter(Boolean);
+  if (p.gowner && p.gowner === me) return null; // my own Google events already show from my local copy
   const ev = {day, t:String(p.t || '12:00 AM'), title:esc(String(p.title || '')), c:p.c === 'primary' ? 'primary' : 'accent', cal:calId, who:[...new Set(who)], gid:String(p.gid), part:+p.part || 1, of:+p.of || 1, dbev:true, did};
   if (p.dur) ev.dur = String(p.dur);
   if (p.range) ev.range = esc(String(p.range));
   if (p.allDay) ev.allDay = true;
+  if (p.gowner) { ev.gshared = true; ev.gowner = p.gowner; if (p.free) ev.free = true; }
   if (p.startMs) { ev.s = minFromMs(p.startMs); ev.e = minFromMs(p.endMs || p.startMs + 36e5); }
   return ev;
 }
@@ -895,7 +897,40 @@ function applyGoogle() {
     if (ts.includes('own')) { CALS.push({id:c.key, name:c.name, shared:false, google:true, bg:c.color, fg:'#FFFFFF'}); state.vis[c.key] = true; }
     ts.forEach(t => c.evs.forEach(ev => (events[ev.day] = events[ev.day] || []).push({...ev, cal:t === 'own' ? c.key : t})));
   });
-  gSaveSettings();
+  gSaveSettings(); gMirrorSoon();
+}
+function gHash(t) { let h = 5381; t = String(t); for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+let gMirT = null, gMirBusy = false, gMirAgain = false;
+function gMirrorSoon() { clearTimeout(gMirT); gMirT = setTimeout(() => gMirror(false), 1500); }
+// Copies my Google events into every live shared calendar they're linked to, so everyone in it sees them.
+async function gMirror(purge) {
+  const r = state.real, g = state.google; if (!r.on || !r.db || !r.gmine || (!purge && !g)) return;
+  if (gMirBusy) { gMirAgain = true; return; }
+  gMirBusy = true;
+  try {
+    for (const L of CALS.filter(x => x.live && x.dbId && !x.google)) {
+      const mine = r.gmine[L.dbId]; if (!mine) continue;
+      const srcs = (!purge && g) ? g.cals.filter(c => c.on && gTargets(c).includes(L.id)) : [];
+      const active = new Set(srcs.map(c => gHash(c.id))), loaded = new Set(srcs.filter(c => c.loaded).map(c => gHash(c.id)));
+      const want = new Map(), ops = [], base_ = 'cals/' + L.dbId + '/ev/';
+      srcs.filter(c => c.loaded).forEach(c => c.evs.forEach(ev => {
+        if (want.size >= 500 || ev.s === undefined) return;
+        const key = gHash(c.id + '|' + ev.gid), did = 'gg' + r.me.slice(0, 8) + '_' + key + '_' + ev.part;
+        const piece = {date:ymd(days[ev.day]), t:ev.t, title:unesc(ev.title), c:'primary', gid:'gg' + key, part:ev.part || 1, of:ev.of || 1, whoU:[r.me], whoN:[], createdBy:r.me, gowner:r.me, gcal:gHash(c.id), free:!!ev.free, startMs:msFromMin(ev.s), endMs:msFromMin(ev.e)};
+        if (ev.range) piece.range = unesc(ev.range);
+        if (ev.allDay) piece.allDay = true;
+        piece.gh = gHash(JSON.stringify(piece));
+        want.set(did, piece);
+      }));
+      want.forEach((piece, did) => { if (!mine[did] || mine[did].gh !== piece.gh) ops.push({op:'set', path:base_ + did, data:piece}); });
+      Object.keys(mine).forEach(did => { if (!want.has(did) && (purge || !active.has(mine[did].gcal) || loaded.has(mine[did].gcal))) ops.push({op:'delete', path:base_ + did}); });
+      if (!ops.length) continue;
+      try {
+        if (r.db.writeMany) await r.db.writeMany(ops);
+        else for (let i = 0; i < ops.length; i += 6) await Promise.all(ops.slice(i, i + 6).map(o => o.op === 'set' ? r.db.doc(o.path).set(o.data) : r.db.doc(o.path).delete()));
+      } catch (e) { /* not allowed or offline: try again on the next sync */ }
+    }
+  } finally { gMirBusy = false; if (gMirAgain) { gMirAgain = false; gMirrorSoon(); } }
 }
 const gCount = () => Object.values(events).flat().filter(e => e.google).length;
 function toggleGLink(key, id) {
@@ -1445,7 +1480,7 @@ document.addEventListener('click', e => {
   if ((el = q('[data-clt]'))) { toggleGLink(el.dataset.clt, state.cl); return; }
   if (q('#gShow')) { showGoogleOnCalendar(); return; }
   if (q('#gSync')) { if (!state.google.busy) syncGoogle(); return; }
-  if (q('#gOff')) { if (WEB_MODE) window.__slothGoogle.disconnect().catch(() => toast("Couldn't tell Google to revoke access. You can do it at myaccount.google.com/permissions")); state.google = null; applyGoogle(); addNotif('Google Calendar disconnected'); render(); return toast('Google Calendar disconnected'); }
+  if (q('#gOff')) { gMirror(true); if (WEB_MODE) window.__slothGoogle.disconnect().catch(() => toast("Couldn't tell Google to revoke access. You can do it at myaccount.google.com/permissions")); state.google = null; applyGoogle(); addNotif('Google Calendar disconnected'); render(); return toast('Google Calendar disconnected'); }
   if ((el = q('[data-toggle]'))) {
     const k = el.dataset.toggle;
     if (k.startsWith('gcal:')) {
