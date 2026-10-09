@@ -159,6 +159,7 @@
 
   function Query(path, where) { this.path = path; this.w = where; }
   Query.prototype.where = function (f, op, v) { return new Query(this.path, this.w.concat([[f, op, v]])); };
+  Query.prototype.doc = function (id) { return new DocRef(this.path + '/' + id); };
   Query.prototype.onSnapshot = function (cb, err) { return addSub({ kind: 'col', path: this.path, where: this.w }, cb, err); };
 
   function DocRef(path) { this.path = path; }
@@ -175,6 +176,10 @@
   var db = {
     collection: function (p) { return new Query(p, []); },
     doc: function (p) { return new DocRef(p); },
+    writeMany: async function (ops) {
+      for (var i = 0; i < ops.length; i += 100) await api('db/batch', { body: { ops: ops.slice(i, i + 100) } });
+      poke();
+    },
   };
 
   // ---------- Google Calendar (server proxy) ----------
