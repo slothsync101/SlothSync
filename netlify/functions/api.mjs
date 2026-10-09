@@ -299,6 +299,29 @@ export default async (req) => {
       return json(list);
     }
 
+    if (route === 'db/batch' && req.method === 'POST') {
+      const { ops } = await req.json().catch(() => ({}));
+      if (!Array.isArray(ops) || ops.length > 100) throw new HttpError(400, 'invalid_argument', 'ops must be a list of up to 100');
+      const results = [];
+      for (const o of ops) {
+        try {
+          const path = cleanPath(o && o.path);
+          const sg = segs(path);
+          if (!(sg[0] === 'cals' && sg[2] === 'ev' && sg.length === 4)) throw new HttpError(403, 'forbidden');
+          const existing = await getJSON(path);
+          if (o.op === 'delete') {
+            if (existing) { if (!(await canWrite('delete', path, uid, existing, null))) throw new HttpError(403, 'forbidden'); await delKey(path); }
+          } else if (o.op === 'set') {
+            checkData(o.data);
+            if (!(await canWrite('set', path, uid, existing, o.data))) throw new HttpError(403, 'forbidden');
+            await putJSON(path, o.data);
+          } else throw new HttpError(400, 'invalid_argument');
+          results.push({ ok: true });
+        } catch (e) { results.push({ error: e.code || 'error' }); }
+      }
+      return json({ results });
+    }
+
     if (route === 'db/poll' && req.method === 'POST') {
       const { subs } = await req.json();
       const results = {};
