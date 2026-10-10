@@ -102,7 +102,6 @@ let state = {tab:'home', day:0, sheet:null, step:-1, prop:0, lunchDone:false, pe
     {id:'s3', icon:'🔁', title:'Weekly sync', dur:'1 hr', span:1, win:'Afternoon', mode:'dur'},
     {id:'s4', icon:'🌙', title:'Overnight offsite', mode:'range', st:'9:30 PM', et:'9:00 AM', daysSpan:1}], cal:{view:'month', focus:new Date(today.getFullYear(), today.getMonth(), today.getDate()), fresh:true},
   invites:[]};
-const SLOTS = {Morning:['9:00 AM','10:30 AM'], Midday:['12:00 PM','12:30 PM','1:00 PM'], Afternoon:['2:00 PM','3:30 PM','4:30 PM'], Anytime:['9:00 AM','10:30 AM','12:00 PM','1:00 PM','2:00 PM','3:30 PM','4:30 PM']};
 const dl = d => { const x = days[d]; if (!x) return ''; if (d < 7) return fmtLong(x).split(',')[0]; return x.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', ...(x.getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})}); };
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const offVal = o => ymd(days[Math.max(0, Math.min(days.length - 1, o))]);
@@ -115,6 +114,15 @@ const fmtT = m => { let h = Math.floor(m / 60), mm = m % 60; const ap = h >= 12 
 const parseT = t => { const [a, ap] = t.split(' '); let [h, m] = a.split(':').map(Number); if (ap === 'PM' && h !== 12) h += 12; if (ap === 'AM' && h === 12) h = 0; return h * 60 + m; };
 const durMin = d => d === '30 min' ? 30 : d === '2 hrs' ? 120 : 60;
 const TIMES = Array.from({length:48}, (_, i) => fmtT(i * 30));
+// Suggested start times per window, in minutes after midnight. :30 times are optional (r.half).
+const SLOT_RANGES = {Morning:[0, 660], Midday:[720, 780], Afternoon:[840, 900], Evening:[960, 1380], Anytime:[480, 1380]};
+function slotList(win, half) {
+  const [a, b] = SLOT_RANGES[win] || SLOT_RANGES.Anytime, out = [];
+  for (let m = a; m <= b + (half && win !== 'Morning' ? 30 : 0); m += half ? 30 : 60) out.push(m);
+  if (win === 'Morning') out.sort((x, y) => (x >= 540 ? x : 1e5 - x) - (y >= 540 ? y : 1e5 - y)); // 9 AM first, then earlier hours
+  return out.map(fmtT);
+}
+const SLOTS = {}; ['Morning', 'Midday', 'Afternoon', 'Evening', 'Anytime'].forEach(w => { SLOTS[w] = slotList(w, false); });
 const lengthTxt = m => { const h = Math.floor(m / 60), mm = m % 60; return h ? `${h} hr${mm ? ' ' + mm + ' min' : ''}` : `${mm} min`; };
 const overlap = (a, b) => a[0] < b[1] && b[0] < a[1];
 const ivals = p => {
@@ -162,7 +170,7 @@ const proposals = () => {
     return out;
   }
   const lo = r.from || 0, hi = Math.min(days.length - 1, lo + (r.ahead || 14));
-  for (let d = lo; d <= hi; d++) SLOTS[r.win].forEach(t => {
+  for (let d = lo; d <= hi; d++) slotList(r.win, r.half).forEach(t => {
     const taken = !slotFree(d, t, r.span, null, r.dur) || state.rejected.includes(`${r.title}|${d}|${t}`);
     if (!taken) out.push([d, t]);
   });
@@ -1277,7 +1285,7 @@ function sheetView() {
       ${lab('When')}<div class="flex flex-wrap gap-2">${chip('data-mode', 'dur', r.mode !== 'range', 'Fixed length')}${chip('data-mode', 'range', r.mode === 'range', 'Custom start & end')}</div>
       ${r.mode === 'range' ? rangeUI(r) : `${lab(r.span > 1 ? 'How long each day' : 'How long')}<div class="flex flex-wrap gap-2">${['30 min','1 hr','2 hrs'].map(v => chip('data-dur', v, r.dur===v, v)).join('')}</div>
       ${lab('Days')}<div class="flex flex-wrap gap-2">${[1, 2, 3].map(v => chip('data-span', v, r.span === v, v === 1 ? '1 day' : v + ' days')).join('')}</div>
-      ${lab('Preferred time')}<div class="flex flex-wrap gap-2">${Object.keys(SLOTS).map(v => chip('data-win', v, r.win===v, v)).join('')}</div>`}
+      ${lab('Preferred time')}<div class="flex flex-wrap gap-2">${Object.keys(SLOTS).map(v => chip('data-win', v, r.win===v, v)).join('')}</div><div class="flex flex-wrap gap-2 mt-2">${chip('data-half', '1', !!r.half, (r.half ? '✓ ' : '') + 'Include :30 times')}</div>`}
       ${r.mode === 'range' ? '' : `${lab('Start looking from')}<input type="date" id="reqFrom" value="${offVal(r.from || 0)}" ${dateAttrs()} class="w-full rounded-2xl bg-muted px-4 py-3 text-sm font-semibold outline-none" />
       <div class="flex flex-wrap gap-2 mt-2">${[['Today', 0], ['Next week', 7], ['Next month', monthOff(1)], ['In 2 months', monthOff(2)], ['In 3 months', monthOff(3)]].map(([l2, o]) => chip('data-from', o, (r.from || 0) === o, l2)).join('')}</div>`}
       ${lab('Look ahead')}<div class="flex flex-wrap gap-2">${[[7, '1 week'], [14, '2 weeks'], [30, '1 month'], [90, '3 months'], [180, '6 months']].map(([v, l2]) => chip('data-ahead', v, (r.ahead || 14) === v, l2)).join('')}</div>
@@ -1411,7 +1419,7 @@ function startAuto(title = '') {
 }
 function runShortcut(sc) {
   const sat = days.findIndex(d => d.getDay() === 6), sd = sat >= 0 && sat + 1 < days.length ? sat : 0;
-  const r = {title:sc.title, from:0, ahead:sc.ahead || 14, cal:CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal(), dur:sc.dur || '1 hr', span:sc.span || 1, win:sc.win || 'Midday', mode:sc.mode || 'dur', sd, ed:Math.min(days.length - 1, sd + (sc.daysSpan || 1)), st:sc.st || '9:30 PM', et:sc.et || '9:00 AM', ids:inviteesFor(CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal())};
+  const r = {title:sc.title, from:0, ahead:sc.ahead || 14, half:!!sc.half, cal:CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal(), dur:sc.dur || '1 hr', span:sc.span || 1, win:sc.win || 'Midday', mode:sc.mode || 'dur', sd, ed:Math.min(days.length - 1, sd + (sc.daysSpan || 1)), st:sc.st || '9:30 PM', et:sc.et || '9:00 AM', ids:inviteesFor(CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal())};
   if (r.mode === 'range') { r.s = r.sd * 1440 + parseT(r.st); r.e = r.ed * 1440 + parseT(r.et); if (r.e <= r.s) return toast('That shortcut has an invalid time range'); }
   state.req = r; state.sheet = 'auto'; runSearch();
 }
@@ -1586,7 +1594,7 @@ document.addEventListener('click', e => {
   if (q('#saveShortcut')) {
     const r = state.req, title = esc(r.title.trim());
     if (!title) return toast('Give the event a name first');
-    state.shortcuts.push({id:'c' + Date.now(), icon:'⭐', title, dur:r.dur, span:r.span, win:r.win, mode:r.mode, st:r.st, et:r.et, daysSpan:Math.max(1, r.ed - r.sd), cal:r.cal, ahead:r.ahead || 14, custom:true});
+    state.shortcuts.push({id:'c' + Date.now(), icon:'⭐', title, dur:r.dur, span:r.span, win:r.win, mode:r.mode, st:r.st, et:r.et, daysSpan:Math.max(1, r.ed - r.sd), cal:r.cal, ahead:r.ahead || 14, half:!!r.half, custom:true});
     return toast('Saved to Shortcuts');
   }
   if ((el = q('[data-from]'))) { state.req.from = +el.dataset.from; return render(); }
@@ -1649,6 +1657,7 @@ document.addEventListener('click', e => {
   if ((el = q('[data-span]'))) { state.req.span = +el.dataset.span; return render(); }
   if ((el = q('[data-dur]'))) { state.req.dur = el.dataset.dur; return render(); }
   if ((el = q('[data-win]'))) { state.req.win = el.dataset.win; return render(); }
+  if (q('[data-half]')) { state.req.half = !state.req.half; return render(); }
   if ((el = q('[data-who]'))) {
     const ids = state.req.ids, id = el.dataset.who, i = ids.indexOf(id);
     if (i > -1) ids.splice(i, 1); else ids.push(id);
