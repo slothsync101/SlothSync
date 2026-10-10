@@ -1272,7 +1272,7 @@ function sheetView() {
     const others = members.filter(m => m.on && m.id !== 'p');
     const chip = (attr, val, on, label) => `<button ${attr}="${val}" class="rounded-full px-4 py-2 text-sm font-bold border ${on?'bg-primary text-primary-foreground border-primary':'bg-muted border-border'}">${label}</button>`;
     const lab = t => `<p class="text-xs font-bold text-muted-foreground uppercase tracking-wider mt-4 mb-2">${t}</p>`;
-    return wrap(`<h3 class="text-xl font-extrabold">New event to auto-schedule</h3>
+    return wrap(`<div class="bg-card flex items-center justify-between gap-3" style="position:sticky;top:-1.5rem;z-index:2;margin:-1.5rem -1.5rem 0;padding:1.25rem 1rem .5rem 1.5rem"><h3 class="text-xl font-extrabold">New event to auto-schedule</h3><button id="sheetX" aria-label="Close" class="shrink-0 size-10 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-lg font-bold">✕</button></div>
       <input id="reqTitle" value="${esc(r.title)}" placeholder="What's the event? (e.g. Retro, Coffee chat)" class="mt-4 w-full rounded-2xl bg-muted px-4 py-3 font-semibold outline-none" />
       ${lab('When')}<div class="flex flex-wrap gap-2">${chip('data-mode', 'dur', r.mode !== 'range', 'Fixed length')}${chip('data-mode', 'range', r.mode === 'range', 'Custom start & end')}</div>
       ${r.mode === 'range' ? rangeUI(r) : `${lab(r.span > 1 ? 'How long each day' : 'How long')}<div class="flex flex-wrap gap-2">${['30 min','1 hr','2 hrs'].map(v => chip('data-dur', v, r.dur===v, v)).join('')}</div>
@@ -1462,6 +1462,7 @@ document.addEventListener('click', e => {
   }
   if (q('[data-glink]')) { state.gl = {step:0, err:''}; state.sheet = 'glink'; return render(); }
   if (q('#gGo')) { linkGoogle(); return; }
+  if (q('#sheetX')) { state.sheet = null; return render(); }
   if (q('#gClose')) { state.sheet = null; return render(); }
   if (q('#nOn')) { enableNotifications(); return; }
   if (q('#nLater')) { state.sheet = null; return render(); }
