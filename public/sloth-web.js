@@ -41,7 +41,7 @@
       wrap.className = 'fixed inset-0 z-50 bg-black/40 flex items-end justify-center';
       wrap.style.cssText = 'position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center';
       wrap.innerHTML =
-        '<div style="background:var(--card);color:var(--foreground);width:100%;max-width:28rem;border-radius:1.5rem 1.5rem 0 0;padding:1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0px));font-family:Nunito,system-ui,sans-serif">' +
+        '<div style="background:var(--card);color:var(--foreground);width:100%;max-width:28rem;max-height:calc(100vh - 1rem);max-height:calc(100dvh - 1rem);overflow-y:auto;border-radius:1.5rem 1.5rem 0 0;padding:1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0px));font-family:Nunito,system-ui,sans-serif">' +
         '<div style="font-size:2.5rem;text-align:center">🦥</div>' +
         '<h3 style="font-size:1.25rem;font-weight:800;text-align:center;margin-top:.5rem">What should people call you?</h3>' +
         '<p style="font-size:.875rem;color:var(--muted-foreground);text-align:center;margin-top:.25rem">No password needed. This name is what others see on shared calendars. It stays signed in on this device.</p>' +
@@ -159,6 +159,7 @@
 
   function Query(path, where) { this.path = path; this.w = where; }
   Query.prototype.where = function (f, op, v) { return new Query(this.path, this.w.concat([[f, op, v]])); };
+  Query.prototype.doc = function (id) { return new DocRef(this.path + '/' + id); };
   Query.prototype.onSnapshot = function (cb, err) { return addSub({ kind: 'col', path: this.path, where: this.w }, cb, err); };
 
   function DocRef(path) { this.path = path; }
