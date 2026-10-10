@@ -485,9 +485,9 @@ function applyCalDoc(id, d) {
   c.members = uids.map(u => 'r_' + u);
   const joined = was ? uids.filter(u => !prevU.has(u)) : [];
   if (joined.length) loadProfiles(joined).then(() => joined.forEach(u => { addNotif(`${nameOf(u)} joined ${c.baseName}`); }));
-  labelCals();
+  labelCals(); gAutoLinkSoon();
   Object.keys(events).forEach(k => { events[k] = events[k].filter(e => e.cal !== local || e.dbev || e.google); });
-  if (!r.subs['ev:' + id]) r.subs['ev:' + id] = r.db.collection('cals/' + id + '/ev').onSnapshot(snap => { r.gmine = r.gmine || {}; const gm = {}; snap.docs.forEach(x => { const q = x.data(); if (q && q.gowner === r.me) gm[x.id] = {gh:q.gh, gcal:q.gcal}; }); r.gmine[id] = gm; replaceEvents(c.id, snap.docs.map(x => [x.id, x.data()])); refresh(); gMirrorSoon(); }, () => {});
+  if (!r.subs['ev:' + id]) r.subs['ev:' + id] = r.db.collection('cals/' + id + '/ev').onSnapshot(snap => { r.gmine = r.gmine || {}; const gm = {}; snap.docs.forEach(x => { const q = x.data(); if (q && q.gowner === r.me) gm[x.id] = {gh:q.gh, gcal:q.gcal}; }); r.gmine[id] = gm; r.gdocs = r.gdocs || {}; r.gdocs[id] = snap.docs.map(x => [x.id, x.data()]); replaceEvents(c.id, r.gdocs[id]); refresh(); gMirrorSoon(); gPushSoon(); }, () => {});
 }
 function dropLiveCal(id) {
   const r = state.real, c = CALS.find(x => x.dbId === id); if (!c) return;
@@ -525,6 +525,7 @@ async function writePiece(c, d, ev) {
   if (ev.dur) piece.dur = ev.dur;
   if (ev.range) piece.range = unesc(ev.range);
   if (ev.allDay) piece.allDay = true;
+  if (ev.auto) piece.auto = true;
   if (ev.s !== undefined) { piece.startMs = msFromMin(ev.s); piece.endMs = msFromMin(ev.e); }
   await r.db.collection('cals/' + c.dbId + '/ev').doc(gid + '_' + piece.part).set(piece);
 }
@@ -885,7 +886,7 @@ function gSaveSettings() {
   clearTimeout(gSaveT);
   gSaveT = setTimeout(() => {
     const cals = {}; g.cals.forEach(c => { cals[c.id] = {on:!!c.on, t:(c.targets || ['own']).slice(0, 12)}; });
-    r.db.doc('data/users/' + r.me + '/google').set({cals, manual:g.cals.filter(c => c.manual).map(c => c.id).slice(0, 30), list:g.cals.filter(c => !c.manual && c.sum !== undefined).slice(0, 60).map(c => ({id:c.id, s:String(c.sum).slice(0, 120), r:c.role || null, h:!!c.hidden, d:!!c.discovered}))}).catch(() => {});
+    r.db.doc('data/users/' + r.me + '/google').set({al:(g.al || []).slice(0, 60), p:g.push !== false, cals, manual:g.cals.filter(c => c.manual).map(c => c.id).slice(0, 30), list:g.cals.filter(c => !c.manual && c.sum !== undefined).slice(0, 60).map(c => ({id:c.id, s:String(c.sum).slice(0, 120), r:c.role || null, h:!!c.hidden, d:!!c.discovered}))}).catch(() => {});
   }, 600);
 }
 async function gLoadSettings() {
@@ -906,6 +907,71 @@ function applyGoogle() {
     ts.forEach(t => c.evs.forEach(ev => (events[ev.day] = events[ev.day] || []).push({...ev, cal:t === 'own' ? c.key : t})));
   });
   gSaveSettings(); gMirrorSoon();
+}
+// ---- Link my Google calendar to shared calendars, and copy auto-scheduled events onto it
+const gPrimaryCal = g => g.cals.find(c => c.id === unesc(g.email)) || g.cals.find(c => gMine(c));
+let gAlT = null;
+function gAutoLinkSoon() { clearTimeout(gAlT); gAlT = setTimeout(gAutoLink, 900); }
+// Each shared calendar gets my main Google calendar linked once. After that it's my choice (Settings), so unlinking sticks.
+function gAutoLink() {
+  const g = state.google, r = state.real; if (!g || !r.on || !g.cals) return;
+  g.al = g.al || [];
+  const prim = gPrimaryCal(g), added = [];
+  CALS.filter(x => x.live && x.dbId && !x.google).forEach(L => {
+    if (g.al.includes(L.dbId)) return;
+    g.al.push(L.dbId); g.alDirty = true;
+    if (prim && !gTargets(prim).includes(L.id)) { prim.targets = [...gTargets(prim), L.id]; added.push(L.name); }
+  });
+  if (!added.length) { if (g.alDirty) { g.alDirty = false; gSaveSettings(); } return; }
+  if (!prim.on) prim.on = true;
+  addNotif(`Your Google calendar ${prim.name} is linked to ${added.join(', ')}. Its events show there, and booked events are added to it. You can change this in Settings.`);
+  const done = () => { applyGoogle(); render(); };
+  if (!prim.loaded) gFetchEvents(prim).then(done).catch(done); else done();
+}
+// Where do booked events from this shared calendar go? A writable Google calendar linked to it, my main one first.
+function gDest(L) {
+  const g = state.google; if (!g) return null;
+  const ok = g.cals.filter(c => c.on && gMine(c) && gTargets(c).includes(L.id));
+  return ok.find(c => c.id === unesc(g.email)) || ok[0] || null;
+}
+let gPushT = null;
+function gPushSoon() { clearTimeout(gPushT); gPushT = setTimeout(gPush, 2500); }
+function gPieceTimes(p) {
+  if (p.startMs) return (+p.part || 1) === 1 ? [p.startMs, p.endMs || p.startMs + 36e5] : null;
+  const [y, m, d] = String(p.date || '').split('-').map(Number); if (!y) return null;
+  const st = new Date(y, m - 1, d, 0, parseT(String(p.t || '12:00 AM'))).getTime();
+  return [st, st + durMin(String(p.dur || '1 hr')) * 6e4];
+}
+async function gPush() {
+  const r = state.real, g = state.google;
+  if (!WEB_MODE || !r.on || !g || g.push === false || g.write === false || g.pushBusy || !r.gdocs) return;
+  g.pushBusy = true;
+  try {
+    if (!r.gpushed) { try { const sn = await r.db.doc('data/users/' + r.me + '/gpushed').get(); r.gpushed = sn.exists ? (sn.data().ids || {}) : {}; } catch (e) { r.gpushed = {}; } }
+    let wrote = false;
+    for (const L of CALS.filter(x => x.live && x.dbId && !x.google)) {
+      const dest = gDest(L); if (!dest) continue;
+      for (const [did, p] of (r.gdocs[L.dbId] || [])) {
+        if (!p || !p.auto || p.gowner || r.gpushed[L.dbId + '/' + did] || !(p.whoU || []).includes(r.me)) continue;
+        const tm = gPieceTimes(p); if (!tm) continue;
+        if (tm[1] < Date.now() - 36e5) { r.gpushed[L.dbId + '/' + did] = 1; wrote = true; continue; }
+        try {
+          await gCall('create_event', {calendarId:dest.id, key:L.dbId + '/' + did, summary:unesc(String(p.title || 'Event')), description:'Booked in Sloth Sync (' + unesc(L.baseName || L.name) + ')', start:new Date(tm[0]).toISOString(), end:new Date(tm[1]).toISOString()});
+          r.gpushed[L.dbId + '/' + did] = 1; wrote = true;
+        } catch (e) {
+          if (e && e.code === 'needs_reauth') { g.write = false; g.err = 'To add booked events to Google, allow it again below.'; render(); throw e; }
+          if (e && e.code === 'rate_limited') throw e;
+          r.gpushed[L.dbId + '/' + did] = 1; wrote = true; // Google refused this one; don't retry it forever
+        }
+      }
+    }
+    if (wrote) {
+      const keys = Object.keys(r.gpushed); if (keys.length > 900) keys.slice(0, keys.length - 900).forEach(k => delete r.gpushed[k]);
+      r.db.doc('data/users/' + r.me + '/gpushed').set({ids:r.gpushed}).catch(() => {});
+      toast('Added to your Google Calendar');
+    }
+  } catch (e) { /* try again on the next change */ }
+  finally { g.pushBusy = false; }
 }
 function gHash(t) { let h = 5381; t = String(t); for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
 let gMirT = null, gMirBusy = false, gMirAgain = false;
@@ -979,12 +1045,14 @@ async function gFetchList() {
   } while (tok && pg < 4);
   return list.slice(0, 40);
 }
+let gWrite = true;
 async function linkGoogle(silent) {
   if (!silent) { state.gl = {step:1, err:''}; state.sheet = 'glink'; render(); }
   try {
     if (WEB_MODE) {
       if (!state.real.on && !silent) { await webSignIn(); if (!state.real.on) throw {code:'needs_signin'}; }
       const G = window.__slothGoogle, st = await G.status();
+      gWrite = st.write !== false;
       if (!st.configured) throw {code:'web_not_configured'};
       if (!st.linked) { if (silent) return; location.href = await G.start(); return; }
     }
@@ -1000,8 +1068,8 @@ async function linkGoogle(silent) {
     const res = await Promise.allSettled(active.map(gFetchEvents));
     if (active.length && res.every(r => r.status === 'rejected')) throw res[0].reason;
     active.forEach((c, i) => { if (res[i].status === 'rejected') { c.on = false; c.err = true; } });
-    state.google = {email:esc(String(primary.id)), synced:new Date(), listAt:Date.now(), cals, busy:false, err:res.some(r => r.status === 'rejected') ? gErr(res.find(r => r.status === 'rejected').reason) : ''};
-    state.gpanel = true; applyGoogle();
+    state.google = {email:esc(String(primary.id)), synced:new Date(), listAt:Date.now(), cals, busy:false, al:(saved && saved.al) || [], push:!saved || saved.p !== false, write:gWrite, err:res.some(r => r.status === 'rejected') ? gErr(res.find(r => r.status === 'rejected').reason) : ''};
+    state.gpanel = true; applyGoogle(); gAutoLinkSoon(); gPushSoon();
     if (!silent) { addNotif(`Google Calendar linked. ${cals.length} calendar${cals.length === 1 ? '' : 's'}, ${gCount()} event${gCount() === 1 ? '' : 's'} in the next 6 months`); state.sheet = null; }
     render(); if (!silent) toast('Google Calendar linked');
   } catch (e) { state.google = null; if (!silent) { if (state.gl) { state.gl.step = 2; state.gl.err = gErr(e); } } render(); }
@@ -1061,6 +1129,11 @@ async function syncGoogle() {
   } finally { g.busy = false; render(); }
   if (!g.err) toast(found.added ? `Found ${found.added} new Google calendar${found.added === 1 ? '' : 's'}` : found.gone ? `${found.gone} Google calendar${found.gone === 1 ? '' : 's'} removed` : 'No new Google calendars. Events are up to date.');
 }
+function gPushCard(g) {
+  if (g.write === false) return `<div class="mt-3 rounded-2xl bg-muted p-3"><p class="text-sm font-extrabold">Add booked events to Google</p><p class="text-xs text-muted-foreground mt-1">Sloth Sync can add events that get booked in a shared calendar to your Google Calendar. It needs permission to create events, nothing else changes.</p><button data-gperm class="mt-2 w-full rounded-full bg-primary text-primary-foreground py-2.5 text-sm font-extrabold">Allow adding events</button></div>`;
+  const where = CALS.filter(x => x.live && x.dbId && !x.google).map(L => { const d = gDest(L); return `<li>${L.name}: ${d ? 'added to ' + d.name : 'not linked to a Google calendar, pick one above under "Show in"'}</li>`; }).join('');
+  return `<div class="mt-3 rounded-2xl bg-muted p-3"><div class="flex items-center gap-3"><div class="flex-1 min-w-0"><p class="text-sm font-extrabold">Add booked events to Google</p><p class="text-xs text-muted-foreground mt-0.5">When everyone confirms an auto-scheduled event, it's added to your linked Google calendar.</p></div>${toggle('gpush', g.push !== false)}</div>${g.push !== false && where ? `<ul class="text-[11px] text-muted-foreground mt-2 space-y-0.5">${where}</ul>` : ''}</div>`;
+}
 function googleCard() {
   const g = state.google, box = 'bg-card border border-border rounded-3xl p-4';
   if (!g) return `<div class="${box}"><div class="flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center">${G_LOGO}</span><div class="flex-1"><p class="font-extrabold">Google Calendar</p><p class="text-xs text-muted-foreground">Link your Google Calendar so auto-schedule works around your real events.</p></div></div>
@@ -1072,6 +1145,7 @@ function googleCard() {
     <div class="mt-3 space-y-2">${gGroups(g.cals, c => `<div class="flex items-center gap-3"><span class="size-3 rounded-full" style="background:${c.color}"></span><span class="flex-1 min-w-0 text-sm font-bold truncate">${c.name} <span class="text-[11px] font-semibold text-muted-foreground">· ${c.on ? (c.loaded ? c.evs.length : '…') : 'off'}${c.on && c.loaded ? (c.evs.length === 1 ? ' event' : ' events') : ''}</span></span>${c.isNew ? '<span class="text-[9px] font-extrabold uppercase rounded bg-primary text-primary-foreground px-1.5 py-0.5">New</span>' : ''}${c.hidden ? '<span class="text-[9px] font-bold text-muted-foreground">hidden</span>' : ''}${c.manual ? `<button data-grm="${c.key}" aria-label="Remove ${c.name}" class="text-xs text-muted-foreground px-1">✕</button>` : ''}${toggle('gcal:' + c.key, c.on)}</div>
       <div class="pl-6 -mt-1 ${c.on ? '' : 'opacity-50 pointer-events-none'}"><span class="text-[11px] font-bold text-muted-foreground">Show in (pick any)</span><div class="flex flex-wrap gap-1.5 mt-1">${[['own', 'Its own calendar'], ...CALS.filter(x => !x.google).map(x => [x.id, x.name])].map(([id, nm]) => `<button data-gtgt="${c.key}|${id}" aria-pressed="${gTargets(c).includes(id)}" class="rounded-full px-2.5 py-1 text-[11px] font-bold border ${gTargets(c).includes(id) ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border text-muted-foreground'}">${nm}</button>`).join('')}</div></div>`)}</div>
     <button data-gadd class="mt-3 w-full rounded-full border border-dashed border-border py-2.5 text-xs font-bold text-muted-foreground">＋ Add a Google calendar by ID (Birthdays, shared…)</button>
+    ${WEB_MODE ? gPushCard(g) : ''}
     <button id="gShow" class="mt-2 w-full rounded-full bg-primary text-primary-foreground py-2.5 text-sm font-extrabold">View on calendar</button>
     <p class="text-[11px] text-muted-foreground mt-3">Sync looks for new Google calendars and refreshes events. Nothing is checked until you press it. Switch calendars on or off above.</p>
     <div class="flex gap-2 mt-2"><button id="gSync" class="flex-1 rounded-full bg-secondary text-secondary-foreground py-2.5 text-sm font-bold ${g.busy ? 'opacity-50' : ''}">${g.busy ? 'Syncing…' : 'Sync'}</button><button id="gOff" class="flex-1 rounded-full border border-border py-2.5 text-sm font-bold text-muted-foreground">Disconnect</button></div></div>`;
@@ -1401,9 +1475,9 @@ function finalize(pd) {
     for (let d = d0; d <= d1; d++) {
       const a = Math.max(pd.s, d * 1440);
       const range = n === 1 ? `${fmtT(pd.s % 1440)} – ${fmtT(pd.e % 1440)}` : d === d0 ? `${fmtT(pd.s % 1440)} → ${dl(Math.floor(pd.e / 1440))} ${fmtT(pd.e % 1440)}` : d === d1 ? `Until ${fmtT(pd.e % 1440)}` : 'All day';
-      placeEvent(pd.cal || defaultCal(), d, {t:fmtT(a % 1440), range, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:d - d0 + 1, of:n, s:pd.s, e:pd.e});
+      placeEvent(pd.cal || defaultCal(), d, {t:fmtT(a % 1440), range, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:d - d0 + 1, of:n, s:pd.s, e:pd.e, auto:true});
     }
-  } else for (let k = 0; k < (pd.span || 1); k++) placeEvent(pd.cal || defaultCal(), pd.day + k, {t:pd.time, dur:pd.dur, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:k + 1, of:pd.span || 1});
+  } else for (let k = 0; k < (pd.span || 1); k++) placeEvent(pd.cal || defaultCal(), pd.day + k, {t:pd.time, dur:pd.dur, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:k + 1, of:pd.span || 1, auto:true});
   if (pd.title === 'Team lunch') state.lunchDone = true;
   state.done.unshift({title:pd.title, custom:pd.custom, s:pd.s, e:pd.e, span:pd.span, day:pd.day, time:pd.time, dur:pd.dur, names:[members[0], ...pd.ids.map(i => members.find(m => m.id === i))]});
   state.pends = state.pends.filter(x => x !== pd);
@@ -1491,10 +1565,12 @@ document.addEventListener('click', e => {
   if (q('#clView')) { showGoogleOnCalendar(); return; }
   if ((el = q('[data-clt]'))) { toggleGLink(el.dataset.clt, state.cl); return; }
   if (q('#gShow')) { showGoogleOnCalendar(); return; }
+  if (q('[data-gperm]')) { (async () => { try { if (!state.real.on) await webSignIn(); location.href = await window.__slothGoogle.start(); } catch (e) { toast(gErr(e).replace(/<[^>]*>/g, '')); } })(); return; }
   if (q('#gSync')) { if (!state.google.busy) syncGoogle(); return; }
   if (q('#gOff')) { gMirror(true); if (WEB_MODE) window.__slothGoogle.disconnect().catch(() => toast("Couldn't tell Google to revoke access. You can do it at myaccount.google.com/permissions")); state.google = null; applyGoogle(); addNotif('Google Calendar disconnected'); render(); return toast('Google Calendar disconnected'); }
   if ((el = q('[data-toggle]'))) {
     const k = el.dataset.toggle;
+    if (k === 'gpush') { const g = state.google; g.push = g.push === false; gSaveSettings(); if (g.push) gPushSoon(); return render(); }
     if (k.startsWith('gcal:')) {
       const c = state.google.cals.find(x => x.key === k.slice(5)); c.on = !c.on; applyGoogle();
       if (c.on && !c.loaded) {
