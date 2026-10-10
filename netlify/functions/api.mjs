@@ -174,6 +174,7 @@ const GOOGLE = () => ({ id: process.env.GOOGLE_CLIENT_ID, secret: process.env.GO
 const gConfigured = () => !!(GOOGLE().id && GOOGLE().secret);
 const redirectUri = (req) => process.env.GOOGLE_REDIRECT_URI || new URL(req.url).origin + '/api/google/callback';
 const tokenCache = new Map();
+const canWriteScope = (sc) => /auth\/calendar\.events|auth\/calendar(\s|$)/.test(String(sc || ''));
 
 async function gAccessToken(uid) {
   const hit = tokenCache.get(uid);
@@ -206,8 +207,36 @@ async function gApi(uid, url) {
   return j;
 }
 
+async function gSend(uid, url, body) {
+  const token = await gAccessToken(uid);
+  const r = await fetch(url, { method: 'POST', headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  if (r.status === 409) return { duplicate: true };
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401) { tokenCache.delete(uid); throw new HttpError(400, 'needs_reauth'); }
+  if (r.status === 403 && /insufficient|scope/i.test(JSON.stringify(j.error || ''))) throw new HttpError(400, 'needs_reauth');
+  if (r.status === 429) throw new HttpError(429, 'rate_limited');
+  if (r.status >= 500) throw new HttpError(502, 'upstream_error');
+  if (!r.ok) throw new HttpError(400, 'tool_error', (j.error && j.error.message) || 'Google error');
+  return { id: j.id, htmlLink: j.htmlLink };
+}
+
 async function gCall(uid, tool, input) {
   input = input || {};
+  if (tool === 'create_event') {
+    const rec = await getJSON('sys/google/' + uid);
+    if (!rec || !canWriteScope(rec.scope)) throw new HttpError(400, 'needs_reauth');
+    const t = (v) => (typeof v === 'string' && !isNaN(Date.parse(v)) ? new Date(v).toISOString() : null);
+    const start = t(input.start), end = t(input.end);
+    if (!input.calendarId || !start || !end || Date.parse(end) <= Date.parse(start) || typeof input.key !== 'string' || !input.key) throw new HttpError(400, 'tool_error', 'invalid event');
+    const ev = {
+      id: 'sl' + sha(uid + '|' + input.key).slice(0, 40),
+      summary: String(input.summary || 'Event').slice(0, 300),
+      description: String(input.description || '').slice(0, 2000),
+      start: { dateTime: start }, end: { dateTime: end },
+      extendedProperties: { private: { slothKey: sha(input.key).slice(0, 16) } },
+    };
+    return await gSend(uid, 'https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(input.calendarId) + '/events', ev);
+  }
   if (tool === 'list_calendars') {
     const q = new URLSearchParams({ maxResults: String(Math.min(250, input.pageSize || 100)), showHidden: 'true' });
     if (input.pageToken) q.set('pageToken', input.pageToken);
@@ -269,7 +298,7 @@ export default async (req) => {
       const prev = await getJSON('sys/google/' + st.uid);
       const refresh = j.refresh_token || (prev && prev.refresh);
       if (!refresh) return back('error&reason=norefresh');
-      await putJSON('sys/google/' + st.uid, { refresh, linkedMs: Date.now() });
+      await putJSON('sys/google/' + st.uid, { refresh, scope: String(j.scope || ''), linkedMs: Date.now() });
       tokenCache.set(st.uid, { token: j.access_token, exp: Date.now() + (j.expires_in || 3000) * 1000 });
       return back('linked');
     }
@@ -365,14 +394,14 @@ export default async (req) => {
       }
     }
 
-    if (route === 'google/status') return json({ configured: gConfigured(), linked: !!(await getJSON('sys/google/' + uid)) });
+    if (route === 'google/status') { const rec = await getJSON('sys/google/' + uid); return json({ configured: gConfigured(), linked: !!rec, write: !!(rec && canWriteScope(rec.scope)) }); }
     if (route === 'google/start' && req.method === 'POST') {
       if (!gConfigured()) throw new HttpError(400, 'web_not_configured');
       const state = rid(16);
       await putJSON('sys/gstate/' + state, { uid, exp: Date.now() + 10 * 60 * 1000 });
       const q = new URLSearchParams({
         client_id: GOOGLE().id, redirect_uri: redirectUri(req), response_type: 'code',
-        scope: 'https://www.googleapis.com/auth/calendar.readonly', access_type: 'offline', prompt: 'consent', include_granted_scopes: 'true', state,
+        scope: 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events', access_type: 'offline', prompt: 'consent', include_granted_scopes: 'true', state,
       });
       return json({ url: 'https://accounts.google.com/o/oauth2/v2/auth?' + q });
     }
