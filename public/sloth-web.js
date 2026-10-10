@@ -159,7 +159,6 @@
 
   function Query(path, where) { this.path = path; this.w = where; }
   Query.prototype.where = function (f, op, v) { return new Query(this.path, this.w.concat([[f, op, v]])); };
-  Query.prototype.doc = function (id) { return new DocRef(this.path + '/' + id); };
   Query.prototype.onSnapshot = function (cb, err) { return addSub({ kind: 'col', path: this.path, where: this.w }, cb, err); };
 
   function DocRef(path) { this.path = path; }
