@@ -1114,7 +1114,7 @@ function nav() {
 
 function sheetView() {
   if (!state.sheet) return '';
-  const wrap = body => `<div class="fixed inset-0 z-40 bg-black/40 flex items-end justify-center" id="scrim"><div class="bg-card w-full max-w-md rounded-t-3xl p-6 fade" style="padding-bottom:calc(1.5rem + env(safe-area-inset-bottom,0px))">${body}</div></div>`;
+  const wrap = body => `<div class="fixed inset-0 z-40 bg-black/40 flex items-end justify-center" id="scrim"><div id="sheetBody" class="bg-card w-full max-w-md rounded-t-3xl p-6 fade" style="box-sizing:border-box;max-height:calc(100vh - 1rem - env(safe-area-inset-top,0px));max-height:calc(100dvh - 1rem - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:calc(1.5rem + env(safe-area-inset-bottom,0px))">${body}</div></div>`;
   if (state.sheet === 'invite') {
     const r = state.real, iv = r.inv, c = calOf(iv.cal);
     const chip = (attr, val, on, t) => `<button ${attr}="${val}" class="rounded-full px-4 py-2 text-sm font-bold border ${on ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted border-border'}">${t}</button>`;
@@ -1299,11 +1299,14 @@ function sheetView() {
     <p class="text-xs text-muted-foreground text-center mt-3">${r.ids.length ? 'Everyone gets a notification to confirm this date and time.' : 'Nobody else is invited, so it goes straight onto your calendar.'} <button id="back" class="font-bold text-primary">Edit details</button></p>`);
 }
 
+let sheetKey = '';
 function render() {
   const old = document.getElementById('calScroll'), keep = old && !state.cal.fresh ? old.scrollTop : null;
+  const oldSheet = document.getElementById('sheetBody'), sheetKeep = oldSheet ? oldSheet.scrollTop : 0, keyNow = state.sheet + ':' + state.step;
   const v = {home:homeView, calendar:calendarView, groups:groupsView, status:statusView, notifs:notifsView, settings:settingsView}[state.tab]();
   document.getElementById('app').innerHTML = v + nav();
   document.getElementById('sheet').innerHTML = sheetView();
+  const nb = document.getElementById('sheetBody'); if (nb && keyNow === sheetKey) nb.scrollTop = sheetKeep; sheetKey = state.sheet ? keyNow : '';
   const sc = document.getElementById('calScroll');
   if (sc) sc.scrollTop = keep != null ? keep : (state.cal.view === 'week' ? 40 : 56) * 7;
   state.cal.fresh = false;
