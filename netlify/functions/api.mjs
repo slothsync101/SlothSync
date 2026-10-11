@@ -61,12 +61,18 @@ async function activeInviteFor(calId) {
   return invs.some(({ data: v }) => v && v.cal === calId && !v.revoked && !(v.expiresMs && now > v.expiresMs) && !(v.maxUses && (v.uses || 0) >= v.maxUses));
 }
 
+async function pendingCalInviteFor(calId, uid) {
+  const v = await getJSON('calinv/' + calId + '_' + uid);
+  return !!v && v.to === uid && v.cal === calId && v.status === 'pending';
+}
+
 function canRead(path, uid, doc, listing) {
   const s = segs(path);
   if (s[0] === 'data') return s[1] === 'users' && s[2] === uid;
   if (s[0] === 'invites') return listing ? doc.owner === uid : true;
   if (s[0] === 'cals' && s.length === 2) return listing ? has(doc.members, uid) : true;
   if (s[0] === 'reqs') return doc.owner === uid || has(doc.inv, uid);
+  if (s[0] === 'calinv') return doc.owner === uid || doc.to === uid;
   return false;
 }
 
@@ -90,6 +96,22 @@ async function canWrite(op, path, uid, existing, data) {
     return subset(keysOf(data), ['uses', 'joined']);
   }
 
+  if (s[0] === 'calinv' && s.length === 2) {
+    if (!existing) {
+      if (op !== 'set' || !data || data.owner !== uid || typeof data.cal !== 'string' || typeof data.to !== 'string' || data.status !== 'pending') return false;
+      if (s[1] !== data.cal + '_' + data.to || data.to === uid) return false;
+      const c = await getJSON('cals/' + data.cal);
+      return !!c && c.owner === uid;
+    }
+    if (existing.owner === uid) {
+      if (op === 'delete') return true;
+      return !data || (data.owner === uid && data.cal === existing.cal && data.to === existing.to);
+    }
+    if (existing.to !== uid) return false;
+    if (op === 'delete') return true;
+    return op === 'update' && subset(keysOf(data), ['status']) && (data.status === 'accepted' || data.status === 'declined');
+  }
+
   if (s[0] === 'cals' && s.length === 2) {
     if (!existing) return op === 'set' && data && data.owner === uid && has(data.members, uid) && s[1].startsWith(uid + '-');
     if (existing.owner === uid) return true;
@@ -102,7 +124,7 @@ async function canWrite(op, path, uid, existing, data) {
     if (removes.length && !(removes.length === 1 && removes[0] === uid && !adds.length)) return false;
     if (adds.length) {
       if (!(adds.length === 1 && adds[0] === uid && !removes.length)) return false;
-      return activeInviteFor(s[1]);
+      return (await activeInviteFor(s[1])) || (await pendingCalInviteFor(s[1], uid));
     }
     return true;
   }
@@ -115,9 +137,19 @@ async function canWrite(op, path, uid, existing, data) {
 
   if (s[0] === 'reqs' && s.length === 2) {
     if (!existing) return op === 'set' && data && data.owner === uid && Array.isArray(data.inv);
-    if (existing.owner === uid) return true;
+    if (existing.owner === uid) {
+      // the owner can host or hand it back; the host has to be the owner or someone invited
+      if (op === 'update' && data && 'host' in data && data.host !== null && data.host !== uid && !has(existing.inv, data.host)) return false;
+      return true;
+    }
     if (!has(existing.inv, uid) || op !== 'update') return false;
-    if (!subset(keysOf(data), ['startMs', 'endMs', 'counterBy', 'counterName', 'ver', 'rounds', 'meAsk', 'origStartMs', 'origEndMs', 'res'])) return false;
+    if (!subset(keysOf(data), ['startMs', 'endMs', 'counterBy', 'counterName', 'ver', 'rounds', 'meAsk', 'origStartMs', 'origEndMs', 'res', 'host'])) return false;
+    if ('host' in data) {
+      // hosting: claim it for yourself while it is open, or give up your own claim. Nothing else.
+      if (!existing.needHost) return false;
+      const claim = data.host === uid && !existing.host, release = data.host === null && existing.host === uid;
+      if (!claim && !release) return false;
+    }
     return subset(keysOf(data.res), [uid]);
   }
   return false;
@@ -139,6 +171,8 @@ async function cascadeDeleteCal(calId) {
   await Promise.all(evs.map((e) => delKey('cals/' + calId + '/ev/' + e.id)));
   const invs = await listCollection('invites');
   await Promise.all(invs.filter((i) => i.data.cal === calId).map((i) => delKey('invites/' + i.id)));
+  const cis = await listCollection('calinv');
+  await Promise.all(cis.filter((i) => i.data.cal === calId).map((i) => delKey('calinv/' + i.id)));
 }
 
 function matches(doc, where) {
@@ -321,6 +355,7 @@ export default async (req) => {
 
     if (route === 'search') {
       const q = (url.searchParams.get('q') || '').trim().toLowerCase();
+      if (q.length < 2) return json([]);
       const { blobs } = await store().list({ prefix: 'sys/names/' });
       const rows = await Promise.all(blobs.slice(0, 500).map(async (b) => ({ id: b.key.slice('sys/names/'.length), p: await getJSON(b.key) })));
       const list = rows.filter((r) => r.p && (!q || r.p.lower.includes(q))).sort((a, b) => a.p.lower.localeCompare(b.p.lower)).slice(0, 20)
