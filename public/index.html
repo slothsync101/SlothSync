@@ -38,10 +38,16 @@
   --accent:#5F7C62; --accent-foreground:#F1F5EC; --card:#202B25; --border:#33423A;
 }
 html { scroll-padding-top: env(safe-area-inset-top,0px); }
+html, body { overscroll-behavior-x: none; } /* a sideways swipe changes tabs, not the browser page */
 body { background: var(--background); font-family: "Nunito", system-ui, sans-serif; }
 *::-webkit-scrollbar { display:none; } * { scrollbar-width:none; }
 .fade { animation: fade .25s ease; }
 @keyframes fade { from { opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
+@keyframes slideFromRight { from { opacity:0; transform:translateX(36px);} to {opacity:1; transform:none;} }
+@keyframes slideFromLeft { from { opacity:0; transform:translateX(-36px);} to {opacity:1; transform:none;} }
+#app.swipe-next > :not(nav) { animation: slideFromRight .22s ease; }
+#app.swipe-prev > :not(nav) { animation: slideFromLeft .22s ease; }
+@media (prefers-reduced-motion: reduce) { #app.swipe-next > :not(nav), #app.swipe-prev > :not(nav) { animation:none; } }
 </style>
 </head>
 <body>
@@ -73,7 +79,7 @@ const ic = (n, s=20, c='') => `<svg class="${c}" width="${s}" height="${s}" view
 const members = [
   {id:'p', name:'Prabhat (you)', short:'PR', color:'#C98952', on:true},
 ];
-const today = new Date();
+let today = new Date();
 const days = Array.from({length:366}, (_, i) => { const d = new Date(today); d.setDate(today.getDate() + i); return d; });
 const DOW = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const fmtLong = d => d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', ...(d.getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})});
@@ -267,7 +273,10 @@ function homeView() {
   <button id="auto" class="fixed bottom-24 right-5 rounded-full bg-primary text-primary-foreground px-5 py-4 flex items-center gap-2 shadow-lg shadow-primary/20 font-extrabold">${ic('wand')}Auto-schedule</button>`;
 }
 
-const base = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+let base = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+// The time zone the calendar is currently laid out in, and the calendar date "day 0" stands for (plain numbers, so they survive a zone change).
+const curTz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch (e) { return 'UTC'; } };
+let appTz = curTz(), anchor = {y:base.getFullYear(), m:base.getMonth(), d:base.getDate()};
 const midnight = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const offsetOf = d => Math.round((midnight(d) - base) / 864e5);
 const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
@@ -386,6 +395,94 @@ const dayOffRaw = d => Math.round((new Date(d.getFullYear(), d.getMonth(), d.get
 const msOf = (day, mins) => new Date(base.getFullYear(), base.getMonth(), base.getDate() + day, 0, mins).getTime();
 const msFromMin = min => { const d = Math.floor(min / 1440); return msOf(d, min - d * 1440); };
 const minFromMs = ms => { const x = new Date(ms); return dayOffRaw(x) * 1440 + x.getHours() * 60 + x.getMinutes(); };
+
+// ---- Time zone: the calendars follow this device's time zone automatically
+const TZ_FMT = {};
+function tzParts(tz, ms) {
+  const f = TZ_FMT[tz] || (TZ_FMT[tz] = new Intl.DateTimeFormat('en-US', {timeZone:tz, hourCycle:'h23', year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric', second:'numeric'}));
+  const o = {}; f.formatToParts(new Date(ms)).forEach(x => { if (x.type !== 'literal') o[x.type] = +x.value; });
+  return o;
+}
+// The exact moment when the wall clock in zone tz reads (y, mo 1-12, d, mins after midnight). d and mins may overflow.
+function wallToMs(tz, y, mo, d, mins) {
+  const guess = Date.UTC(y, mo - 1, d, 0, mins); let ms = guess;
+  for (let i = 0; i < 4; i++) {
+    const p = tzParts(tz, ms), off = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - ms, next = guess - off;
+    if (next === ms) break; ms = next;
+  }
+  return ms;
+}
+function tzLabel(tz) {
+  let short = '';
+  try { short = (new Intl.DateTimeFormat('en-US', {timeZone:tz, timeZoneName:'short'}).formatToParts(new Date()).find(x => x.type === 'timeZoneName') || {}).value || ''; } catch (e) {}
+  const city = String(tz).split('/').pop().replace(/_/g, ' ');
+  return short && short !== city ? `${city} (${short})` : city;
+}
+const anchorKey = () => anchor.y * 10000 + anchor.m * 100 + anchor.d;
+// Re-lays everything out when the device's time zone or the date changes. Each event keeps the exact moment it happens,
+// so 6:00 PM in New York becomes 3:00 PM in Los Angeles. All-day events keep their calendar date.
+function recalibrate() {
+  const newTz = curTz(), nd = new Date();
+  if (newTz === appTz && nd.getFullYear() * 10000 + nd.getMonth() * 100 + nd.getDate() === anchorKey()) return false;
+  const oldTz = appTz, A = {...anchor}, zoneChanged = newTz !== oldTz, r = state.real;
+  const toMs = (dayOff, mins) => wallToMs(oldTz, A.y, A.m + 1, A.d + dayOff, mins);
+  const oldFocus = state.cal && state.cal.focus ? tzParts(oldTz, state.cal.focus.getTime()) : null;
+  today = nd; base = new Date(nd.getFullYear(), nd.getMonth(), nd.getDate());
+  anchor = {y:base.getFullYear(), m:base.getMonth(), d:base.getDate()}; appTz = newTz;
+  days.length = 0; for (let i = 0; i < 366; i++) { const d = new Date(today); d.setDate(today.getDate() + i); days.push(d); }
+  const N = days.length;
+  const reMin = m => { const dd = Math.floor(m / 1440); return minFromMs(toMs(dd, m - dd * 1440)); };
+  const reDay = d => dayOffRaw(new Date(A.y, A.m, A.d + d));
+  const clampDay = d => Math.max(0, Math.min(N - 1, d));
+  // events that live only on this device: move each to its new place
+  const keep = [], out = {}, groups = new Map();
+  Object.keys(events).forEach(k => events[k].forEach(ev => { if (!ev.dbev && !ev.google) keep.push([+k, ev]); }));
+  const put = (d, ev) => { if (d >= 0 && d < N) { ev.day = ev.day === undefined ? undefined : d; (out[d] = out[d] || []).push(ev); } };
+  keep.forEach(([d, ev]) => {
+    if (ev.allDay) return put(reDay(d), ev);
+    if (ev.s !== undefined) { const key = ev.gid !== undefined ? 'g' + ev.gid : ev; if (!groups.has(key)) groups.set(key, {proto:ev, s:ev.s, e:ev.e}); return; }
+    const nm = reMin(d * 1440 + parseT(ev.t)); ev.t = fmtT(nm % 1440); put(Math.floor(nm / 1440), ev);
+  });
+  groups.forEach(g => {
+    const ns = reMin(g.s), ne = Math.max(ns + 5, reMin(g.e)), d0 = Math.floor(ns / 1440), d1 = Math.floor((ne - 1) / 1440);
+    for (let d = Math.max(d0, 0); d <= Math.min(d1, N - 1); d++) { const tx = spanText(ns, ne, d); put(d, {...g.proto, day:g.proto.day === undefined ? undefined : d, s:ns, e:ne, t:tx.t, range:tx.range, part:d - d0 + 1, of:d1 - d0 + 1}); }
+  });
+  events = out;
+  // requests, confirmed events and invitations on this device
+  const rePos = o => {
+    if (!o) return;
+    if (o.custom && o.s !== undefined) { o.s = reMin(o.s); o.e = Math.max(o.s + 5, reMin(o.e)); o.day = Math.floor(o.s / 1440); o.time = fmtT(o.s % 1440); }
+    else if (o.day !== undefined && o.time) { const nm = reMin(o.day * 1440 + parseT(o.time)); o.day = Math.floor(nm / 1440); o.time = fmtT(nm % 1440); }
+  };
+  state.pends.forEach(pd => { rePos(pd); rePos(pd.orig); });
+  state.done.forEach(rePos);
+  (state.invites || []).forEach(iv => { rePos(iv); if (Array.isArray(iv.alt)) { const nm = reMin(iv.alt[0] * 1440 + parseT(iv.alt[1])); iv.alt = [Math.floor(nm / 1440), fmtT(nm % 1440)]; } });
+  if (state.req) { ['from', 'sd', 'ed'].forEach(k => { if (typeof state.req[k] === 'number') state.req[k] = clampDay(reDay(state.req[k])); }); ['s', 'e'].forEach(k => { if (typeof state.req[k] === 'number') state.req[k] = reMin(state.req[k]); }); }
+  state.rejected = [];
+  state.day = clampDay(reDay(state.day));
+  if (oldFocus) state.cal.focus = new Date(oldFocus.year, oldFocus.month - 1, oldFocus.day);
+  state.cal.fresh = true;
+  if (state.sheet === 'evd') state.sheet = null;
+  // shared calendars: shown again from the saved moments, in the new zone
+  if (r && r.on && r.gdocs) CALS.filter(c => c.live && c.dbId && r.gdocs[c.dbId]).forEach(c => replaceEvents(c.id, r.gdocs[c.dbId]));
+  // Google: re-laid out from the events already downloaded, no new request
+  if (state.google) { state.google.cals.forEach(c => { if (c.raw) c.evs = c.raw.flatMap(ev => gConvert(c, ev)); }); applyGoogle(); }
+  if (zoneChanged) { addNotif(`Time zone changed to ${tzLabel(newTz)}. Your calendars now show times there.`); toast('Time zone updated to ' + tzLabel(newTz)); }
+  const ae = document.activeElement;
+  if (!(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) render();
+  return true;
+}
+let tzTimer = null;
+function tzWatch() {
+  if (tzTimer) return;
+  const check = () => { try { recalibrate(); } catch (e) { console.error(e); } };
+  tzTimer = setInterval(check, 15000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+  ['focus', 'pageshow', 'online'].forEach(ev => window.addEventListener(ev, check));
+}
+function tzCard() {
+  return `<div class="bg-card border border-border rounded-3xl p-4 flex items-center gap-3"><div class="flex-1 min-w-0"><p class="font-extrabold">Time zone</p><p class="text-xs text-muted-foreground">${esc(tzLabel(appTz))}. Follows your device automatically, so events and suggestions update when you travel.</p></div><span class="text-xs font-extrabold text-accent-foreground bg-accent rounded-full px-3 py-1">Auto</span></div>`;
+}
 const isReal = id => { const m = members.find(x => x.id === id); return !!(m && m.real); };
 const uidOf = id => { const m = members.find(x => x.id === id); return m && m.uid; };
 const memByUid = u => members.find(x => x.uid === u);
@@ -521,19 +618,40 @@ function replaceEvents(localId, docs) {
   Object.keys(events).forEach(k => { events[k] = events[k].filter(e => !(e.dbev && e.cal === localId)); });
   docs.forEach(([did, p]) => { const ev = fromPiece(did, p, localId); if (ev) (events[ev.day] = events[ev.day] || []).push(ev); });
 }
+// What "7:00 PM Tuesday" looks like for a span of wall-clock minutes (from today's midnight) on day d.
+function spanText(s0, e0, d) {
+  const d0 = Math.floor(s0 / 1440), d1 = Math.floor((e0 - 1) / 1440);
+  const range = d0 === d1 ? `${fmtT(s0 % 1440)} – ${fmtT(e0 % 1440)}` : d === d0 ? `${fmtT(s0 % 1440)} → ${dl(Math.floor(e0 / 1440))} ${fmtT(e0 % 1440)}` : d === d1 ? `Until ${fmtT(e0 % 1440)}` : 'All day';
+  return {t:fmtT(Math.max(s0, d * 1440) % 1440), range};
+}
 function fromPiece(did, p, calId) {
-  const [y, m, d] = String(p.date || '').split('-').map(Number); if (!y || !m || !d) return null;
-  const day = dayOffRaw(new Date(y, m - 1, d)); if (day < 0 || day >= days.length) return null;
+  let day, tOver, rangeOver, sOver, eOver;
+  const ms = +p.startMs || 0;
+  if (ms && !p.allDay) {
+    // an exact moment: lay it out in this device's own time zone
+    const whole = p.whole === undefined ? true : !!p.whole;
+    if (whole) {
+      const s0 = minFromMs(ms), e0 = Math.max(s0 + 5, minFromMs(+p.endMs || ms + 36e5));
+      day = Math.floor(s0 / 1440) + (+p.part || 1) - 1;
+      if (day > Math.floor((e0 - 1) / 1440)) return null;
+      const tx = spanText(s0, e0, day); tOver = tx.t; rangeOver = tx.range; sOver = s0; eOver = e0;
+    } else { const m0 = minFromMs(ms); day = Math.floor(m0 / 1440); tOver = fmtT(m0 % 1440); }
+  } else {
+    const [y, m, d] = String(p.date || '').split('-').map(Number); if (!y || !m || !d) return null;
+    day = dayOffRaw(new Date(y, m - 1, d));
+  }
+  if (day < 0 || day >= days.length) return null;
   const me = state.real.me;
   const who = [...(p.whoU || []).map(u => u === me ? 'PR' : (memByUid(u) || {}).short), ...(p.whoN || []).map(n => (members.find(x => !x.real && x.id !== 'p' && x.name === esc(String(n))) || {}).short)].filter(Boolean);
   if (p.gowner && p.gowner === me) return null; // my own Google events already show from my local copy
-  const ev = {day, t:String(p.t || '12:00 AM'), title:esc(String(p.title || '')), c:p.c === 'primary' ? 'primary' : 'accent', cal:calId, who:[...new Set(who)], gid:String(p.gid), part:+p.part || 1, of:+p.of || 1, dbev:true, did};
+  const ev = {day, t:tOver || String(p.t || '12:00 AM'), title:esc(String(p.title || '')), c:p.c === 'primary' ? 'primary' : 'accent', cal:calId, who:[...new Set(who)], gid:String(p.gid), part:+p.part || 1, of:+p.of || 1, dbev:true, did};
   if (p.dur) ev.dur = String(p.dur);
-  if (p.range) ev.range = esc(String(p.range));
+  if (rangeOver) ev.range = rangeOver; else if (p.range && !tOver) ev.range = esc(String(p.range));
   if (p.allDay) ev.allDay = true;
   if (p.host) ev.host = hostFromUid(p.host);
   if (p.gowner) { ev.gshared = true; ev.gowner = p.gowner; if (p.free) ev.free = true; }
-  if (p.startMs) { ev.s = minFromMs(p.startMs); ev.e = minFromMs(p.endMs || p.startMs + 36e5); }
+  if (sOver !== undefined) { ev.s = sOver; ev.e = eOver; }
+  else if (p.startMs && p.allDay) { ev.s = minFromMs(p.startMs); ev.e = minFromMs(p.endMs || p.startMs + 36e5); }
   return ev;
 }
 let gidSeq = 0;
@@ -547,7 +665,9 @@ async function writePiece(c, d, ev) {
   if (ev.allDay) piece.allDay = true;
   if (ev.auto) piece.auto = true;
   if (ev.host && hostUid(ev.host)) piece.host = hostUid(ev.host);
-  if (ev.s !== undefined) { piece.startMs = msFromMin(ev.s); piece.endMs = msFromMin(ev.e); }
+  if (ev.s !== undefined) { piece.startMs = msFromMin(ev.s); piece.endMs = msFromMin(ev.e); piece.whole = true; }
+  else if (!ev.allDay && ev.t) { const st0 = msOf(d, parseT(ev.t)); piece.startMs = st0; piece.endMs = st0 + durMin(ev.dur || '1 hr') * 6e4; piece.whole = false; }
+  piece.tz = appTz;
   await r.db.collection('cals/' + c.dbId + '/ev').doc(gid + '_' + piece.part).set(piece);
 }
 function placeEvent(calId, d, ev) {
@@ -987,7 +1107,7 @@ function gConvert(c, ev) {
   }
   const st = new Date(ev.start.dateTime), en = new Date(ev.end.dateTime || ev.start.dateTime);
   if (isNaN(st) || isNaN(en)) return [];
-  const s = Math.round((st - base) / 60000), e = Math.max(s + 5, Math.round((en - base) / 60000));
+  const s = minFromMs(st.getTime()), e = Math.max(s + 5, minFromMs(en.getTime()));
   const d0 = Math.floor(s / 1440), d1 = Math.floor((e - 1) / 1440);
   for (let d = Math.max(d0, 0); d <= Math.min(d1, N - 1); d++) {
     const a = Math.max(s, d * 1440);
@@ -998,15 +1118,15 @@ function gConvert(c, ev) {
 }
 async function gFetchEvents(c) {
   const start = base.toISOString(), end = new Date(base.getFullYear(), base.getMonth(), base.getDate() + 180).toISOString();
-  let token, pages = 0; const out = [];
+  let token, pages = 0; const out = [], raw = [];
   do {
     const p = await gCall('list_events', {calendarId:c.id, startTime:start, endTime:end, orderBy:'startTime', pageSize:100, ...(token ? {pageToken:token} : {})});
     if (p && p.accessRole) c.role = p.accessRole;
     if (p && p.summary) c.title = esc(String(p.summary));
-    ((p && (p.events || p.items)) || []).forEach(ev => out.push(...gConvert(c, ev)));
+    ((p && (p.events || p.items)) || []).forEach(ev => { raw.push(ev); out.push(...gConvert(c, ev)); });
     token = p && p.nextPageToken; pages++;
   } while (token && pages < 6);
-  c.evs = out; c.loaded = true;
+  c.evs = out; c.raw = raw; c.loaded = true;
 }
 const gTargets = c => { const v = (c.targets || ['own']).filter(t => t === 'own' || CALS.some(x => x.id === t && !x.google)); return v.length ? v : ['own']; };
 const gLinks = id => state.google ? state.google.cals.filter(c => c.on && gTargets(c).includes(id)) : [];
@@ -1068,7 +1188,7 @@ function gDest(L) {
 let gPushT = null;
 function gPushSoon() { clearTimeout(gPushT); gPushT = setTimeout(gPush, 2500); }
 function gPieceTimes(p) {
-  if (p.startMs) return (+p.part || 1) === 1 ? [p.startMs, p.endMs || p.startMs + 36e5] : null;
+  if (p.startMs) return (p.whole === undefined || p.whole) && (+p.part || 1) !== 1 ? null : [p.startMs, p.endMs || p.startMs + 36e5];
   const [y, m, d] = String(p.date || '').split('-').map(Number); if (!y) return null;
   const st = new Date(y, m - 1, d, 0, parseT(String(p.t || '12:00 AM'))).getTime();
   return [st, st + durMin(String(p.dur || '1 hr')) * 6e4];
@@ -1124,7 +1244,7 @@ async function gMirror(purge) {
         const piece = {date:ymd(days[ev.day]), t:ev.t, title:unesc(ev.title), c:'primary', gid:'gg' + key, part:ev.part || 1, of:ev.of || 1, whoU:[r.me], whoN:[], createdBy:r.me, gowner:r.me, gcal:gHash(c.id), free:!!ev.free, startMs:msFromMin(ev.s), endMs:msFromMin(ev.e)};
         if (ev.range) piece.range = unesc(ev.range);
         if (ev.allDay) piece.allDay = true;
-        piece.gh = gHash(JSON.stringify(piece));
+        piece.gh = gHash(JSON.stringify([piece.title, piece.startMs, piece.endMs, piece.allDay ? piece.date : 0, piece.part, piece.of, piece.free, piece.gcal]));
         want.set(did, piece);
       }));
       want.forEach((piece, did) => { if (!mine[did] || mine[did].gh !== piece.gh) ops.push({op:'set', path:base_ + did, data:piece}); });
@@ -1316,7 +1436,7 @@ function themeCard() {
 const staticBanner = () => hostKind() === 'static' ? `<div class="bg-secondary border border-border rounded-3xl p-4"><p class="font-extrabold">This is a stand-alone copy</p><p class="text-xs text-muted-foreground mt-1">${STATIC_HELP}</p></div>` : '';
 function settingsView() {
   const row = (k, t, d) => `<div class="bg-card border border-border rounded-3xl p-4 flex items-center gap-3"><div class="flex-1"><p class="font-extrabold">${t}</p><p class="text-xs text-muted-foreground">${d}</p></div>${toggle(k, prefs[k])}</div>`;
-  return `${header()}<section class="px-5 mt-2 space-y-3">${staticBanner()}${notifCard()}${googleCard()}${row('sync','Two-way sync','Keep new events on every calendar')}${row('quiet','Quiet hours','No pings before 9 AM')}${themeCard()}</section>`;
+  return `${header()}<section class="px-5 mt-2 space-y-3">${staticBanner()}${notifCard()}${tzCard()}${googleCard()}${row('sync','Two-way sync','Keep new events on every calendar')}${row('quiet','Quiet hours','No pings before 9 AM')}${themeCard()}</section>`;
 }
 
 function nav() {
@@ -1982,9 +2102,49 @@ document.addEventListener('click', e => {
   }
   if (e.target.id === 'scrim') { state.sheet = null; render(); }
 });
+// ---- swipe left or right to move to the next or previous tab
+const TAB_ORDER = ['home', 'calendar', 'groups', 'status', 'notifs', 'settings'];
+(function swipeTabs() {
+  let sx = 0, sy = 0, st = 0, live = false;
+  // don't steal swipes meant for something else: form fields, anything that scrolls sideways, or the edge of the screen (back gesture)
+  const blocked = el => {
+    for (let n = el; n && n !== document.body; n = n.parentElement) {
+      if (n.nodeType !== 1) continue;
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(n.tagName) || n.isContentEditable || n.hasAttribute('data-noswipe')) return true;
+      if (n.scrollWidth > n.clientWidth + 2 && /(auto|scroll)/.test(getComputedStyle(n).overflowX)) return true;
+    }
+    return false;
+  };
+  document.addEventListener('touchstart', e => {
+    const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now();
+    live = e.touches.length === 1 && !state.sheet && sx > 24 && sx < innerWidth - 24 && !blocked(e.target);
+  }, {passive:true});
+  // once it's clearly a sideways swipe, keep the browser from also treating it as "go back/forward" or a page drag
+  document.addEventListener('touchmove', e => {
+    if (!live) return;
+    const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.8 && e.cancelable) e.preventDefault();
+  }, {passive:false});
+  document.addEventListener('touchcancel', () => { live = false; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (!live) return; live = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Date.now() - st > 800 || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.8) return;
+    if (state.sheet) return;
+    const i = TAB_ORDER.indexOf(state.tab), j = i + (dx < 0 ? 1 : -1);
+    if (i < 0 || j < 0 || j >= TAB_ORDER.length) return;
+    state.tab = TAB_ORDER[j];
+    render();
+    const app = document.getElementById('app'), cls = dx < 0 ? 'swipe-next' : 'swipe-prev';
+    app.classList.remove('swipe-next', 'swipe-prev'); void app.offsetWidth; app.classList.add(cls);
+    setTimeout(() => app.classList.remove(cls), 300);
+    window.scrollTo(0, 0);
+  }, {passive:true});
+})();
 initTheme();
 render();
 maybeFirstRun();
+tzWatch();
 initReal();
 </script>
 </body>
