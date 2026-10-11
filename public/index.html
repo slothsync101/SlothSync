@@ -248,11 +248,13 @@ function homeView() {
         <p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">${e.range || (e.t + (e.dur ? ' · ' + e.dur : ''))}${e.of > 1 ? ' · Day ' + e.part + ' of ' + e.of : ''}</p>
         <h3 class="text-lg font-extrabold mt-1 truncate">${e.title}</h3>
         <div class="flex items-center gap-2 mt-2"><div class="flex -space-x-2">${e.who.map(s=>avatar(byShort(s))).join('')}</div>
-        <span class="text-xs text-muted-foreground">${e.google ? 'From Google' : e.gshared ? 'From ' + nameOf(e.gowner) + "'s Google Calendar" : e.cal === 'personal' ? 'Only you' : e.who.length + ' going'} · ${names}</span></div></div>
+        <span class="text-xs text-muted-foreground">${e.host ? hostLabel(e.host) + ' · ' : ''}${e.google ? 'From Google' : e.gshared ? 'From ' + nameOf(e.gowner) + "'s Google Calendar" : e.cal === 'personal' ? 'Only you' : e.who.length + ' going'} · ${names}</span></div></div>
       ${e.google || e.gshared ? '' : `<button data-del="${idx}" aria-label="Remove event" class="text-muted-foreground p-2">${ic('trash',18)}</button>`}
     </article>`).join('') || `<div class="bg-card border border-dashed border-border rounded-3xl p-6 text-center text-muted-foreground fade"><div class="text-3xl">🦥</div><p class="font-bold mt-2">Nothing planned</p><p class="text-sm">A perfectly slow day.</p></div>`;
   const pend = Object.values(state.real.reqs).filter(v => v.status === 'open' && !(v.res && v.res[state.real.me] === v.ver)).length + notifs.filter(n=>n.type==='req'&&n.open).length + state.invites.filter(i=>i.status==='open').length + state.pends.filter(p=>p.me==='ask').length;
+  const calInv = calInviteCards();
   return `${header()}
+  ${calInv ? `<section class="px-5 mt-2 space-y-3">${calInv}</section>` : ''}
   <section class="px-5 mt-2"><div class="flex items-center justify-between mb-3"><h2 class="text-lg font-bold">${days[state.day].toLocaleDateString('en-US',{month:'long', ...(days[state.day].getFullYear() !== today.getFullYear() ? {year:'numeric'} : {})})}</h2><div class="flex items-center gap-2"><button data-wk="-1" aria-label="Previous week" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground"><span class="inline-flex rotate-180">${ic('chev',18)}</span></button><button data-wk="1" aria-label="Next week" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">${ic('chev',18)}</button><button data-tab="calendar" aria-label="Open calendar" class="size-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground">${ic('calendar',20)}</button></div></div>
     <div class="flex gap-2 overflow-x-auto -mx-5 px-5 pb-1">${strip}</div></section>
   <section class="px-5 mt-7"><div class="flex items-center justify-between mb-3"><h2 class="text-xl font-bold">${state.day < 7 ? dl(state.day) + "'s plan" : 'Plan for ' + dl(state.day)}</h2>
@@ -454,6 +456,23 @@ function subscribeReal() {
     snap.docChanges().forEach(ch => { if (ch.type === 'removed') dropLiveCal(ch.doc.id); else applyCalDoc(ch.doc.id, ch.doc.data()); });
     liveRefresh();
   }, err);
+  r.subs.favs = db.doc('data/users/' + me + '/favs').onSnapshot(snap => {
+    if (r.favDirty) return;
+    r.favs = (snap.exists && snap.data().uids) || []; loadFavProfiles(); refresh();
+  }, err);
+  r.subs.calinvIn = db.collection('calinv').where('to', '==', me).onSnapshot(snap => {
+    const first = !r.cinSeen; if (first) r.cinSeen = new Set();
+    const next = {};
+    snap.docs.forEach(d => {
+      const v = d.data(); next[d.id] = v;
+      if (v.status === 'pending' && !r.cinSeen.has(d.id)) { r.cinSeen.add(d.id); if (!first) addNotif(`${nameOf(v.owner)} invited you to the shared calendar ${esc(String(v.calName || ''))}`); }
+    });
+    r.calinv = next; loadProfiles(Object.values(next).map(v => v.owner)); refresh();
+  }, err);
+  r.subs.calinvOut = db.collection('calinv').where('owner', '==', me).onSnapshot(snap => {
+    r.calinvOut = Object.fromEntries(snap.docs.map(d => [d.id, d.data()]));
+    CALS.filter(x => x.live && x.owner === me).forEach(labelPend); liveRefresh();
+  }, err);
   r.subs.inv = db.collection('reqs').where('inv', 'array-contains', me).onSnapshot(snap => {
     const first = r.seen === null; if (first) r.seen = new Set();
     const next = {};
@@ -482,7 +501,7 @@ function applyCalDoc(id, d) {
   if (!owner) { c.bg = d.color || c.bg; c.fg = fgFor(c.bg); }
   const uids = (d.members || []).filter(u => u !== r.me);
   uids.forEach(u => ensureMember(u)); loadProfiles(uids);
-  c.members = uids.map(u => 'r_' + u);
+  c.members = uids.map(u => 'r_' + u); c.acc = uids; labelPend(c);
   const joined = was ? uids.filter(u => !prevU.has(u)) : [];
   if (joined.length) loadProfiles(joined).then(() => joined.forEach(u => { addNotif(`${nameOf(u)} joined ${c.baseName}`); }));
   labelCals(); gAutoLinkSoon();
@@ -512,6 +531,7 @@ function fromPiece(did, p, calId) {
   if (p.dur) ev.dur = String(p.dur);
   if (p.range) ev.range = esc(String(p.range));
   if (p.allDay) ev.allDay = true;
+  if (p.host) ev.host = hostFromUid(p.host);
   if (p.gowner) { ev.gshared = true; ev.gowner = p.gowner; if (p.free) ev.free = true; }
   if (p.startMs) { ev.s = minFromMs(p.startMs); ev.e = minFromMs(p.endMs || p.startMs + 36e5); }
   return ev;
@@ -526,6 +546,7 @@ async function writePiece(c, d, ev) {
   if (ev.range) piece.range = unesc(ev.range);
   if (ev.allDay) piece.allDay = true;
   if (ev.auto) piece.auto = true;
+  if (ev.host && hostUid(ev.host)) piece.host = hostUid(ev.host);
   if (ev.s !== undefined) { piece.startMs = msFromMin(ev.s); piece.endMs = msFromMin(ev.e); }
   await r.db.collection('cals/' + c.dbId + '/ev').doc(gid + '_' + piece.part).set(piece);
 }
@@ -543,14 +564,59 @@ async function makeLive(c) {
   Object.keys(events).forEach(k => events[k].forEach(ev => { if (ev.cal === c.id && !ev.google && !ev.dbev) own.push([+k, ev]); }));
   c.dbId = dbId; c.live = true; c.owner = r.me; c.baseName = c.name;
   try {
-    await r.db.doc('cals/' + dbId).set({name:unesc(c.name), color:hexFor(c.bg), owner:r.me, localId:c.id, members:[r.me, ...realUids(c)], createdMs:Date.now()});
+    await r.db.doc('cals/' + dbId).set({name:unesc(c.name), color:hexFor(c.bg), owner:r.me, localId:c.id, members:[r.me], createdMs:Date.now()});
     for (const [d, ev] of own) await writePiece(c, d, ev);
+    c.acc = [];
+    await inviteMissing(c);
   } catch (e) { c.live = false; delete c.dbId; throw e; }
 }
+// People join a shared calendar only by accepting an invitation. Here "members" means people who accepted; the rest are invited.
+function labelPend(c) {
+  const r = state.real, all = Object.values(r.calinvOut || {}).filter(v => c.dbId && v.cal === c.dbId);
+  c.pend = all.filter(v => v.status === 'pending').map(v => v.to);
+  c.declined = all.filter(v => v.status === 'declined').map(v => v.to);
+}
+async function sendCalInvite(c, u) {
+  const r = state.real;
+  await r.db.doc('calinv/' + c.dbId + '_' + u).set({cal:c.dbId, calName:unesc(String(c.baseName || c.name)), owner:r.me, to:u, status:'pending', createdMs:Date.now()});
+  c.pend = [...new Set([...(c.pend || []), u])]; c.declined = (c.declined || []).filter(x => x !== u);
+}
+async function inviteMissing(c) {
+  const acc = new Set(c.acc || []), pend = new Set(c.pend || []);
+  for (const u of new Set(realUids(c))) if (!acc.has(u) && !pend.has(u)) await sendCalInvite(c, u);
+  settleInvited(c);
+}
+// People who were only invited are not in the calendar yet, so take them out of the member list.
+function settleInvited(c) { const p = new Set(c.pend || []); c.members = (c.members || []).filter(id => { const u = uidOf(id); return !(u && p.has(u)); }); }
 async function setCalMembers(c) {
   const r = state.real;
   if (c.owner !== r.me) throw {code:'not_owner'};
-  await r.db.doc('cals/' + c.dbId).update({members:[r.me, ...new Set(realUids(c))]});
+  const want = new Set(realUids(c)), acc = c.acc || [], keep = acc.filter(u => want.has(u));
+  if (keep.length !== acc.length) { await r.db.doc('cals/' + c.dbId).update({members:[r.me, ...keep]}); c.acc = keep; }
+  await inviteMissing(c);
+}
+async function cancelCalInvite(c, u) {
+  await state.real.db.doc('calinv/' + c.dbId + '_' + u).delete();
+  c.pend = (c.pend || []).filter(x => x !== u);
+}
+function calInviteCards() {
+  const r = state.real; if (!r.on) return '';
+  return Object.entries(r.calinv || {}).filter(([, v]) => v.status === 'pending').map(([id, v]) => `<div class="bg-card border border-primary rounded-3xl p-4"><p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Calendar invitation from ${nameOf(v.owner)}</p><p class="font-extrabold text-lg mt-1">${esc(String(v.calName || 'Shared calendar'))}</p><p class="text-sm text-muted-foreground">Accept to see this calendar and its events, and to be included when events get scheduled.</p><div class="flex flex-wrap gap-2 mt-3"><button data-cinacc="${id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Accept</button><button data-cindec="${id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Decline</button></div></div>`).join('');
+}
+async function answerCalInvite(id, accept) {
+  const r = state.real, v = (r.calinv || {})[id]; if (!v || r.cinBusy) return;
+  r.cinBusy = true;
+  try {
+    if (!accept) { await r.db.doc('calinv/' + id).update({status:'declined'}); toast('Invitation declined'); return; }
+    const cd = await r.db.doc('cals/' + v.cal).get();
+    if (!cd.exists) { await r.db.doc('calinv/' + id).delete(); toast('That calendar no longer exists'); return; }
+    const cal = cd.data();
+    if (!(cal.members || []).includes(r.me)) await r.db.doc('cals/' + v.cal).update({members:[...(cal.members || []), r.me]});
+    await r.db.doc('calinv/' + id).delete().catch(() => {});
+    addNotif(`You joined ${esc(String(cal.name || v.calName || 'the shared calendar'))}`);
+    toast('Joined ' + unesc(esc(String(cal.name || 'the calendar'))));
+  } catch (e) { toast("Couldn't answer that invitation. Try again."); }
+  finally { r.cinBusy = false; render(); }
 }
 let contactsQ = Promise.resolve();
 function saveContacts() {
@@ -561,7 +627,7 @@ function saveContacts() {
 async function addRealToCalendar(c, m) {
   const r = state.real, cur = new Set(c.members || []);
   cur.add(m.id); c.members = [...cur];
-  try { if (!c.live) await makeLive(c); else await setCalMembers(c); toast(`${unesc(m.name).split(' ')[0]} added to ${unesc(c.name)}`); }
+  try { if (!c.live) await makeLive(c); else await setCalMembers(c); toast(`${unesc(m.name).split(' ')[0]} invited to ${unesc(c.name)}. They need to accept first.`); }
   catch (e) { cur.delete(m.id); c.members = [...cur]; toast(e && e.code === 'not_owner' ? "Only the calendar's owner can change who's in it" : "Couldn't update the shared calendar"); }
   render();
 }
@@ -577,7 +643,7 @@ function createReq(pd) {
   const r = state.real, c = calOf(pd.cal || defaultCal()), inv = pd.ids.filter(isReal).map(uidOf);
   if (!r.on || !inv.length) return;
   pd.rid = 'r' + pd.id; pd.dbver = 1;
-  const doc = {owner:r.me, cal:c.live ? c.dbId : null, title:unesc(pd.title), dur:pd.dur, span:pd.span || 1, custom:!!pd.custom, startMs:startOf(pd), inv, res:{}, ver:1, rounds:0, counterBy:null, counterName:'', meAsk:false, origStartMs:null, origEndMs:null, status:'open', createdMs:Date.now()};
+  const doc = {owner:r.me, cal:c.live ? c.dbId : null, needHost:!!pd.needHost, host:null, title:unesc(pd.title), dur:pd.dur, span:pd.span || 1, custom:!!pd.custom, startMs:startOf(pd), inv, res:{}, ver:1, rounds:0, counterBy:null, counterName:'', meAsk:false, origStartMs:null, origEndMs:null, status:'open', createdMs:Date.now()};
   if (pd.custom) doc.endMs = msFromMin(pd.e);
   wq(pd, () => r.db.doc('reqs/' + pd.rid).set(doc));
 }
@@ -589,11 +655,20 @@ function pushReq(pd, bump) {
   if (pd.custom) data.endMs = msFromMin(pd.e);
   wq(pd, () => r.db.doc('reqs/' + pd.rid).update(data));
 }
+function setOwnerHost(pd, h) {
+  const r = state.real; pd.host = h;
+  if (r.on && pd.rid) wq(pd, () => r.db.doc('reqs/' + pd.rid).update({host:h === 'p' ? r.me : null}));
+  if (h && tryFinalize(pd)) return;
+  render(); if (h) toast("You're hosting");
+}
 function pushStatus(pd, status) { const r = state.real; if (r.on && pd.rid) wq(pd, () => r.db.doc('reqs/' + pd.rid).update({status})); }
+const hostFromUid = u => !u ? null : u === state.real.me ? 'p' : ensureMember(u).id;
+const hostUid = h => !h ? null : h === 'p' ? state.real.me : uidOf(h) || null;
+const hostLabel = h => { const m = members.find(x => x.id === h); return h === 'p' ? 'You host' : m ? m.name.split(' ')[0] + ' hosts' : ''; };
 const localCal = dbId => (CALS.find(c => c.dbId === dbId) || {}).id || defaultCal();
 function mirrorRes(pd, d) { (d.inv || []).forEach(u => { const mid = 'r_' + u; if (d.res && d.res[u] === d.ver) pd.res[mid] = 'yes'; else delete pd.res[mid]; }); }
 function pdFromDoc(id, d) {
-  const pd = {id:+id.slice(1) || Date.now(), rid:id, title:esc(String(d.title || '')), dur:String(d.dur || '1 hr'), span:+d.span || 1, custom:!!d.custom, ids:(d.inv || []).map(u => ensureMember(u).id), res:{}, alt:{}, me:d.meAsk ? 'ask' : 'yes', cal:localCal(d.cal), rounds:+d.rounds || 0, dbver:+d.ver || 1};
+  const pd = {id:+id.slice(1) || Date.now(), rid:id, title:esc(String(d.title || '')), dur:String(d.dur || '1 hr'), span:+d.span || 1, custom:!!d.custom, ids:(d.inv || []).map(u => ensureMember(u).id), res:{}, alt:{}, me:d.meAsk ? 'ask' : 'yes', cal:localCal(d.cal), rounds:+d.rounds || 0, dbver:+d.ver || 1, needHost:!!d.needHost, host:hostFromUid(d.host)};
   setTimes(pd, d.startMs, d.endMs);
   if (d.origStartMs != null) { const o = {custom:pd.custom, span:pd.span, dur:pd.dur}; setTimes(o, d.origStartMs, d.origEndMs); pd.orig = o; }
   if (d.counterBy) pd.counterBy = d.counterBy === state.real.me ? 'p' : 'r_' + d.counterBy;
@@ -616,6 +691,11 @@ function syncOwnerReq(id, d) {
   let pd = state.pends.find(p => p.rid === id);
   if (!pd) { pd = pdFromDoc(id, d); mirrorRes(pd, d); state.pends.push(pd); return; }
   if (d.ver > (pd.dbver || 1)) applyRemoteProposal(pd, d); else mirrorRes(pd, d);
+  if (pd.needHost) {
+    const was = pd.host, now = hostFromUid(d.host);
+    pd.host = now;
+    if (now && now !== was && now !== 'p') addNotif(`${nameOf(d.host)} is hosting ${pd.title}`);
+  }
   tryFinalize(pd);
 }
 function realInviteCards() {
@@ -624,6 +704,7 @@ function realInviteCards() {
     const ps = {custom:!!v.custom, span:+v.span || 1}; setTimes(ps, v.startMs, v.endMs);
     const when = wt(ps) + (v.custom ? '' : ' · ' + esc(String(v.dur || ''))), owner = nameOf(v.owner), mine = v.res && v.res[r.me] === v.ver, open = v.status === 'open';
     const tag = v.counterBy ? `<p class="text-xs font-bold text-primary mt-1">${v.counterBy === r.me ? 'You' : nameOf(v.counterBy)} suggested this time</p>` : v.counterName ? `<p class="text-xs font-bold text-primary mt-1">${esc(String(v.counterName))} suggested this time</p>` : '';
+    const hostBox = !v.needHost || v.status !== 'open' ? '' : v.host ? `<p class="text-xs font-bold text-muted-foreground mt-2">${v.host === r.me ? 'You are hosting.' : nameOf(v.host) + ' is hosting.'}${v.host === r.me ? ` <button data-rhostx="${id}" class="font-bold text-primary">Step down</button>` : ''}</p>` : `<div class="flex items-center gap-2 mt-2"><p class="text-xs font-bold text-muted-foreground flex-1 min-w-0">Needs a host. It's only scheduled once someone claims it.</p><button data-rhost="${id}" class="rounded-full bg-primary text-primary-foreground px-3 py-1.5 text-xs font-extrabold">I'll host</button></div>`;
     let body;
     if (v.status === 'booked') body = '<p class="text-xs font-bold text-muted-foreground mt-2">Booked. It is in the shared calendar.</p>';
     else if (v.status === 'cancelled') body = `<p class="text-xs font-bold text-muted-foreground mt-2">Cancelled by ${owner}</p>`;
@@ -634,7 +715,7 @@ function realInviteCards() {
         <div class="flex gap-2 mt-3"><button data-rsend="${id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Send suggestion</button><button data-rno="${id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Cancel</button></div>`;
     } else if (r.canWrite === false) body = '<p class="text-xs font-bold text-muted-foreground mt-2">You have view-only access, so you can\'t reply. Ask for Contributor access to this page.</p>';
     else body = `<div class="flex flex-wrap gap-2 mt-3"><button data-racc="${id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Accept</button><button data-rcnt="${id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Suggest another time</button></div>`;
-    return `<div class="bg-card border rounded-3xl p-4 ${open && !mine ? 'border-primary' : 'border-border'}"><p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Invitation from ${owner}</p><p class="font-extrabold text-lg mt-1">${esc(String(v.title || ''))}</p><p class="text-sm text-muted-foreground">${when}</p>${tag}${body}</div>`;
+    return `<div class="bg-card border rounded-3xl p-4 ${open && !mine ? 'border-primary' : 'border-border'}"><p class="text-xs font-bold text-muted-foreground uppercase tracking-wider">Invitation from ${owner}</p><p class="font-extrabold text-lg mt-1">${esc(String(v.title || ''))}</p><p class="text-sm text-muted-foreground">${when}</p>${tag}${hostBox}${body}</div>`;
   }).join('');
 }
 
@@ -713,14 +794,59 @@ function startJoin(code) {
   if (code && code.length === 8) previewInvite(code);
 }
 // ---- people picker + calendar membership sheets
+// ---- favorites: people you invite a lot, saved to your account
+const isFav = u => (state.real.favs || []).includes(u);
+const favList = () => (state.real.favs || []).map(u => (state.real.favProf || {})[u]).filter(Boolean);
+const starBtn = (u, on) => `<button data-fav="${esc(u)}" aria-label="${on ? 'Remove from favorites' : 'Add to favorites'}" aria-pressed="${on}" class="shrink-0 size-9 rounded-full flex items-center justify-center text-xl ${on ? 'text-primary' : 'text-muted-foreground'}">${on ? '★' : '☆'}</button>`;
+let favSaveT = null;
+function saveFavs() {
+  const r = state.real; if (!r.on) return;
+  r.favDirty = true; clearTimeout(favSaveT);
+  favSaveT = setTimeout(() => { r.db.doc('data/users/' + r.me + '/favs').set({uids:(r.favs || []).slice(0, 100)}).catch(() => toast("Couldn't save your favorites")).finally(() => { r.favDirty = false; }); }, 400);
+}
+async function loadFavProfiles() {
+  const r = state.real, need = (r.favs || []).filter(u => !(r.favProf || {})[u]);
+  if (need.length) {
+    try { const ps = await r.user.profiles(need); r.favProf = r.favProf || {}; need.forEach(u => { if (ps[u]) r.favProf[u] = {id:u, name:ps[u].name || 'Someone', avatarUrl:ps[u].avatarUrl || ''}; }); } catch (e) {}
+  }
+  redrawPeople();
+}
+function redrawPeople() { const el = document.getElementById('rpRes'); if (el && state.sheet === 'rp') el.innerHTML = rpRows(); else if (state.sheet !== 'rp') refresh(); }
+function profileFor(u) {
+  const r = state.real, fromRes = ((r.rp && r.rp.res) || []).find(x => x.id === u), m = memByUid(u);
+  return fromRes || (r.favProf || {})[u] || (m ? {id:u, name:unesc(m.name), avatarUrl:m.img || ''} : null);
+}
+function toggleFav(u) {
+  const r = state.real; r.favs = r.favs || []; r.favProf = r.favProf || {};
+  if (isFav(u)) r.favs = r.favs.filter(x => x !== u);
+  else { const p = profileFor(u); if (!p) return; r.favs = [...r.favs, u]; r.favProf[u] = {id:u, name:p.name, avatarUrl:p.avatarUrl || ''}; }
+  saveFavs();
+}
+function personRow(p, label, done) {
+  return `<div class="flex items-center gap-1"><button data-rpadd="${esc(p.id)}" class="flex-1 min-w-0 flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${done ? 'bg-accent/50' : 'bg-card'}"><span class="size-8 rounded-full overflow-hidden flex shrink-0">${p.avatarUrl ? `<img src="${esc(p.avatarUrl)}" alt="" class="size-8 object-cover" />` : ''}</span><span class="flex-1 min-w-0 font-bold truncate">${esc(p.name)}${p.guest ? ' <span class="text-[10px] text-muted-foreground">guest</span>' : ''}</span><span class="text-sm font-extrabold ${done ? 'text-primary' : 'text-muted-foreground'}">${label}</span></button>${starBtn(p.id, isFav(p.id))}</div>`;
+}
 function rpRows() {
   const rp = state.real.rp; if (!rp) return '';
-  if (!rp.res.length) return `<p class="text-sm text-muted-foreground">${rp.searched ? (WEB_MODE ? 'No one found. People show up here once they have opened this site. You can also send them an invite link.' : 'No one found. Search needs people in your organization, and anyone invited from outside may not appear.') : (WEB_MODE ? 'Type a name to search people on this site.' : 'Type a name to search your organization.')}</p>`;
-  return rp.res.map(p => { const added = !!memByUid(p.id); return `<button data-rpadd="${esc(p.id)}" class="w-full flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${added ? 'bg-accent/50' : 'bg-card'}"><span class="size-8 rounded-full overflow-hidden flex shrink-0"><img src="${esc(p.avatarUrl)}" alt="" class="size-8 object-cover" /></span><span class="flex-1 min-w-0 font-bold truncate">${esc(p.name)}${p.guest ? ' <span class="text-[10px] text-muted-foreground">guest</span>' : ''}</span><span class="text-sm font-extrabold ${added ? 'text-primary' : 'text-muted-foreground'}">${added ? 'Added' : 'Add'}</span></button>`; }).join('');
+  const me = state.real.me;
+  if (!rp.searched) {
+    const favs = favList().filter(p => p.id !== me);
+    const head = favs.length ? `<p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">★ Favorites</p>${favs.map(p => personRow(p, memByUid(p.id) ? 'Added' : 'Add', !!memByUid(p.id))).join('')}` : '';
+    const hint = `<p class="text-sm text-muted-foreground ${favs.length ? 'mt-1' : ''}">${favs.length ? 'Or type' : 'Type'} at least 2 letters of a name to search ${WEB_MODE ? 'people on this site' : 'your organization'}.${favs.length ? '' : ' Tap ☆ on anyone to save them as a favorite.'}</p>`;
+    return head + hint;
+  }
+  if (!rp.res.length) return `<p class="text-sm text-muted-foreground">${WEB_MODE ? 'No one found. People show up here once they have opened this site. You can also send them an invite link.' : 'No one found. Search needs people in your organization, and anyone invited from outside may not appear.'}</p>`;
+  return rp.res.map(p => { const added = !!memByUid(p.id); return personRow(p, added ? 'Added' : 'Add', added); }).join('');
 }
+// Nothing is listed until a name is typed (at least 2 letters), so the whole list of people is never shown.
+const MIN_SEARCH = 2;
+let searchSeq = 0;
 function searchPeople(q) {
   const r = state.real; if (!r.on || !r.rp) return;
-  r.user.search(q).then(list => { r.rp.res = (list || []).filter(p => p.id !== r.me); r.rp.searched = true; const el = document.getElementById('rpRes'); if (el) el.innerHTML = rpRows(); });
+  const draw = () => { const el = document.getElementById('rpRes'); if (el) el.innerHTML = rpRows(); };
+  const mine = ++searchSeq;
+  q = String(q || '').trim();
+  if (q.length < MIN_SEARCH) { r.rp.res = []; r.rp.searched = false; draw(); return; }
+  r.user.search(q).then(list => { if (mine !== searchSeq || !r.rp) return; r.rp.res = (list || []).filter(p => p.id !== r.me); r.rp.searched = true; draw(); }).catch(() => { if (mine === searchSeq && r.rp) { r.rp.res = []; r.rp.searched = true; draw(); } });
 }
 function openPicker(forCal) { const r = state.real; r.rp = {q:'', res:[], searched:false, forCal:forCal || null}; state.sheet = 'rp'; render(); searchPeople(''); }
 function groupsView() {
@@ -728,7 +854,7 @@ function groupsView() {
     <div class="bg-card border border-border rounded-3xl p-4 flex items-center gap-3">
       <span class="size-11 rounded-full text-white font-extrabold flex items-center justify-center" style="background:${m.color}">${m.short}</span>
       <div class="flex-1"><p class="font-extrabold">${m.name}${m.real ? ' <span class="text-[10px] font-extrabold uppercase rounded bg-primary text-primary-foreground px-1.5 py-0.5 align-middle">Real</span>' : ''}</p><p class="text-xs text-muted-foreground">${m.real ? 'Real person' : m.on?'Calendar synced':'Excluded from scheduling'}${m.email ? ' · ' + m.email : ''}</p></div>
-      ${i===0?'<span class="text-xs font-bold text-muted-foreground">Always on</span>':toggle('mem'+i, m.on)}</div>`).join('')}
+      ${m.real ? starBtn(m.uid, isFav(m.uid)) : ''}${i===0?'<span class="text-xs font-bold text-muted-foreground">Always on</span>':toggle('mem'+i, m.on)}</div>`).join('')}
     ${members.length === 1 ? '<p class="text-sm text-muted-foreground px-1">Just you for now. Add real people to schedule events together.</p>' : ''}
     <button data-addp class="w-full rounded-3xl border border-dashed border-border p-4 text-left text-muted-foreground flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic('plus', 22)}</span><span class="font-extrabold">Add a person</span></button>
     <button data-joinopen class="w-full rounded-3xl border border-dashed border-border p-4 text-left text-muted-foreground flex items-center gap-3"><span class="size-11 rounded-full bg-muted flex items-center justify-center text-primary">${ic('users')}</span><span class="font-extrabold">Have an invite code?</span></button></section>`;
@@ -760,7 +886,12 @@ const inviteComplete = iv => (iv.status === 'accepted' || iv.status === 'moved')
 function statusView() {
   const chip = ([m, note]) => `<span class="inline-flex items-center gap-2 rounded-full bg-muted border border-border pl-1 pr-3 py-1 text-xs font-bold">${avatar(m)}${m.id === 'p' ? 'You' : m.name.split(' ')[0]}${note ? `<span class="text-muted-foreground font-semibold">${note}</span>` : ''}</span>`;
   const lab = t => `<p class="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-3 mb-2">${t}</p>`;
-  const card = (title, when, yes, no, tag) => {
+  const hostRow = pd => {
+    if (!pd.needHost) return '';
+    const mine = pd.host === 'p', who = pd.host && !mine ? members.find(x => x.id === pd.host) : null;
+    return `${lab('Host')}<div class="flex items-center gap-2 flex-wrap">${pd.host ? `<span class="text-sm font-bold">${mine ? 'You are hosting' : (who ? who.name.split(' ')[0] : 'Someone') + ' is hosting'}</span>${mine ? `<button data-ohostx="${pd.id}" class="text-xs font-bold text-primary">Step down</button>` : ''}` : `<span class="text-sm text-muted-foreground flex-1 min-w-0">Nobody yet. It's only scheduled once someone claims it.</span><button data-ohost="${pd.id}" class="rounded-full bg-primary text-primary-foreground px-3 py-1.5 text-xs font-extrabold">I'll host</button>`}</div>`;
+  };
+  const card = (title, when, yes, no, tag, extra = '') => {
     const total = yes.length + no.length, pct = Math.round(100 * yes.length / total);
     return `<div class="bg-card border border-border rounded-3xl p-4 fade">
       <div class="flex items-start justify-between gap-2"><div><h3 class="text-lg font-extrabold">${title}</h3><p class="text-xs text-muted-foreground font-semibold">${when}</p></div>
@@ -768,13 +899,13 @@ function statusView() {
       <div class="mt-3 h-2 rounded-full bg-muted overflow-hidden"><div class="h-full bg-accent transition-all" style="width:${pct}%"></div></div>
       <p class="text-xs font-bold text-muted-foreground mt-1">${yes.length} of ${total} confirmed</p>
       ${lab('Confirmed')}<div class="flex flex-wrap gap-2">${yes.map(chip).join('') || '<span class="text-xs text-muted-foreground">No one yet</span>'}</div>
-      ${lab('Not confirmed yet')}<div class="flex flex-wrap gap-2">${no.map(chip).join('') || '<span class="text-xs text-muted-foreground">Everyone is in</span>'}</div></div>`;
+      ${lab('Not confirmed yet')}<div class="flex flex-wrap gap-2">${no.map(chip).join('') || '<span class="text-xs text-muted-foreground">Everyone is in</span>'}</div>${extra}</div>`;
   };
   const reqs = state.pends.map(pd => {
     const yes = [], no = [];
     (pd.me === 'ask' ? no : yes).push([members[0], pd.me === 'ask' ? 'your OK needed' : '']);
     pd.ids.forEach(id => (pd.res[id] === 'yes' ? yes : no).push([members.find(x => x.id === id), id === pd.counterBy ? 'proposed this time' : '']));
-    return card(pd.title, `${wt(pd)} · ${pd.dur}`, yes, no, pd.me === 'ask' ? 'Needs your OK' : 'Waiting');
+    return card(pd.title, `${wt(pd)} · ${pd.dur}`, yes, no, pd.me === 'ask' ? 'Needs your OK' : pd.needHost && !pd.host ? 'Needs a host' : 'Waiting', hostRow(pd));
   });
   const inv = state.invites.filter(i => i.status !== 'declined').map(iv => {
     const org = members.find(m => m.id === iv.fid), f = iv.from.split(' ')[0];
@@ -797,7 +928,7 @@ function notifsView() {
     <p class="font-bold">${n.text}</p>
     ${n.type==='ask' && n.open ? askBtns(n) : n.type==='req' && n.open ? `<div class="flex gap-2 mt-3"><button data-nauto="${n.id}" class="rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-extrabold">Find a time</button><button data-ndismiss="${n.id}" class="rounded-full bg-secondary text-secondary-foreground px-4 py-2 text-sm font-bold">Dismiss</button></div>`
     : n.open ? `<button data-ndismiss="${n.id}" class="text-xs font-bold text-primary mt-2">Mark read</button>` : `<p class="text-xs text-muted-foreground mt-1">Done</p>`}</div>`).join('');
-  return `${header()}<section class="px-5 mt-2 space-y-3">${realInviteCards()}${inviteCards()}${items}</section>`;
+  return `${header()}<section class="px-5 mt-2 space-y-3">${calInviteCards()}${realInviteCards()}${inviteCards()}${items}</section>`;
 }
 function toggle(id, on) {
   return `<button role="switch" aria-checked="${on}" data-toggle="${id}" class="w-12 h-7 rounded-full p-1 transition-colors ${on?'bg-primary':'bg-muted'}"><span class="block size-5 rounded-full bg-white transition-transform ${on?'translate-x-5':''}"></span></button>`;
@@ -1235,10 +1366,14 @@ function sheetView() {
   }
   if (state.sheet === 'cmem') {
     const c = calOf(state.real.cm), r = state.real, others = members.filter(m => m.id !== 'p');
-    const inC = new Set(c.members || []);
-    const rows = others.map(m => { const on = inC.has(m.id); return `<button data-cmt="${m.id}" class="w-full flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${on ? 'bg-accent/50' : 'bg-card'}">${avatar(m)}<span class="flex-1 min-w-0 font-bold truncate">${m.name}</span><span class="text-[10px] font-extrabold uppercase rounded px-1.5 py-0.5 bg-primary text-primary-foreground">Real</span><span class="text-sm font-extrabold ${on ? 'text-primary' : 'text-muted-foreground'}">${on ? 'In' : 'Add'}</span></button>`; }).join('');
+    const inC = new Set(c.members || []), pendU = new Set(c.pend || []), decU = new Set(c.declined || []);
+    const favInv = favList().filter(p => p.id !== r.me && !inC.has('r_' + p.id) && !pendU.has(p.id));
+    const sorted = [...others].sort((a, b) => (b.real && isFav(b.uid) ? 1 : 0) - (a.real && isFav(a.uid) ? 1 : 0));
+    const rows = sorted.map(m => { const u = m.real ? m.uid : null, pd = !!u && pendU.has(u), dc = !!u && decU.has(u), on = inC.has(m.id) && !pd; const lbl = on ? 'In' : pd ? 'Invited · tap to cancel' : dc ? 'Declined · invite again' : m.real ? 'Invite' : 'Add'; return `<div class="flex items-center gap-1"><button data-cmt="${m.id}" class="flex-1 min-w-0 flex items-center gap-3 rounded-2xl border border-border px-4 py-3 text-left ${on ? 'bg-accent/50' : 'bg-card'}">${avatar(m)}<span class="flex-1 min-w-0 font-bold truncate">${m.name}</span><span class="text-[10px] font-extrabold uppercase rounded px-1.5 py-0.5 bg-primary text-primary-foreground">Real</span><span class="text-sm font-extrabold ${on ? 'text-primary' : 'text-muted-foreground'}">${lbl}</span></button>${m.real ? starBtn(m.uid, isFav(m.uid)) : ''}</div>`; }).join('');
+    const favChips = favInv.length ? `<p class="text-xs font-bold uppercase tracking-wider text-muted-foreground mt-4 mb-2">★ Favorites</p><div class="flex flex-wrap gap-2">${favInv.map(p => `<button data-favinv="${esc(p.id)}" class="rounded-full border border-border bg-card px-4 py-2 text-sm font-bold">+ ${esc(String(p.name).split(' ')[0])}</button>`).join('')}</div>` : '';
     return wrap(`<h3 class="text-xl font-extrabold">People in ${c.name}</h3>
-      <p class="text-sm text-muted-foreground mt-1">${c.live ? 'This calendar is live. Real people in it see it and its events on their own devices.' : 'Adding a real person makes this calendar live, so they can see it on their own device.'}</p>
+      <p class="text-sm text-muted-foreground mt-1">${c.live ? 'This calendar is live. Real people see it and its events on their own devices once they accept your invitation.' : 'Inviting a real person makes this calendar live. They see it on their own device after they accept.'}</p>
+      ${favChips}
       <div class="space-y-2 mt-4">${rows || '<p class="text-sm text-muted-foreground">No one else yet.</p>'}</div>
       ${r.on && r.canWrite === false ? '<p class="text-xs font-bold text-muted-foreground mt-4">You have view-only access to this page, so you can\'t change who is in a calendar.</p>' : r.on ? '<button data-rpopen class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Find real people</button>' + (!c.live || c.owner === r.me ? '<button data-invopen class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-3 font-bold">Invite with a link</button>' : '<p class="text-xs text-muted-foreground mt-2">Only the calendar\'s owner can create invite links.</p>') : (WEB_MODE ? '<button data-websignin class="mt-4 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Sign in to add real people</button>' : (hostKind() === 'static' ? '<p class="text-xs text-muted-foreground mt-4">' + STATIC_HELP + '</p>' : '<p class="text-xs text-muted-foreground mt-4">Real people are available when you open this page from its published link while signed in to Claude.</p>'))}`);
   }
@@ -1364,6 +1499,7 @@ function sheetView() {
       <div class="flex flex-wrap gap-2 mt-2">${[['Today', 0], ['Next week', 7], ['Next month', monthOff(1)], ['In 2 months', monthOff(2)], ['In 3 months', monthOff(3)]].map(([l2, o]) => chip('data-from', o, (r.from || 0) === o, l2)).join('')}</div>`}
       ${lab('Look ahead')}<div class="flex flex-wrap gap-2">${[[7, '1 week'], [14, '2 weeks'], [30, '1 month'], [90, '3 months'], [180, '6 months']].map(([v, l2]) => chip('data-ahead', v, (r.ahead || 14) === v, l2)).join('')}</div>
       ${lab("Who's invited")}<div class="flex flex-wrap gap-2">${others.filter(m => inviteesFor(r.cal).includes(m.id)).map(m => chip('data-who', m.id, r.ids.includes(m.id), m.name.split(' ')[0])).join('') || '<span class="text-sm text-muted-foreground">Just you. Add real people to this calendar to invite them.</span>'}</div>
+      ${r.ids.length ? `${lab('Hosting')}<div class="flex flex-wrap gap-2">${chip('data-host', '1', !!r.host, (r.host ? '✓ ' : '') + 'Needs a host')}</div><p class="text-xs text-muted-foreground mt-2">${r.host ? 'Anyone invited can claim hosting. The event is only scheduled once someone does.' : 'Turn on if someone has to host, like bringing the snacks or running it.'}</p>` : ''}
       ${lab('Add to calendar')}<div class="flex flex-wrap gap-2">${CALS.filter(c => !c.google).map(c => chip('data-rcal', c.id, r.cal === c.id, c.name)).join('')}</div>
       <button id="findTime" class="mt-6 w-full rounded-full bg-primary text-primary-foreground py-3 font-extrabold">Find a time</button>
       <button id="saveShortcut" class="mt-2 w-full rounded-full bg-secondary text-secondary-foreground py-2 text-sm font-bold">Save as shortcut</button>`);
@@ -1460,7 +1596,7 @@ function addNotif(text, extra = {}) {
   notifs.unshift({id:Date.now() + Math.random(), text, type:'info', open:true, ...extra});
   sysNotify('Sloth Sync', String(text).replace(/&lt;/g, '<').replace(/&amp;/g, '&').replace(/&quot;/g, '"'));
 }
-function tryFinalize(pd) { if (pd.me !== 'ask' && pd.ids.every(i => pd.res[i] === 'yes')) { finalize(pd); return true; } return false; }
+function tryFinalize(pd) { if (pd.me !== 'ask' && pd.ids.every(i => pd.res[i] === 'yes') && (!pd.needHost || pd.host)) { finalize(pd); return true; } return false; }
 function resolveAsk(pd) { notifs.forEach(n => { if (n.type === 'ask' && n.pid === pd.id) n.open = false; }); }
 function askBtns(n) {
   const pd = state.pends.find(p => p.id === n.pid);
@@ -1475,9 +1611,9 @@ function finalize(pd) {
     for (let d = d0; d <= d1; d++) {
       const a = Math.max(pd.s, d * 1440);
       const range = n === 1 ? `${fmtT(pd.s % 1440)} – ${fmtT(pd.e % 1440)}` : d === d0 ? `${fmtT(pd.s % 1440)} → ${dl(Math.floor(pd.e / 1440))} ${fmtT(pd.e % 1440)}` : d === d1 ? `Until ${fmtT(pd.e % 1440)}` : 'All day';
-      placeEvent(pd.cal || defaultCal(), d, {t:fmtT(a % 1440), range, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:d - d0 + 1, of:n, s:pd.s, e:pd.e, auto:true});
+      placeEvent(pd.cal || defaultCal(), d, {t:fmtT(a % 1440), range, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:d - d0 + 1, of:n, s:pd.s, e:pd.e, auto:true, host:pd.host || undefined});
     }
-  } else for (let k = 0; k < (pd.span || 1); k++) placeEvent(pd.cal || defaultCal(), pd.day + k, {t:pd.time, dur:pd.dur, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:k + 1, of:pd.span || 1, auto:true});
+  } else for (let k = 0; k < (pd.span || 1); k++) placeEvent(pd.cal || defaultCal(), pd.day + k, {t:pd.time, dur:pd.dur, title:pd.title, who, c:'accent', cal:pd.cal || defaultCal(), gid:pd.id, part:k + 1, of:pd.span || 1, auto:true, host:pd.host || undefined});
   if (pd.title === 'Team lunch') state.lunchDone = true;
   state.done.unshift({title:pd.title, custom:pd.custom, s:pd.s, e:pd.e, span:pd.span, day:pd.day, time:pd.time, dur:pd.dur, names:[members[0], ...pd.ids.map(i => members.find(m => m.id === i))]});
   state.pends = state.pends.filter(x => x !== pd);
@@ -1493,7 +1629,7 @@ function startAuto(title = '') {
 }
 function runShortcut(sc) {
   const sat = days.findIndex(d => d.getDay() === 6), sd = sat >= 0 && sat + 1 < days.length ? sat : 0;
-  const r = {title:sc.title, from:0, ahead:sc.ahead || 14, half:!!sc.half, cal:CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal(), dur:sc.dur || '1 hr', span:sc.span || 1, win:sc.win || 'Midday', mode:sc.mode || 'dur', sd, ed:Math.min(days.length - 1, sd + (sc.daysSpan || 1)), st:sc.st || '9:30 PM', et:sc.et || '9:00 AM', ids:inviteesFor(CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal())};
+  const r = {title:sc.title, from:0, ahead:sc.ahead || 14, half:!!sc.half, host:!!sc.host, cal:CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal(), dur:sc.dur || '1 hr', span:sc.span || 1, win:sc.win || 'Midday', mode:sc.mode || 'dur', sd, ed:Math.min(days.length - 1, sd + (sc.daysSpan || 1)), st:sc.st || '9:30 PM', et:sc.et || '9:00 AM', ids:inviteesFor(CALS.some(c => c.id === sc.cal) ? sc.cal : defaultCal())};
   if (r.mode === 'range') { r.s = r.sd * 1440 + parseT(r.st); r.e = r.ed * 1440 + parseT(r.et); if (r.e <= r.s) return toast('That shortcut has an invalid time range'); }
   state.req = r; state.sheet = 'auto'; runSearch();
 }
@@ -1627,18 +1763,26 @@ document.addEventListener('click', e => {
   if (q('#jLook')) { const jn = state.real.jn, code = normCode(jn.code); jn.code = code; if (code.length !== 8) { jn.err = 'Codes have 8 letters and numbers, like ABCD-EFGH.'; return render(); } previewInvite(code); return; }
   if (q('#jGo')) { const jn = state.real.jn; if (jn.info && jn.info.already) { state.real.jn = null; state.sheet = null; state.tab = 'calendar'; return render(); } joinInvite(); return; }
   if (q('#jBack')) { state.real.jn = null; state.sheet = null; return render(); }
+  if ((el = q('[data-cinacc]'))) { answerCalInvite(el.dataset.cinacc, true); return; }
+  if ((el = q('[data-cindec]'))) { answerCalInvite(el.dataset.cindec, false); return; }
   if ((el = q('[data-cmem]'))) { state.real.cm = el.dataset.cmem; state.sheet = 'cmem'; return render(); }
   if (q('[data-rpopen]')) { openPicker(state.sheet === 'cmem' ? state.real.cm : null); return; }
   if ((el = q('[data-cmt]'))) {
     const c = calOf(state.real.cm), m = members.find(x => x.id === el.dataset.cmt), cur = new Set(c.members || []);
+    if (m.real && c.live && (c.pend || []).includes(m.uid)) { cancelCalInvite(c, m.uid).then(() => { toast('Invitation cancelled'); render(); }).catch(() => toast("Couldn't cancel that invitation")); return; }
     const was = cur.has(m.id); if (was) cur.delete(m.id); else cur.add(m.id); c.members = [...cur];
     if (m.real && state.real.on) {
       (async () => { try { if (!c.live) await makeLive(c); else await setCalMembers(c); } catch (e) { if (was) cur.add(m.id); else cur.delete(m.id); c.members = [...cur]; toast(e && e.code === 'not_owner' ? "Only the calendar's owner can change who's in it" : "Couldn't update the shared calendar"); render(); } })();
     }
     return render();
   }
+  if ((el = q('[data-favinv]'))) {
+    const p = favList().find(x => x.id === el.dataset.favinv), c = calOf(state.real.cm); if (!p || !c) return;
+    const m = ensureMember(p.id, p); saveContacts().catch(() => {}); addRealToCalendar(c, m); return;
+  }
+  if ((el = q('[data-fav]'))) { toggleFav(el.dataset.fav); if (state.sheet === 'rp') redrawPeople(); else render(); return; }
   if ((el = q('[data-rpadd]'))) {
-    const rp = state.real.rp, p = rp.res.find(x => x.id === el.dataset.rpadd); if (!p) return;
+    const rp = state.real.rp, p = rp.res.find(x => x.id === el.dataset.rpadd) || favList().find(x => x.id === el.dataset.rpadd); if (!p) return;
     const m = ensureMember(p.id, p); saveContacts().catch(() => {});
     addNotif(`${unesc(m.name)} was added to your group`);
     const fc = rp.forCal && calOf(rp.forCal);
@@ -1646,6 +1790,14 @@ document.addEventListener('click', e => {
     const rows = document.getElementById('rpRes'); if (rows) rows.innerHTML = rpRows();
     return;
   }
+  if ((el = q('[data-ohost]'))) { const pd = state.pends.find(x => x.id == el.dataset.ohost); if (pd) setOwnerHost(pd, 'p'); return; }
+  if ((el = q('[data-ohostx]'))) { const pd = state.pends.find(x => x.id == el.dataset.ohostx); if (pd) setOwnerHost(pd, null); return; }
+  if ((el = q('[data-rhost]'))) {
+    const r = state.real, id = el.dataset.rhost, v = r.reqs[id]; if (!v || v.host) return;
+    r.db.doc('reqs/' + id).update({host:r.me}).then(() => toast("You're hosting")).catch(() => toast("Someone else just took it, or you can't host this one"));
+    return;
+  }
+  if ((el = q('[data-rhostx]'))) { const r = state.real, id = el.dataset.rhostx; r.db.doc('reqs/' + id).update({host:null}).catch(() => toast("Couldn't step down. Try again")); return; }
   if ((el = q('[data-racc]'))) {
     const r = state.real, id = el.dataset.racc, v = r.reqs[id]; if (!v) return;
     r.db.doc('reqs/' + id).update({res:{[r.me]:v.ver}}).catch(() => toast('You need Contributor access to reply'));
@@ -1670,7 +1822,7 @@ document.addEventListener('click', e => {
   if (q('#saveShortcut')) {
     const r = state.req, title = esc(r.title.trim());
     if (!title) return toast('Give the event a name first');
-    state.shortcuts.push({id:'c' + Date.now(), icon:'⭐', title, dur:r.dur, span:r.span, win:r.win, mode:r.mode, st:r.st, et:r.et, daysSpan:Math.max(1, r.ed - r.sd), cal:r.cal, ahead:r.ahead || 14, half:!!r.half, custom:true});
+    state.shortcuts.push({id:'c' + Date.now(), icon:'⭐', title, dur:r.dur, span:r.span, win:r.win, mode:r.mode, st:r.st, et:r.et, daysSpan:Math.max(1, r.ed - r.sd), cal:r.cal, ahead:r.ahead || 14, half:!!r.half, host:!!r.host, custom:true});
     return toast('Saved to Shortcuts');
   }
   if ((el = q('[data-from]'))) { state.req.from = +el.dataset.from; return render(); }
@@ -1733,6 +1885,7 @@ document.addEventListener('click', e => {
   if ((el = q('[data-span]'))) { state.req.span = +el.dataset.span; return render(); }
   if ((el = q('[data-dur]'))) { state.req.dur = el.dataset.dur; return render(); }
   if ((el = q('[data-win]'))) { state.req.win = el.dataset.win; return render(); }
+  if (q('[data-host]')) { state.req.host = !state.req.host; return render(); }
   if (q('[data-half]')) { state.req.half = !state.req.half; return render(); }
   if ((el = q('[data-who]'))) {
     const ids = state.req.ids, id = el.dataset.who, i = ids.indexOf(id);
@@ -1747,7 +1900,7 @@ document.addEventListener('click', e => {
   if (q('#confirm')) {
     const props = proposals(), p = props[state.prop % props.length], r = state.req;
     const rg = r.mode === 'range', k = p[2] || 0;
-    const pd = {id:Date.now(), title:r.title, dur:rg ? lengthTxt(r.e - r.s) : r.dur, span:rg ? 1 : r.span, custom:rg, s:rg ? r.s + k * 1440 : undefined, e:rg ? r.e + k * 1440 : undefined, day:p[0], time:p[1], ids:[...r.ids], res:{}, alt:{}, me:'yes', cal:r.cal};
+    const pd = {id:Date.now(), title:r.title, dur:rg ? lengthTxt(r.e - r.s) : r.dur, span:rg ? 1 : r.span, custom:rg, s:rg ? r.s + k * 1440 : undefined, e:rg ? r.e + k * 1440 : undefined, day:p[0], time:p[1], ids:[...r.ids], res:{}, alt:{}, me:'yes', cal:r.cal, needHost:!!r.host && r.ids.length > 0, host:null};
     state.pends.push(pd); createReq(pd); state.sheet = null; state.tab = 'home'; state.day = p[0];
     if (pd.ids.length) addNotif(`You asked ${pd.ids.length} ${pd.ids.length===1?'person':'people'} to confirm ${pd.title}, ${wt(pd, 1)}`);
     render(); if (pd.ids.length) toast('Requests sent');
